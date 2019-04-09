@@ -7,11 +7,12 @@
     <title>Document</title>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        const socket = io.connect('http://localhost:8080');
+        const socket = io.connect(window.location.origin);
         const name = 'narajaon';
 
         console.log('Welcome', name);
         socket.emit('player-ready', { player: name });
+        socket.on('NICE', () => console.log('IT\' NOICE'));
     </script>
 </head>
 <body>

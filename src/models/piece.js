@@ -8,7 +8,7 @@ const types = [
     [1, 1, 0, 1, 1],
 ];
 
-class Piece {
+module.exports = class Piece {
     constructor() {
         const index = Math.floor(Math.random() * (types.length));
         this.type = types[index];

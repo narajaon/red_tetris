@@ -1,11 +1,16 @@
-class Player {
+/**
+ * STATES:
+ * - connected
+ * - started
+ * - ended
+ * - paused ?
+ */
+module.exports = class Player {
     constructor() {
         this.grid = new Array(200);
-        this.isDead = false;
+        this.state = 'connected';
     }
 
     placePiece() {
     }
 }
-
-module.exports = Player;

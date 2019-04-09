@@ -1,18 +1,32 @@
-class Game {
-    isOver = false;
+const { Piece, Player } = require('../models')
 
-    constructor(players, room) {
-        this.players = players;
+/**
+ * STATES:
+ * - connected
+ * - started
+ * - ended
+ * - paused ?
+ */
+module.exports = class Game {
+    constructor(player, room, socket) {
+        this.players = [player];
         this.room = room;
+        this.state = 'started';
+        this.io = io;
+        this.socket = socket;
     }
 
-    get player(id) {
+    player(id) {
         return this.players[id];
     }
 
     addPlayer(player) {
         this.players.push(player);
     }
-}
 
-module.exports = Game;
+    generatePiece() {
+        const newPiece = new Piece();
+        // emit new piece to client
+        this.socket.emit('new-piece', newPiece);
+    }
+}
