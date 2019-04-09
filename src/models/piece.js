@@ -13,4 +13,7 @@ module.exports = class Piece {
         const index = Math.floor(Math.random() * (types.length));
         this.type = types[index];
     }
+
+    setUp() {
+    }
 }

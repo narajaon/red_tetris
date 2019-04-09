@@ -11,7 +11,7 @@ function start(){
 	// SETUP SERVER
 	config.express.setup(app);
 	// SETUP SOCKET EVENTS
-	config.socket.setup(server);
+	config.game.setup(server);
 	// START SERVER
 	server.listen(config.server.port);
 	console.log('server UP on', config.server.port);

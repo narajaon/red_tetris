@@ -1,4 +1,4 @@
-const { Piece, Player } = require('../models')
+const path = require('path');
 
 /**
  * STATES:
@@ -8,11 +8,9 @@ const { Piece, Player } = require('../models')
  * - paused ?
  */
 module.exports = class Game {
-    constructor(player, room, socket) {
-        this.players = [player];
-        this.room = room;
+    constructor(player, socket) {
         this.state = 'started';
-        this.io = io;
+        this.players = [player];
         this.socket = socket;
     }
 
@@ -24,9 +22,7 @@ module.exports = class Game {
         this.players.push(player);
     }
 
-    generatePiece() {
-        const newPiece = new Piece();
-        // emit new piece to client
-        this.socket.emit('new-piece', newPiece);
+    start() {
+        this.socket.connect();
     }
 }

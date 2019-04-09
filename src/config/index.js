@@ -1,8 +1,8 @@
 const express = require('./express');
-const socket = require('./socket');
+const game = require('./game');
 
 module.exports = {
-  socket,
+  game,
   express,
   server: {
     host: '0.0.0.0',

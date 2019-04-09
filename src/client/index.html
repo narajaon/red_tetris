@@ -12,7 +12,12 @@
 
         console.log('Welcome', name);
         socket.emit('player-ready', { player: name });
-        socket.on('NICE', () => console.log('IT\' NOICE'));
+        socket.on('new-piece', ({ piece }) => {
+            console.log('Incoming', piece);
+        });
+        setInterval(() => {
+            socket.emit('piece-placed');
+        }, 2000);
     </script>
 </head>
 <body>
