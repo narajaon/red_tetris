@@ -1,5 +1,10 @@
 const Piece = require('./piece');
 
+/**
+ * TODO:
+ * - Handle: 'game-over', 'new-player'
+ */
+
 module.exports = class Socket {
 	constructor(namespace, io) {
 		this.namespace = namespace ? `${namespace}/` : '';

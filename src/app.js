@@ -4,14 +4,18 @@ const config = require('./server/config');
 let app;
 let server;
 
-function start() {
+async function start() {
+	if (app) return app;
+
 	// SETUP SERVER
 	app = config.express.setup();
 	server = http.Server(app);
-	// SETUP SOCKET EVENTS
+	// SETUP GAME
 	config.game.setup(server);
 	// START SERVER
-	server.listen(config.server.port);
+	await server.listen(config.server.port);
+
+	return app;
 }
 
 async function stop() {
@@ -24,11 +28,7 @@ start();
 
 /**
  * TODO :
- * - emit piece to each players
- * - on 'piece-placed' event:
- * 		- generate new piece
- * 		- emit new piece
- * 		- add it to piece queue
+ * - Handle different rooms
  */
 
 module.exports = {
