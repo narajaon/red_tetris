@@ -6,11 +6,11 @@
  * - paused ?
  */
 module.exports = class Player {
-    constructor() {
-        this.grid = new Array(200);
-        this.state = 'connected';
-    }
+	constructor() {
+		this.grid = new Array(200);
+		this.state = 'connected';
+	}
 
-    placePiece() {
-    }
-}
+	placePiece() {
+	}
+};

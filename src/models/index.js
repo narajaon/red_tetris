@@ -4,8 +4,8 @@ const Player = require('./player');
 const Socket = require('./socket');
 
 module.exports = {
-    Game,
-    Piece,
-    Player,
-    Socket,
-}
+	Game,
+	Piece,
+	Player,
+	Socket,
+};
