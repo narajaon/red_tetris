@@ -9,7 +9,7 @@ module.exports = class Socket {
 	connect() {
 		this.io.on(`${this.namespace}connection`, (socket) => {
 			console.log('connected');
-			socket.on('player-ready', (data) => {
+			socket.on('player-ready', (any) => {
 				console.log('ready');
 				socket.emit('new-piece', { piece: new Piece() });
 			});
@@ -19,12 +19,5 @@ module.exports = class Socket {
 				console.log('a piece has been placed');
 			});
 		});
-	}
-
-	listen(event, socket, cb) {
-		socket.on(event, cb);
-	}
-
-	broadcast(event, data) {
 	}
 };

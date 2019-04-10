@@ -3,7 +3,7 @@ const app = require('express')();
 
 function setup() {
 	app.get('/', (req, res) => {
-		res.sendFile(path.resolve(`${__dirname}/../client/index.html`));
+		res.sendFile(path.resolve(`${__dirname}/../../client/index.html`));
 	});
 
 	return app;
