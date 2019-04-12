@@ -2,8 +2,8 @@ import React from 'react';
 
 const Tile = () => {
 	const style = {
-		height: '100px',
-		width: '100px',
+		height: '50px',
+		width: '50px',
 		backgroundColor: 'red',
 	};
 
