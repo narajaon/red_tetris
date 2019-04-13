@@ -3,7 +3,7 @@ import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import Tile from '../components/Tile';
 
-const Grid = ({ grid, placePiece }) => {
+const Grid = ({ grid, placePiece, rotatePiece }) => {
 	const style = {
 		display: 'grid',
 		gridTemplateColumns: 'repeat(10, min-content)',
@@ -19,7 +19,8 @@ const Grid = ({ grid, placePiece }) => {
 			<div style={ style }>
 				{ tiles }
 			</div>
-			<button onClick={ () => placePiece('O') }>PLACE</button>
+			<button onClick={ () => placePiece('T') }>PLACE</button>
+			<button onClick={ () => rotatePiece('T') }>ROTATE</button>
 		</div>
 	);
 };
@@ -34,13 +35,17 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		placePiece: (piece) => {
 			dispatch({ type: 'place-piece', piece });
-		}
+		},
+		rotatePiece: (piece) => {
+			dispatch({ type: 'rotate-piece', piece });
+		},
 	};
 };
 
 Grid.propTypes = {
 	grid: PropTypes.array,
 	placePiece: PropTypes.func,
+	rotatePiece: PropTypes.func,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Grid);

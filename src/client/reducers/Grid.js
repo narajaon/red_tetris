@@ -7,6 +7,7 @@ const initState = {
 
 		return gridBuffer;
 	})(),
+	currentPiece: null,
 };
 
 const tetris = {
@@ -47,6 +48,13 @@ const tetris = {
 	],
 };
 
+/**
+ * TODO :
+ * - Create a placePiece([array]) function (refacto)
+ * - Create current Piece state
+ * - Create updateCurrentPiece action
+ */
+
 const actions = {
 	'update-grid-coord': (state, { coord }) => {
 		const gridBuffer = state.grid.map(elem => [ ...elem ]);
@@ -58,9 +66,35 @@ const actions = {
 	'place-piece' : (state, { piece }) => {
 		const pieceGrid = tetris[piece];
 		const gridBuffer = state.grid.map(elem => [ ...elem ]);
-		const origin = { x: 3, y: 0 };
+		const origin = { x: piece === 'O' ? 4: 3, y: 0 };
 		let { x, y } = origin;
 		pieceGrid.forEach(line => {			
+			line.forEach(col => {
+				gridBuffer[y][x] = col;
+				x += 1;
+			});
+			x = origin.x; /* eslint-disable-line */
+			y += 1;
+		});
+
+		return { ...state, grid: gridBuffer };
+	},
+	'rotate-piece' : (state, { piece }) => {
+		const pieceGrid = tetris[piece];
+		const gridBuffer = state.grid.map(elem => [ ...elem ]);
+		const n = pieceGrid.length;
+		const rotated = pieceGrid.map((line, y) => {
+			return line.map((col, x) => {
+				return pieceGrid[n - x - 1][y];
+			});
+		});
+
+		console.log(rotated);
+		console.log(actions['place-piece'](state, { piece }));
+		
+		const origin = { x: piece === 'O' ? 4: 3, y: 0 };
+		let { x, y } = origin;
+		rotated.forEach(line => {			
 			line.forEach(col => {
 				gridBuffer[y][x] = col;
 				x += 1;
