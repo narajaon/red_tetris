@@ -1,13 +1,15 @@
-const generateGrid = () => {
-	const gridBuffer = [];
-	for (let i = 0; i < 200; i++) {
-		gridBuffer.push({
-			isFull: 0,
-			index: i,
-		});
-	}
-    
-	return gridBuffer;
+const initState = {
+	grid: (() => {
+		const gridBuffer = [];
+		for (let i = 0; i < 200; i++) {
+			gridBuffer.push({
+				isFull: 0,
+				index: i,
+			});
+		}
+		
+		return gridBuffer;
+	})(),
 };
 
 const tetris = {
@@ -46,10 +48,6 @@ const tetris = {
 		1, 1, 1,
 		0, 1, 0,
 	],
-};
-
-const initState = {
-	grid: generateGrid(),
 };
 
 const actions = {

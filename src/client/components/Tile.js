@@ -9,7 +9,7 @@ const Tile = ({ index, isFull = 0 }) => {
 	};
 
 	return (
-		<div style={style}>{ isFull }</div>
+		<div style={style}>{ index }</div>
 	);
 };
 
