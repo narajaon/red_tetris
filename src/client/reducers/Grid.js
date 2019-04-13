@@ -53,16 +53,10 @@ const tetris = {
  * - Create a placePiece([array]) function (refacto)
  * - Create current Piece state
  * - Create updateCurrentPiece action
+ * - Create a currentOrigin state
  */
 
 const actions = {
-	'update-grid-coord': (state, { coord }) => {
-		const gridBuffer = state.grid.map(elem => [ ...elem ]);
-		const val = gridBuffer[coord.y][coord.x];
-		gridBuffer[coord.y][coord.x] = val === 0 ? 1 : 0;
-
-		return { ...state, grid: gridBuffer };
-	},
 	'place-piece' : (state, { piece }) => {
 		const pieceGrid = tetris[piece];
 		const gridBuffer = state.grid.map(elem => [ ...elem ]);
@@ -89,9 +83,6 @@ const actions = {
 			});
 		});
 
-		console.log(rotated);
-		console.log(actions['place-piece'](state, { piece }));
-		
 		const origin = { x: piece === 'O' ? 4: 3, y: 0 };
 		let { x, y } = origin;
 		rotated.forEach(line => {			
