@@ -3,42 +3,23 @@ import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import Tile from '../components/Tile';
 
-/**
- * finds a tile from a given coordinates
- * @param {Array} grid the whole tetris grid
- * @param {Object} param1 x and y of the object to find
- */
-const getIndexFromCoordinates = (grid, { x, y }) => {
-	let line = -1;
-	let col = 0;
-	if (y === 0) {
-		return x;
-	}
-	
-	return grid.find((elem, index) => {
-		col += 1;
-		if (index % 10 === 0) {
-			line += 1;
-			col = 0;
-		}
-
-		return line === y && col === x;
-	});
-};
-
-const Grid = ({ grid, updateGridIndex }) => {
+const Grid = ({ grid, placePiece }) => {
 	const style = {
 		display: 'grid',
 		gridTemplateColumns: 'repeat(10, min-content)',
 		gridGap: '1px',
 	};
-	
+
+	const tiles = grid.map((elem) => {
+		return elem.map((tile, index) => <Tile key={ index } isFull={ tile }/>);
+	});
+
 	return (
 		<div className="grid-wrapper">
 			<div style={ style }>
-				{ grid.map((elem, index) => <Tile key={ elem.index } isFull={ elem.isFull } index={ index }/>) }
+				{ tiles }
 			</div>
-			<button onClick={ () => updateGridIndex(4) }>PLACE</button>
+			<button onClick={ () => placePiece('O') }>PLACE</button>
 		</div>
 	);
 };
@@ -51,15 +32,15 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		updateGridIndex: (index) => {
-			dispatch({ type: 'update-grid-index', isFull: 1, index });
+		placePiece: (piece) => {
+			dispatch({ type: 'place-piece', piece });
 		}
 	};
 };
 
 Grid.propTypes = {
 	grid: PropTypes.array,
-	updateGridIndex: PropTypes.func,
+	placePiece: PropTypes.func,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Grid);
