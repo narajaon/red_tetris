@@ -92,7 +92,7 @@ const actions = {
 		const canMove = pieceCollides(initGrid(), updatedOrigin, currentPiece);
 		if (!canMove) return state;
 		const gridBuffer = getUpdatedGrid(initGrid(), updatedOrigin, currentPiece);
-		
+
 		return { ...state, currentOrigin: updatedOrigin, grid: gridBuffer };
 	}
 };
@@ -116,21 +116,20 @@ function pieceCollides(grid, origin, piece) {
 	let { x, y } = origin;
 	const moveAllowed = piece.every(line => {
 		const lineRet = line.every((col) => {
-			if (grid[y] === undefined ||
-				grid[y][x] === undefined && col !== 0 ||
-				x === 10) {
+			if (grid[y] === undefined && col !== 0 ||
+				grid[y] !== undefined && grid[y][x] === undefined && col !== 0) {
 				return false;
 			}
 			x += 1;
-	
+
 			return true;
 		});
 		x = origin.x; /* eslint-disable-line */
 		y += 1;
-	
+
 		return lineRet;
 	});
-	
+
 	return moveAllowed;
 }
 
@@ -139,6 +138,10 @@ function getUpdatedGrid(grid, origin, piece) {
 	let { x, y } = origin;
 	piece.forEach(line => {
 		line.forEach((col) => {
+			if (x === gridBuffer[0].length && col === 0 ||
+				gridBuffer[y] === undefined) {
+				return;
+			}
 			gridBuffer[y][x] = col;
 			x += 1;
 		});
