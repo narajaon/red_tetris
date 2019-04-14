@@ -12,7 +12,7 @@ module.exports = {
 	},
 	"rules": {
         "indent": [
-            "error",
+            "warn",
             "tab"
         ],
         "no-unused-vars": ["warn", { "vars": "all" }],
