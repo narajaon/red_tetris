@@ -56,7 +56,7 @@ const actions = {
 	'place-piece' : (state, { currentPieceName }) => {
 		const { currentOrigin, grid } = state;
 		const pieceGrid = tetris[currentPieceName];
-		const { gridBuffer, moveAllowed } = getUpdatedGrid(grid, currentOrigin, pieceGrid);
+		const gridBuffer = getUpdatedGrid(grid, currentOrigin, pieceGrid);
 
 		return {
 			...state,
@@ -76,7 +76,7 @@ const actions = {
 				return pieceGrid[n - x - 1][y];
 			});
 		});
-		const { gridBuffer, moveAllowed } = getUpdatedGrid(initGrid(), currentOrigin, rotated);
+		const gridBuffer = getUpdatedGrid(initGrid(), currentOrigin, rotated);
 
 		return { ...state, grid: gridBuffer, currentPiece: rotated };
 	},
@@ -89,11 +89,11 @@ const actions = {
 		};
 
 		// REPLACE INIT GRID WITH GRID AND CHECK IF GRID[Y][X] IS NOT EMPTY
-		const { gridBuffer, moveAllowed } = getUpdatedGrid(initGrid(), updatedOrigin, currentPiece);
-		const definitiveOrigin = moveAllowed === true ? updatedOrigin : currentOrigin;
-		console.log(updatedOrigin, currentOrigin);
-
-		return { ...state, currentOrigin: definitiveOrigin, grid: gridBuffer };
+		const canMove = pieceCollides(initGrid(), updatedOrigin, currentPiece);
+		if (!canMove) return state;
+		const gridBuffer = getUpdatedGrid(initGrid(), updatedOrigin, currentPiece);
+		
+		return { ...state, currentOrigin: updatedOrigin, grid: gridBuffer };
 	}
 };
 
@@ -112,28 +112,41 @@ function initGrid() {
 	return gridBuffer;
 }
 
-function getUpdatedGrid(grid, origin, piece) {
-	const gridBuffer = clone2DGrid(grid);
+function pieceCollides(grid, origin, piece) {
 	let { x, y } = origin;
 	const moveAllowed = piece.every(line => {
 		const lineRet = line.every((col) => {
-			if ((gridBuffer[y] === undefined) ||
-				(gridBuffer[y][x] === undefined && col !== 0) ||
-				(x === 10)) {
+			if (grid[y] === undefined ||
+				grid[y][x] === undefined && col !== 0 ||
+				x === 10) {
 				return false;
 			}
-			gridBuffer[y][x] = col;
 			x += 1;
-
+	
 			return true;
 		});
 		x = origin.x; /* eslint-disable-line */
 		y += 1;
-
+	
 		return lineRet;
 	});
+	
+	return moveAllowed;
+}
 
-	return { gridBuffer, moveAllowed };
+function getUpdatedGrid(grid, origin, piece) {
+	const gridBuffer = clone2DGrid(grid);
+	let { x, y } = origin;
+	piece.forEach(line => {
+		line.forEach((col) => {
+			gridBuffer[y][x] = col;
+			x += 1;
+		});
+		x = origin.x; /* eslint-disable-line */
+		y += 1;
+	});
+
+	return gridBuffer;
 }
 
 function clone2DGrid(grid) {
