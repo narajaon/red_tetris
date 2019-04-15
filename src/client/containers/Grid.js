@@ -15,7 +15,7 @@ const Grid = ({ grid, placePiece, rotatePiece, translatePiece }) => {
 	});
 
 	const keyPressHandler = (event) => {
-		const piece = 'Z';
+		const piece = 'J';
 		switch (event.keyCode) {
 		case 82: // 'r' key
 			rotatePiece();
