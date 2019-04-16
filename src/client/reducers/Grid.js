@@ -56,7 +56,7 @@ const actions = {
 		});
 		const gridBuffer = getUpdatedGrid(initGrid(), origin, rotated);
 		const newPieces = { ...cloneDeep(pieces), current: rotated};
-		
+
 		return {
 			...state,
 			grid: gridBuffer,
@@ -70,8 +70,8 @@ const gridReducer = (state = initState, action) => {
 };
 
 function createNewPiece(tetrisPieces) {
-	return tetrisPieces[Math.floor(Math.random() * 7)];
-	// return tetrisPieces['L'];
+	// return tetrisPieces[Math.floor(Math.random() * 7)];
+	return tetrisPieces[3];
 }
 
 function pieceCollides(grid, origin, piece) {
@@ -83,18 +83,18 @@ function pieceCollides(grid, origin, piece) {
 				return false;
 			}
 			x += 1;
-				
+
 			return true;
 		});
 			x = origin.x; /* eslint-disable-line */
 		y += 1;
-			
+
 		return lineRet;
 	});
-		
+
 	return moveAllowed;
 }
-	
+
 function clone2DGrid(grid) {
 	return grid.map(line => [ ...line ]);
 }
@@ -106,6 +106,14 @@ function initGrid() {
 	}
 
 	return gridBuffer;
+}
+
+function refreshedGrid(prevGrid) {
+	const newGrid = prevGrid.map(line => {
+		return line.map(col => col === 2 ? 0 : col);
+	});
+
+	return newGrid;	
 }
 
 function getUpdatedGrid(gameGrid, origin, piece) {
