@@ -1,5 +1,5 @@
 import React from 'react';
-import Grid from './Grid';
+import Grid from '../containers/Grid';
 
 const App = () => {
 	const style = {

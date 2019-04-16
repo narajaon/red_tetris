@@ -1,10 +1,10 @@
 import { cloneDeep } from 'lodash';
-import actionCreator from '../actions';
+import { tetris } from '../actions';
 
 const initState = {
 	grid: initGrid(),
 	pieces: {
-		current: createNewPiece(actionCreator.tetris),
+		current: createNewPiece(tetris),
 		origin: { x: 3, y: 0 },
 		name: '',
 		kick: 0,
@@ -54,8 +54,8 @@ const actions = {
 				return pieceCopy[n - x - 1][y];
 			});
 		});
-		const newPieces = { ...cloneDeep(pieces), current: rotated};
 		const gridBuffer = getUpdatedGrid(initGrid(), origin, rotated);
+		const newPieces = { ...cloneDeep(pieces), current: rotated};
 		
 		return {
 			...state,
@@ -70,7 +70,8 @@ const gridReducer = (state = initState, action) => {
 };
 
 function createNewPiece(tetrisPieces) {
-	return tetrisPieces['L'];
+	return tetrisPieces[Math.floor(Math.random() * 7)];
+	// return tetrisPieces['L'];
 }
 
 function pieceCollides(grid, origin, piece) {
