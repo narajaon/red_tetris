@@ -3,25 +3,29 @@ import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import Tile from '../components/Tile';
 
-const Grid = ({ grid, placePiece, rotatePiece, translatePiece }) => {
+/**
+ * TODO:
+ * - Change grid for flex
+ */
+const Grid = (props) => {
+	const { grid, pieces , placePiece, rotatePiece, translatePiece } = props;
 	const style = {
 		display: 'grid',
 		gridTemplateColumns: 'repeat(10, min-content)',
 		gridGap: '1px',
 	};
-
+	
 	const tiles = grid.map((elem) => {
 		return elem.map((tile, index) => <Tile key={ index } isFull={ tile }/>);
 	});
 
 	const keyPressHandler = (event) => {
-		const piece = 'J';
 		switch (event.keyCode) {
 		case 82: // 'r' key
-			rotatePiece();
+			rotatePiece(pieces);
 			break;						
 		case 32: // 'sp' key
-			placePiece(piece);
+			placePiece();
 			break;			
 		case 37: // 'left' arrow
 			translatePiece({x: -1, y: 0});
@@ -48,28 +52,32 @@ const Grid = ({ grid, placePiece, rotatePiece, translatePiece }) => {
 	);
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({ gridReducer }) => {
+	const { grid, pieces } = gridReducer;
+	
 	return {
-		grid: state.grid,
+		grid,
+		pieces,
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		placePiece: currentPieceName => {
-			dispatch({ type: 'place-piece', currentPieceName });
+		placePiece: () => {
+			dispatch({ type: 'place-piece' });
 		},
 		rotatePiece: piece => {
 			dispatch({ type: 'rotate-piece', piece });
 		},
-		translatePiece: (translationCoord, kick) => {
-			dispatch({ type: 'translate-piece', translationCoord, kick });
+		translatePiece: (translation) => {
+			dispatch({ type: 'translate-piece', translation });
 		},
 	};
 };
 
 Grid.propTypes = {
 	grid: PropTypes.array,
+	pieces: PropTypes.object,
 	placePiece: PropTypes.func,
 	rotatePiece: PropTypes.func,
 	translatePiece: PropTypes.func,
