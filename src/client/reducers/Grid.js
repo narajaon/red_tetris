@@ -1,5 +1,5 @@
 import { cloneDeep } from 'lodash';
-import { tetris } from '../constants';
+import { tetris, tile } from '../constants';
 
 const initState = {
 	grid: initGrid(),
@@ -75,7 +75,7 @@ const gridReducer = (state = initState, action) => {
 };
 
 function createNewPieces(tetrisPieces) {
-	const tetrisId = Math.floor(Math.random() * 7);
+	const tetrisId = Math.floor(Math.random() * tetris.length);
 
 	return {
 		current: [...tetrisPieces[tetrisId]],
@@ -90,7 +90,8 @@ function pieceCollides(grid, origin, piece) {
 	const moveAllowed = piece.every(line => {
 		const lineRet = line.every((col) => {
 			if (grid[y] === undefined && col !== 0 ||
-				grid[y] !== undefined && grid[y][x] === undefined && col !== 0) {
+				grid[y] !== undefined && grid[y][x] === undefined && col !== 0 ||
+				grid[y] !== undefined && grid[y][x] === tile.FULL && col !== 0) {
 				return false;
 			}
 			x += 1;
@@ -121,7 +122,7 @@ function initGrid() {
 
 function createFreshGrid(prevGrid) {
 	const newGrid = prevGrid.map(line => {
-		return line.map(col => col === 1 ? 0 : col);
+		return line.map(col => col === tile.CURRENT ? tile.EMPTY : col);
 	});
 
 	return newGrid;
@@ -129,11 +130,8 @@ function createFreshGrid(prevGrid) {
 
 function blockPieceInGrid(prevGrid) {
 	const newGrid = prevGrid.map(line => {
-		return line.map(col => col === 1 ? 2 : col);
+		return line.map(col => col === tile.CURRENT ? tile.FULL : col);
 	});
-
-	console.log(prevGrid);
-	console.log(newGrid);
 
 	return newGrid;
 }
@@ -148,7 +146,7 @@ function getUpdatedGrid(gameGrid, origin, piece) {
 				return;
 			}
 
-			gridCopy[y][x] = col;
+			gridCopy[y][x] = gridCopy[y][x] === tile.FULL ? tile.FULL : col;
 			x += 1;
 		});
 		x = origin.x; /* eslint-disable-line */

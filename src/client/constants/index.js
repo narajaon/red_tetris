@@ -36,6 +36,12 @@ export const tetris = [
 	],
 ];
 
+export const tile = {
+	EMPTY: 0,
+	CURRENT: 1,
+	FULL: 2,
+};
+
 export const keys = {
 	R: 82,
 	SPACE: 32,
