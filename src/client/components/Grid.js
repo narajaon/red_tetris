@@ -1,6 +1,7 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import Tile from './Tile';
+import { keys } from '../constants';
 
 /**
  * TODO:
@@ -21,19 +22,19 @@ const Grid = (props) => {
 	
 	const keyPressHandler = (event) => {
 		switch (event.keyCode) {
-		case 82: // 'r' key
+		case keys.R:
 			rotatePiece(pieces);
 			break;						
-		case 32: // 'sp' key
+		case keys.SPACE:
 			placePiece();
 			break;			
-		case 37: // 'left' arrow
+		case keys.LEFT:
 			translatePiece({x: -1, y: 0});
 			break;
-		case 39: // 'right' arrow
+		case keys.RIGHT:
 			translatePiece({x: 1, y: 0});
 			break;
-		case 40: // 'down' arrow
+		case keys.DOWN:
 			translatePiece({x: 0, y: 1});
 			break;
 		}

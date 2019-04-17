@@ -1,21 +1,17 @@
 import { cloneDeep } from 'lodash';
-import { tetris } from '../actions';
+import { tetris } from '../constants';
 
 const initState = {
 	grid: initGrid(),
-	pieces: {
-		current: createNewPiece(tetris),
-		origin: { x: 3, y: 0 },
-		name: '',
-		kick: 0,
-	},
+	pieces: createNewPieces(tetris),
 };
 
 const actions = {
 	'place-piece' : (state) => {
 		const { grid, pieces } = state;
 		const { origin, current } = pieces;
-		const gridBuffer = getUpdatedGrid(initGrid(), origin, current);
+		const freshGrid = createFreshGrid(grid);
+		const gridBuffer = getUpdatedGrid(freshGrid, origin, current);
 
 		return {
 			...state,
@@ -26,15 +22,23 @@ const actions = {
 	'translate-piece' : (state, { translation }) => {
 		const { pieces, grid } = state;
 		const { origin, current } = pieces;
+		const freshGrid = createFreshGrid(grid);
 		if (!current) return state;
 		const updatedOrigin = {
 			x: origin.x + translation.x,
 			y: origin.y + translation.y,
 		};
-		// still using initGrid for now, will replace to grid
-		const canMove = pieceCollides(initGrid(), updatedOrigin, current);
+		const canMove = pieceCollides(freshGrid, updatedOrigin, current);
+		// can not move down anymore
+		if (!canMove && translation.y > 0) {
+			return {
+				...state,
+				grid: blockPieceInGrid(grid),
+				pieces: createNewPieces(tetris),
+			};
+		}
 		if (!canMove) return state;
-		const gridBuffer = getUpdatedGrid(initGrid(), updatedOrigin, current);
+		const gridBuffer = getUpdatedGrid(freshGrid, updatedOrigin, current);
 		const newPieces = { ...cloneDeep(pieces), origin: {...updatedOrigin}};
 
 		return {
@@ -46,6 +50,7 @@ const actions = {
 	'rotate-piece' : (state) => {
 		const { pieces, grid } = state;
 		const { origin, current } = pieces;
+		const freshGrid = createFreshGrid(grid);
 		if (!pieces) return state;
 		const pieceCopy = clone2DGrid(current);
 		const n = pieceCopy.length;
@@ -54,7 +59,7 @@ const actions = {
 				return pieceCopy[n - x - 1][y];
 			});
 		});
-		const gridBuffer = getUpdatedGrid(initGrid(), origin, rotated);
+		const gridBuffer = getUpdatedGrid(freshGrid, origin, rotated);
 		const newPieces = { ...cloneDeep(pieces), current: rotated};
 
 		return {
@@ -69,9 +74,15 @@ const gridReducer = (state = initState, action) => {
 	return actions[action.type] ? actions[action.type](state, action) : state;
 };
 
-function createNewPiece(tetrisPieces) {
-	// return tetrisPieces[Math.floor(Math.random() * 7)];
-	return tetrisPieces[3];
+function createNewPieces(tetrisPieces) {
+	const tetrisId = Math.floor(Math.random() * 7);
+
+	return {
+		current: [...tetrisPieces[tetrisId]],
+		origin: { x: 3, y: 0 },
+		name: tetrisId,
+		kick: 0,
+	};
 }
 
 function pieceCollides(grid, origin, piece) {
@@ -86,7 +97,7 @@ function pieceCollides(grid, origin, piece) {
 
 			return true;
 		});
-			x = origin.x; /* eslint-disable-line */
+		x = origin.x; /* eslint-disable-line */
 		y += 1;
 
 		return lineRet;
@@ -108,12 +119,23 @@ function initGrid() {
 	return gridBuffer;
 }
 
-function refreshedGrid(prevGrid) {
+function createFreshGrid(prevGrid) {
 	const newGrid = prevGrid.map(line => {
-		return line.map(col => col === 2 ? 0 : col);
+		return line.map(col => col === 1 ? 0 : col);
 	});
 
-	return newGrid;	
+	return newGrid;
+}
+
+function blockPieceInGrid(prevGrid) {
+	const newGrid = prevGrid.map(line => {
+		return line.map(col => col === 1 ? 2 : col);
+	});
+
+	console.log(prevGrid);
+	console.log(newGrid);
+
+	return newGrid;
 }
 
 function getUpdatedGrid(gameGrid, origin, piece) {
@@ -125,6 +147,7 @@ function getUpdatedGrid(gameGrid, origin, piece) {
 				gridCopy[y] === undefined) {
 				return;
 			}
+
 			gridCopy[y][x] = col;
 			x += 1;
 		});
