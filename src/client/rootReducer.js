@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import gridReducer from './Grid';
+import gridReducer from './reducers/Grid';
 
 /**
  * TODO :

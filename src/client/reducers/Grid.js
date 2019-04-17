@@ -28,7 +28,7 @@ const actions = {
 			x: origin.x + translation.x,
 			y: origin.y + translation.y,
 		};
-		const canMove = pieceCollides(freshGrid, updatedOrigin, current);
+		const canMove = pieceCanMove(freshGrid, updatedOrigin, current);
 		// can not move down anymore
 		if (!canMove && translation.y > 0) {
 			return {
@@ -59,13 +59,28 @@ const actions = {
 				return pieceCopy[n - x - 1][y];
 			});
 		});
-		const gridBuffer = getUpdatedGrid(freshGrid, origin, rotated);
-		const newPieces = { ...cloneDeep(pieces), current: rotated};
+		if (!pieceCanMove(freshGrid, origin, rotated)){
+			const translatedOrigin = {
+				x: origin.x + 1,
+				y: origin.y,
+			};
+			if (!canWallKick(freshGrid, translatedOrigin, current)) return state;
+			const { piece: rotatedPiece , origin : newOrigin } = wallKick(freshGrid, origin, translatedOrigin, current);
+			console.log(rotatedPiece, newOrigin, origin);
+			
+			const newGrid = getUpdatedGrid(freshGrid, newOrigin, rotatedPiece);
+			
+			return {
+				...state,
+				grid: newGrid,
+				pieces: { ...cloneDeep(pieces), current: rotatedPiece, origin: newOrigin},
+			};
+		}
 
 		return {
 			...state,
-			grid: gridBuffer,
-			pieces: newPieces,
+			grid: getUpdatedGrid(freshGrid, origin, rotated),
+			pieces: { ...cloneDeep(pieces), current: rotated},
 		};
 	},
 };
@@ -78,33 +93,83 @@ function createNewPieces(tetrisPieces) {
 	const tetrisId = Math.floor(Math.random() * tetris.length);
 
 	return {
-		current: [...tetrisPieces[tetrisId]],
+		current: [...tetrisPieces[1]],
 		origin: { x: 3, y: 0 },
 		name: tetrisId,
 		kick: 0,
 	};
 }
 
-function pieceCollides(grid, origin, piece) {
+function pieceCanMove(grid, origin, piece) {
 	let { x, y } = origin;
+	const xOrigin = origin.x;
 	const moveAllowed = piece.every(line => {
 		const lineRet = line.every((col) => {
-			if (grid[y] === undefined && col !== 0 ||
-				grid[y] !== undefined && grid[y][x] === undefined && col !== 0 ||
-				grid[y] !== undefined && grid[y][x] === tile.FULL && col !== 0) {
+			if (grid[y] === undefined && col !== tile.EMPTY ||
+				grid[y] !== undefined && grid[y][x] === undefined && col !== tile.EMPTY ||
+				grid[y] !== undefined && grid[y][x] === tile.FULL && col !== tile.EMPTY) {
 				return false;
 			}
 			x += 1;
 
 			return true;
 		});
-		x = origin.x; /* eslint-disable-line */
+		x = xOrigin;
 		y += 1;
 
 		return lineRet;
 	});
 
 	return moveAllowed;
+}
+
+function canWallKick(grid, origin, piece) {
+	const n = piece.length;
+	let rotated = clone2DGrid(piece);
+
+	for (let rota = 0; rota < 3; rota += 1) {
+		rotated = rotated.map((line, y) => {
+			return line.map((col, x) => {
+				return rotated[n - x - 1][y];
+			});
+		});
+
+		if (pieceCanMove(grid, origin, rotated)) {
+			console.log('ROTATIONS', rota);
+			
+			return true;
+		}
+	}
+
+	return false;
+}
+
+/**
+ * TODO :
+ * - handle -x and +y wallkicks
+ * - fix I weird wallkick
+ */
+function wallKick(grid, prevOrigin, newOrigin, piece) {
+	const n = piece.length;
+	let rotated = clone2DGrid(piece);
+	console.log(prevOrigin, newOrigin);
+
+	for (let rota = 0; rota < 3; rota += 1) {
+		rotated = rotated.map((line, y) => {
+			return line.map((col, x) => {
+				return rotated[n - x - 1][y];
+			});
+		});
+
+		if (pieceCanMove(grid, newOrigin, rotated)) {
+			console.log('TRUE');
+			
+			return { piece: rotated, origin: newOrigin };
+		}
+	}
+	console.log('FALSE');
+
+	return { piece, origin: prevOrigin };
 }
 
 function clone2DGrid(grid) {
@@ -139,6 +204,7 @@ function blockPieceInGrid(prevGrid) {
 function getUpdatedGrid(gameGrid, origin, piece) {
 	const gridCopy = clone2DGrid(gameGrid);
 	let { x, y } = origin;
+	const xOrigin = origin.x;
 	piece.forEach(line => {
 		line.forEach((col) => {
 			if (x === gridCopy[0].length && col === 0 ||
@@ -149,7 +215,7 @@ function getUpdatedGrid(gameGrid, origin, piece) {
 			gridCopy[y][x] = gridCopy[y][x] === tile.FULL ? tile.FULL : col;
 			x += 1;
 		});
-		x = origin.x; /* eslint-disable-line */
+		x = xOrigin;
 		y += 1;
 	});
 
