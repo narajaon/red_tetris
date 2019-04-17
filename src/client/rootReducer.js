@@ -9,5 +9,6 @@ import gridReducer from './reducers/Grid';
  * - Generate new piece
  */
 export default combineReducers({
-	gridReducer
+	gridReducer,
+	// playersReducer,
 });

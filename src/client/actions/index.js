@@ -9,3 +9,7 @@ export function rotatePiece(piece){
 export function translatePiece(translation){
 	return { type: 'translate-piece', translation };
 }
+
+export function startAnimation(interval){
+	return { type: 'start-animation', interval };
+}

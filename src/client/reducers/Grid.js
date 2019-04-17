@@ -1,16 +1,33 @@
 import { cloneDeep } from 'lodash';
-import { tetris, tile } from '../constants';
+import { TETRIS, WALLKICKS, WALLKICKS_I, TILE } from '../constants';
 
 const initState = {
 	grid: initGrid(),
-	pieces: createNewPieces(tetris),
+	pieces: null,
+	interval: null,
 };
 
 const actions = {
+	'start-animation' : (state, { interval }) => {
+		return {
+			...state,
+			interval
+		};
+	},
 	'place-piece' : (state) => {
 		const { grid, pieces } = state;
-		const { origin, current } = pieces;
 		const freshGrid = createFreshGrid(grid);
+		// PIECE PLACED
+		if (pieces === null) {
+			const newPieces = createNewPieces(TETRIS);
+			
+			return {
+				...state,
+				pieces: newPieces,
+				grid: getUpdatedGrid(freshGrid, newPieces.origin, newPieces.current)
+			};
+		}
+		const { origin, current } = pieces;
 		const gridBuffer = getUpdatedGrid(freshGrid, origin, current);
 
 		return {
@@ -34,7 +51,7 @@ const actions = {
 			return {
 				...state,
 				grid: blockPieceInGrid(grid),
-				pieces: createNewPieces(tetris),
+				pieces: null,
 			};
 		}
 		if (!canMove) return state;
@@ -51,7 +68,9 @@ const actions = {
 		const { pieces, grid } = state;
 		const { origin, current } = pieces;
 		const freshGrid = createFreshGrid(grid);
+
 		if (!pieces) return state;
+
 		const pieceCopy = clone2DGrid(current);
 		const n = pieceCopy.length;
 		const rotated = pieceCopy.map((line, y) => {
@@ -59,21 +78,11 @@ const actions = {
 				return pieceCopy[n - x - 1][y];
 			});
 		});
+
 		if (!pieceCanMove(freshGrid, origin, rotated)){
-			const translatedOrigin = {
-				x: origin.x + 1,
-				y: origin.y,
-			};
-			if (!canWallKick(freshGrid, translatedOrigin, current)) return state;
-			const { piece: rotatedPiece , origin : newOrigin } = wallKick(freshGrid, origin, translatedOrigin, current);
-			console.log(rotatedPiece, newOrigin, origin);
-			
-			const newGrid = getUpdatedGrid(freshGrid, newOrigin, rotatedPiece);
-			
 			return {
 				...state,
-				grid: newGrid,
-				pieces: { ...cloneDeep(pieces), current: rotatedPiece, origin: newOrigin},
+				...attemptWallKicks(pieces, current, freshGrid),
 			};
 		}
 
@@ -90,12 +99,12 @@ const gridReducer = (state = initState, action) => {
 };
 
 function createNewPieces(tetrisPieces) {
-	const tetrisId = Math.floor(Math.random() * tetris.length);
+	const id = Math.floor(Math.random() * TETRIS.length);
 
 	return {
-		current: [...tetrisPieces[1]],
+		current: [...tetrisPieces[id]],
 		origin: { x: 3, y: 0 },
-		name: tetrisId,
+		name: id,
 		kick: 0,
 	};
 }
@@ -105,9 +114,9 @@ function pieceCanMove(grid, origin, piece) {
 	const xOrigin = origin.x;
 	const moveAllowed = piece.every(line => {
 		const lineRet = line.every((col) => {
-			if (grid[y] === undefined && col !== tile.EMPTY ||
-				grid[y] !== undefined && grid[y][x] === undefined && col !== tile.EMPTY ||
-				grid[y] !== undefined && grid[y][x] === tile.FULL && col !== tile.EMPTY) {
+			if (grid[y] === undefined && col !== TILE.EMPTY ||
+				grid[y] !== undefined && grid[y][x] === undefined && col !== TILE.EMPTY ||
+				grid[y] !== undefined && grid[y][x] === TILE.FULL && col !== TILE.EMPTY) {
 				return false;
 			}
 			x += 1;
@@ -123,11 +132,13 @@ function pieceCanMove(grid, origin, piece) {
 	return moveAllowed;
 }
 
+const MAX_ROTATIONS = 1;
+
 function canWallKick(grid, origin, piece) {
 	const n = piece.length;
 	let rotated = clone2DGrid(piece);
 
-	for (let rota = 0; rota < 3; rota += 1) {
+	for (let rota = 0; rota < MAX_ROTATIONS; rota += 1) {
 		rotated = rotated.map((line, y) => {
 			return line.map((col, x) => {
 				return rotated[n - x - 1][y];
@@ -135,8 +146,6 @@ function canWallKick(grid, origin, piece) {
 		});
 
 		if (pieceCanMove(grid, origin, rotated)) {
-			console.log('ROTATIONS', rota);
-			
 			return true;
 		}
 	}
@@ -144,17 +153,11 @@ function canWallKick(grid, origin, piece) {
 	return false;
 }
 
-/**
- * TODO :
- * - handle -x and +y wallkicks
- * - fix I weird wallkick
- */
 function wallKick(grid, prevOrigin, newOrigin, piece) {
 	const n = piece.length;
 	let rotated = clone2DGrid(piece);
-	console.log(prevOrigin, newOrigin);
 
-	for (let rota = 0; rota < 3; rota += 1) {
+	for (let rota = 0; rota < MAX_ROTATIONS; rota += 1) {
 		rotated = rotated.map((line, y) => {
 			return line.map((col, x) => {
 				return rotated[n - x - 1][y];
@@ -162,14 +165,50 @@ function wallKick(grid, prevOrigin, newOrigin, piece) {
 		});
 
 		if (pieceCanMove(grid, newOrigin, rotated)) {
-			console.log('TRUE');
-			
 			return { piece: rotated, origin: newOrigin };
 		}
 	}
-	console.log('FALSE');
 
 	return { piece, origin: prevOrigin };
+}
+
+function iterWallKicks(freshGrid, origin, current, wallkicks) {
+	let translatedOrigin;
+
+	const kicks = wallkicks.some(translation => {
+		translatedOrigin = {
+			x: origin.x + translation.x,
+			y: origin.y + translation.y,
+		};
+
+		if (canWallKick(freshGrid, translatedOrigin, current)) return true;
+
+		return false;
+	});
+
+	return kicks ? translatedOrigin : null;
+}
+
+function attemptWallKicks(pieces, current, freshGrid) {
+	const { origin } = pieces;
+	let translatedOrigin = iterWallKicks(freshGrid, origin, current, WALLKICKS);
+
+	if (!translatedOrigin && pieces.name === 1) {
+		translatedOrigin = iterWallKicks(freshGrid, origin, current, WALLKICKS_I);
+	}
+
+	if (!translatedOrigin) return {};
+
+	const {
+		piece: rotatedPiece,
+		origin : newOrigin
+	} = wallKick(freshGrid, origin, translatedOrigin, current);
+	const newGrid = getUpdatedGrid(freshGrid, newOrigin, rotatedPiece);
+
+	return {
+		grid: newGrid,
+		pieces: { ...cloneDeep(pieces), current: rotatedPiece, origin: newOrigin},
+	};
 }
 
 function clone2DGrid(grid) {
@@ -187,7 +226,7 @@ function initGrid() {
 
 function createFreshGrid(prevGrid) {
 	const newGrid = prevGrid.map(line => {
-		return line.map(col => col === tile.CURRENT ? tile.EMPTY : col);
+		return line.map(col => col === TILE.CURRENT ? TILE.EMPTY : col);
 	});
 
 	return newGrid;
@@ -195,7 +234,7 @@ function createFreshGrid(prevGrid) {
 
 function blockPieceInGrid(prevGrid) {
 	const newGrid = prevGrid.map(line => {
-		return line.map(col => col === tile.CURRENT ? tile.FULL : col);
+		return line.map(col => col === TILE.CURRENT ? TILE.FULL : col);
 	});
 
 	return newGrid;
@@ -207,12 +246,13 @@ function getUpdatedGrid(gameGrid, origin, piece) {
 	const xOrigin = origin.x;
 	piece.forEach(line => {
 		line.forEach((col) => {
+
 			if (x === gridCopy[0].length && col === 0 ||
 				gridCopy[y] === undefined) {
 				return;
 			}
 
-			gridCopy[y][x] = gridCopy[y][x] === tile.FULL ? tile.FULL : col;
+			gridCopy[y][x] = gridCopy[y][x] === TILE.FULL ? TILE.FULL : col;
 			x += 1;
 		});
 		x = xOrigin;

@@ -1,14 +1,31 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import Tile from './Tile';
-import { keys } from '../constants';
+import { KEYS } from '../constants';
 
 /**
  * TODO:
  * - Change grid for flex
  */
 const Grid = (props) => {
-	const { placePiece, rotatePiece, translatePiece, grid, pieces } = props;
+	const {
+		placePiece,
+		rotatePiece,
+		translatePiece,
+		startAnimation,
+		grid,
+		pieces,
+		interval,
+	} = props;
+
+	// SIDE EFFECTS - NEED REFACTO
+	if (!pieces) {
+		interval !== null ? clearInterval(interval) : null;
+		placePiece();
+		startAnimation(setInterval(() => {
+			translatePiece({x: 0, y: 1});
+		}, 500));
+	}
 
 	const style = {
 		display: 'grid',
@@ -16,25 +33,21 @@ const Grid = (props) => {
 		gridGap: '1px',
 	};
 
-	const tiles = grid.map((elem) => {
-		return elem.map((tile, index) => <Tile key={ index } isFull={ tile }/>);
-	});
-	
 	const keyPressHandler = (event) => {
 		switch (event.keyCode) {
-		case keys.R:
+		case KEYS.R:
 			rotatePiece(pieces);
-			break;						
-		case keys.SPACE:
+			break;
+		case KEYS.SPACE:
 			placePiece();
-			break;			
-		case keys.LEFT:
+			break;
+		case KEYS.LEFT:
 			translatePiece({x: -1, y: 0});
 			break;
-		case keys.RIGHT:
+		case KEYS.RIGHT:
 			translatePiece({x: 1, y: 0});
 			break;
-		case keys.DOWN:
+		case KEYS.DOWN:
 			translatePiece({x: 0, y: 1});
 			break;
 		}
@@ -47,7 +60,11 @@ const Grid = (props) => {
 			onKeyPress={ keyPressHandler }
 			className="grid-wrapper">
 			<div style={ style }>
-				{ tiles }
+				{ grid.map((elem) => {
+					return elem.map((tile, index) => (
+						<Tile key={ index } isFull={ tile }/>
+					));
+				}) }
 			</div>
 		</div>
 	);
@@ -57,6 +74,8 @@ Grid.propTypes = {
 	placePiece: PropTypes.func,
 	rotatePiece: PropTypes.func,
 	translatePiece: PropTypes.func,
+	startAnimation: PropTypes.func,
+	interval: PropTypes.number,
 	grid: PropTypes.array,
 	pieces: PropTypes.object,
 };

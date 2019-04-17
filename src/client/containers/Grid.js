@@ -4,14 +4,16 @@ import {
 	placePiece,
 	rotatePiece,
 	translatePiece,
+	startAnimation,
 } from '../actions';
 
 const mapStateToProps = ({ gridReducer }) => {
-	const { grid, pieces } = gridReducer;
-	
+	const { grid, pieces, interval } = gridReducer;
+
 	return {
 		grid,
 		pieces,
+		interval,
 	};
 };
 
@@ -25,6 +27,9 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		translatePiece: (translation) => {
 			dispatch(translatePiece(translation));
+		},
+		startAnimation: (interval) => {
+			dispatch(startAnimation(interval));
 		},
 	};
 };
