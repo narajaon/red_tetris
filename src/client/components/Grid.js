@@ -60,11 +60,13 @@ const Grid = (props) => {
 			onKeyPress={ keyPressHandler }
 			className="grid-wrapper">
 			<div style={ style }>
-				{ grid.map((elem) => {
-					return elem.map((tile, index) => (
-						<Tile key={ index } isFull={ tile }/>
-					));
-				}) }
+				{
+					grid.map((elem) => {
+						return elem.map((tile, index) => (
+							<Tile key={ index } isFull={ tile }/>
+						));
+					})
+				}
 			</div>
 		</div>
 	);

@@ -20,7 +20,7 @@ const actions = {
 		// PIECE PLACED
 		if (pieces === null) {
 			const newPieces = createNewPieces(TETRIS);
-			
+
 			return {
 				...state,
 				pieces: newPieces,
@@ -48,9 +48,12 @@ const actions = {
 		const canMove = pieceCanMove(freshGrid, updatedOrigin, current);
 		// can not move down anymore
 		if (!canMove && translation.y > 0) {
+			const blocked = blockPieceInGrid(grid);
+			const scored = removeScoredLines(blocked);
+
 			return {
 				...state,
-				grid: blockPieceInGrid(grid),
+				grid: scored,
 				pieces: null,
 			};
 		}
@@ -130,6 +133,21 @@ function pieceCanMove(grid, origin, piece) {
 	});
 
 	return moveAllowed;
+}
+
+function removeScoredLines(grid) {
+	const filtered = grid.filter(lines => !lines.every(col => col !== 0));
+	const newGrid = initGrid();
+	let n = newGrid.length - 1;
+
+	for (let i = filtered.length - 1; i >= 0; i -= 1) {
+		filtered[i].map((col, index) => {
+			newGrid[n][index] = col;
+		});
+		n -= 1;
+	}
+
+	return newGrid;
 }
 
 const MAX_ROTATIONS = 1;
