@@ -12,5 +12,4 @@ import gameReducer from './reducers/Game';
 export default combineReducers({
 	gridReducer,
 	gameReducer,
-	// playersReducer,
 });

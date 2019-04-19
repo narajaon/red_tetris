@@ -12,11 +12,16 @@ export default function socketMiddleware() {
 			event,
 			leave,
 			handle,
+			data,
 			...rest
 		} = action;
 
 		if (!event) {
 			return next(action);
+		}
+
+		if (data) {
+			return socket.broadcast(event, data);
 		}
 
 		if (leave) {

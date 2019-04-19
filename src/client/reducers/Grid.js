@@ -15,6 +15,15 @@ const actions = {
 			interval
 		};
 	},
+	'reset-grid' : (state) => {
+		return {
+			...state,
+			grid: initGrid(),
+			pieces: null,
+			interval: null,
+			overflows: false,
+		};
+	},
 	'place-piece' : (state) => {
 		const { grid, pieces } = state;
 		const freshGrid = createFreshGrid(grid);
@@ -91,6 +100,11 @@ const actions = {
 };
 
 const gridReducer = (state = initState, action) => {
+	if (state.overflows && action.type !== 'reset-grid') {
+		console.log('OVER', state);
+		return state;
+	}
+	
 	return actions[action.type] ? actions[action.type](state, action) : state;
 };
 
@@ -111,7 +125,7 @@ function pieceOverflows(grid) {
 			return acc2 + (curr2 === 1 ? curr2 : 0);
 		}, 0);
 	};
-	
+
 	const countTilesPlaces = grid.reduce(reducer, 0);
 
 	return countTilesPlaces < 4;
@@ -155,41 +169,31 @@ function removeScoredLines(grid) {
 	return newGrid;
 }
 
-const MAX_ROTATIONS = 1;
-
 function canWallKick(grid, origin, piece) {
 	const n = piece.length;
 	let rotated = clone2DGrid(piece);
 
-	for (let rota = 0; rota < MAX_ROTATIONS; rota += 1) {
-		rotated = rotated.map((line, y) => {
-			return line.map((col, x) => {
-				return rotated[n - x - 1][y];
-			});
+	rotated = rotated.map((line, y) => {
+		return line.map((col, x) => {
+			return rotated[n - x - 1][y];
 		});
-
-		if (pieceCanMove(grid, origin, rotated)) {
-			return true;
-		}
-	}
-
-	return false;
+	});
+	
+	return pieceCanMove(grid, origin, rotated);
 }
 
 function wallKick(grid, prevOrigin, newOrigin, piece) {
 	const n = piece.length;
 	let rotated = clone2DGrid(piece);
 
-	for (let rota = 0; rota < MAX_ROTATIONS; rota += 1) {
-		rotated = rotated.map((line, y) => {
-			return line.map((col, x) => {
-				return rotated[n - x - 1][y];
-			});
+	rotated = rotated.map((line, y) => {
+		return line.map((col, x) => {
+			return rotated[n - x - 1][y];
 		});
+	});
 
-		if (pieceCanMove(grid, newOrigin, rotated)) {
-			return { piece: rotated, origin: newOrigin };
-		}
+	if (pieceCanMove(grid, newOrigin, rotated)) {
+		return { piece: rotated, origin: newOrigin };
 	}
 
 	return { piece, origin: prevOrigin };

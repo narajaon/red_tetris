@@ -4,7 +4,8 @@ import Grid from '../containers/Grid';
 const App = () => {
 	const style = {
 		display: 'flex',
-		justifyContent: 'center',
+		alignItems: 'center',
+		flexDirection: 'column',
 	};
 
 	return (

@@ -1,12 +1,17 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import rootReducer from './rootReducer';
+import socketMiddleware from './middlewares/Socket';
 import App from './components/App';
 import * as serviceWorker from './serviceWorker';
 
-const store = createStore(rootReducer);
+const store = createStore(
+	rootReducer,
+	applyMiddleware(socketMiddleware())
+);
+
 render(
 	<Provider store={ store }>
 		<App />
