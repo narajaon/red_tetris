@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import gridReducer from './reducers/Grid';
+import gameReducer from './reducers/Game';
 
 /**
  * TODO :
@@ -10,5 +11,6 @@ import gridReducer from './reducers/Grid';
  */
 export default combineReducers({
 	gridReducer,
+	gameReducer,
 	// playersReducer,
 });

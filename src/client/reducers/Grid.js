@@ -5,6 +5,7 @@ const initState = {
 	grid: initGrid(),
 	pieces: null,
 	interval: null,
+	overflows: false,
 };
 
 const actions = {
@@ -17,22 +18,13 @@ const actions = {
 	'place-piece' : (state) => {
 		const { grid, pieces } = state;
 		const freshGrid = createFreshGrid(grid);
-		// PIECE PLACED
-		if (pieces === null) {
-			const newPieces = createNewPieces(TETRIS);
-
-			return {
-				...state,
-				pieces: newPieces,
-				grid: getUpdatedGrid(freshGrid, newPieces.origin, newPieces.current)
-			};
-		}
-		const { origin, current } = pieces;
+		const piecesToPlace = pieces || createNewPieces(TETRIS);
+		const { origin, current } = piecesToPlace;
 		const gridBuffer = getUpdatedGrid(freshGrid, origin, current);
 
 		return {
 			...state,
-			pieces,
+			pieces: cloneDeep(piecesToPlace),
 			grid: gridBuffer,
 		};
 	},
@@ -48,6 +40,7 @@ const actions = {
 		const canMove = pieceCanMove(freshGrid, updatedOrigin, current);
 		// can not move down anymore
 		if (!canMove && translation.y > 0) {
+			if (pieceOverflows(grid)) return { ...state, overflows: true };
 			const blocked = blockPieceInGrid(grid);
 			const scored = removeScoredLines(blocked);
 
@@ -110,6 +103,18 @@ function createNewPieces(tetrisPieces) {
 		name: id,
 		kick: 0,
 	};
+}
+
+function pieceOverflows(grid) {
+	const reducer = (acc, curr) => {
+		return acc + curr.reduce((acc2, curr2) => {
+			return acc2 + (curr2 === 1 ? curr2 : 0);
+		}, 0);
+	};
+	
+	const countTilesPlaces = grid.reduce(reducer, 0);
+
+	return countTilesPlaces < 4;
 }
 
 function pieceCanMove(grid, origin, piece) {

@@ -1,7 +1,6 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import Tile from './Tile';
-import { KEYS } from '../constants';
 
 /**
  * TODO:
@@ -9,22 +8,20 @@ import { KEYS } from '../constants';
  */
 const Grid = (props) => {
 	const {
-		placePiece,
-		rotatePiece,
-		translatePiece,
+		keyPressHandler,
 		startAnimation,
+		stopAnimation,
 		grid,
+		overflows,
 		pieces,
 		interval,
 	} = props;
 
-	// SIDE EFFECTS - NEED REFACTO
-	if (!pieces) {
-		interval !== null ? clearInterval(interval) : null;
-		placePiece();
-		startAnimation(setInterval(() => {
-			translatePiece({x: 0, y: 1});
-		}, 500));
+	if (!pieces && !overflows) {
+		interval !== null ? stopAnimation(interval) : null;
+		startAnimation();
+	} else if (overflows) {
+		stopAnimation(interval);
 	}
 
 	const style = {
@@ -33,31 +30,11 @@ const Grid = (props) => {
 		gridGap: '1px',
 	};
 
-	const keyPressHandler = (event) => {
-		switch (event.keyCode) {
-		case KEYS.R:
-			rotatePiece(pieces);
-			break;
-		case KEYS.SPACE:
-			placePiece();
-			break;
-		case KEYS.LEFT:
-			translatePiece({x: -1, y: 0});
-			break;
-		case KEYS.RIGHT:
-			translatePiece({x: 1, y: 0});
-			break;
-		case KEYS.DOWN:
-			translatePiece({x: 0, y: 1});
-			break;
-		}
-	};
-
 	return (
 		<div
 			tabIndex="0"
-			onKeyDown={ keyPressHandler }
-			onKeyPress={ keyPressHandler }
+			onKeyDown={ (e) => keyPressHandler(e, pieces) }
+			onKeyPress={ (e) => keyPressHandler(e, pieces) }
 			className="grid-wrapper">
 			<div style={ style }>
 				{
@@ -73,13 +50,13 @@ const Grid = (props) => {
 };
 
 Grid.propTypes = {
-	placePiece: PropTypes.func,
-	rotatePiece: PropTypes.func,
-	translatePiece: PropTypes.func,
+	keyPressHandler: PropTypes.func,
 	startAnimation: PropTypes.func,
+	stopAnimation: PropTypes.func,
 	interval: PropTypes.number,
 	grid: PropTypes.array,
 	pieces: PropTypes.object,
+	overflows: PropTypes.bool,
 };
 
 export default Grid;
