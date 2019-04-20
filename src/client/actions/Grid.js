@@ -1,5 +1,5 @@
-export function placePiece(){
-	return { type: 'place-piece' };
+export function placePiece(pieces){
+	return { type: 'place-piece', pieces };
 }
 
 export function rotatePiece(piece){

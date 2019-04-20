@@ -7,6 +7,7 @@ import {
 	translatePiece,
 	startAnimation,
 } from '../actions/Grid';
+import { emitPieceRequest } from '../actions/Socket';
 
 const mapStateToProps = ({ gridReducer }) => {
 	const { grid, pieces, interval, overflows } = gridReducer;
@@ -27,7 +28,7 @@ const mapDispatchToProps = (dispatch) => {
 				dispatch(rotatePiece(pieces));
 				break;
 			case KEYS.SPACE:
-				dispatch(placePiece());
+				// dispatch(emitPieceRequest('narajaon', 42));
 				break;
 			case KEYS.LEFT:
 				dispatch(translatePiece({x: -1, y: 0}));
@@ -41,14 +42,14 @@ const mapDispatchToProps = (dispatch) => {
 			}
 		},
 		startAnimation: () => {
-			dispatch(placePiece());
-			dispatch(startAnimation(setInterval(() => {
-				dispatch(translatePiece({x: 0, y: 1}));
-			}, 500)));
+			// dispatch(emitPieceRequest('narajaon', 42));
+			// dispatch(startAnimation(setInterval(() => {
+			// 	dispatch(translatePiece({x: 0, y: 1}));
+			// }, 500)));
 		},
 		stopAnimation: (interval) => {
-			clearInterval(interval);
-			dispatch(startAnimation(null));
+			// clearInterval(interval);
+			// dispatch(startAnimation(null));
 		},
 	};
 };

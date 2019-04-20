@@ -21,7 +21,8 @@ export default function socketMiddleware() {
 		}
 
 		if (data) {
-			return socket.broadcast(event, data);
+			console.log(data);
+			return socket.emit(event, data);
 		}
 
 		if (leave) {
@@ -29,13 +30,16 @@ export default function socketMiddleware() {
 		}
 
 		let handleEvent = handle;
+
 		if (typeof handleEvent === 'string') {
-			handleEvent = result => dispatch({
-				type: handle,
-				data: { ...result }
-			});
+			handleEvent = result => {	
+				dispatch({
+					type: handle,
+					data: { ...result }
+				});
+			};
 		}
-		
+
 		return socket.on(event, handleEvent);
 	};
 }

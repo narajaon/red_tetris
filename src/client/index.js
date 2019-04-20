@@ -6,13 +6,17 @@ import thunk from 'redux-thunk';
 
 import rootReducer from './rootReducer';
 import socketMiddleware from './middlewares/Socket';
-import App from './components/App';
+import App from './containers/App';
 import * as serviceWorker from './serviceWorker';
+import hijackTranslate from './middlewares/hijackTranlate';
+import startAnimation from './middlewares/startAnimation';
 
 const store = createStore(
 	rootReducer,
 	applyMiddleware(
 		thunk,
+		hijackTranslate(),
+		startAnimation(),
 		socketMiddleware(),
 	)
 );

@@ -39,6 +39,6 @@ const TETRIS = [
 module.exports = class Piece {
 	constructor() {
 		const index = Math.floor(Math.random() * (TETRIS.length));
-		this.type = TETRIS[index];
+		this.type = { current: TETRIS[index], id: index };
 	}
 };

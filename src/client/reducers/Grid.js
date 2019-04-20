@@ -1,5 +1,5 @@
 import { cloneDeep } from 'lodash';
-import { TETRIS, WALLKICKS, WALLKICKS_I, TILE } from '../constants';
+import { WALLKICKS, WALLKICKS_I, TILE } from '../constants';
 
 const initState = {
 	grid: initGrid(),
@@ -24,10 +24,10 @@ const actions = {
 			overflows: false,
 		};
 	},
-	'place-piece' : (state) => {
-		const { grid, pieces } = state;
+	'place-piece' : (state, { pieces }) => {
+		const { grid } = state;
 		const freshGrid = createFreshGrid(grid);
-		const piecesToPlace = pieces || createNewPieces(TETRIS);
+		const piecesToPlace = createNewPieces(pieces);
 		const { origin, current } = piecesToPlace;
 		const gridBuffer = getUpdatedGrid(freshGrid, origin, current);
 
@@ -47,6 +47,7 @@ const actions = {
 			y: origin.y + translation.y,
 		};
 		const canMove = pieceCanMove(freshGrid, updatedOrigin, current);
+
 		// can not move down anymore
 		if (!canMove && translation.y > 0) {
 			if (pieceOverflows(grid)) return { ...state, overflows: true };
@@ -71,6 +72,9 @@ const actions = {
 	},
 	'rotate-piece' : (state) => {
 		const { pieces, grid } = state;
+
+		if (!pieces) return state;
+
 		const { origin, current } = pieces;
 		const freshGrid = createFreshGrid(grid);
 
@@ -104,15 +108,15 @@ const gridReducer = (state = initState, action) => {
 		// console.log('OVER', state);
 		return state;
 	}
-	
+
 	return actions[action.type] ? actions[action.type](state, action) : state;
 };
 
-function createNewPieces(tetrisPieces) {
-	const id = Math.floor(Math.random() * TETRIS.length);
+function createNewPieces(pieces) {
+	const { current, id } = pieces;
 
 	return {
-		current: [...tetrisPieces[id]],
+		current,
 		origin: { x: 3, y: 0 },
 		name: id,
 		kick: 0,
@@ -178,7 +182,7 @@ function canWallKick(grid, origin, piece) {
 			return rotated[n - x - 1][y];
 		});
 	});
-	
+
 	return pieceCanMove(grid, origin, rotated);
 }
 

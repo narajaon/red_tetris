@@ -8,9 +8,9 @@ export function emitPlayerConnected(player, room) {
 	};
 }
 
-export function emitPiecePlaced(player, room) {
+export function emitPieceRequest(player, room) {
 	return {
-		event: 'piece-placed',
+		event: 'piece-request',
 		data: {
 			player,
 			room,
@@ -21,10 +21,10 @@ export function emitPiecePlaced(player, room) {
 export function listenToNewPiece() {
 	return dispatch => dispatch({
 		event: 'new-piece-event',
-		handle: ({ piece }) => dispatch({
-			type: 'new-piece',
-			piece: piece,
-		}),
+		handle: ({ pieces }) => {
+			dispatch({ type: 'place-piece', pieces });
+			dispatch({ type: 'start-animation' });
+		},
 	});
 }
 

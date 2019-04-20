@@ -21,17 +21,17 @@ module.exports = class Socket {
 			socket.on('game-start', () => {
 				const { type } = new Piece();
 				console.log('game has started');
-				socket.emit('new-piece-event', { piece: type });
+				socket.emit('new-piece-event', { pieces: type });
 			});
 
 			socket.on('game-ended', () => {
 				console.log('game has ended');
 			});
 
-			socket.on('piece-placed', () => {
+			socket.on('piece-request', ({ player, room }) => {
 				const { type } = new Piece();
-				console.log('a piece has been placed');
-				socket.emit('new-piece-event', { piece: type });
+				console.log(`a piece has been requested by ${player} in room ${room}`);
+				socket.emit('new-piece-event', { pieces: type });
 			});
 		});
 	}
