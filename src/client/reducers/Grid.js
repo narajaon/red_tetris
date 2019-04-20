@@ -101,7 +101,7 @@ const actions = {
 
 const gridReducer = (state = initState, action) => {
 	if (state.overflows && action.type !== 'reset-grid') {
-		console.log('OVER', state);
+		// console.log('OVER', state);
 		return state;
 	}
 	

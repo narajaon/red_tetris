@@ -1,5 +1,9 @@
 const path = require('path');
-const app = require('express')();
+const express = require('express');
+const serverConf = require('./server');
+
+const app = express();
+const staticDir = serverConf.env === 'test' ? '../static/' : '/../../../build/';
 
 /**
  * TODO:
@@ -7,9 +11,11 @@ const app = require('express')();
  */
 
 function setup() {
-	// app.get('/', (req, res) => {
-	// 	res.sendFile(path.resolve(`${__dirname}/../../client/index.html`));
-	// });
+	app.use(express.static(path.join(__dirname, staticDir)));
+
+	app.get('/', (req, res) => {
+		res.sendFile(path.join(__dirname, staticDir, 'index.html'));
+	});
 
 	return app;
 }
