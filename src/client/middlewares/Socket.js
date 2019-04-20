@@ -13,7 +13,6 @@ export default function socketMiddleware() {
 			leave,
 			handle,
 			data,
-			...rest
 		} = action;
 
 		if (!event) {
@@ -30,7 +29,7 @@ export default function socketMiddleware() {
 
 		let handleEvent = handle;
 		if (typeof handleEvent === 'string') {
-			handleEvent = result => dispatch({ type: handle, result, ...rest });
+			handleEvent = result => dispatch({ type: handle, data: { ...result } });
 		}
 		
 		return socket.on(event, handleEvent);

@@ -18,16 +18,25 @@ export function emitPiecePlaced(player, room) {
 	};
 }
 
-export function handleNewPiece() {
+export function listenToNewPiece() {
 	return dispatch => dispatch({
 		event: 'new-piece-event',
-		handle: data => dispatch({
+		handle: ({ piece }) => dispatch({
 			type: 'new-piece',
-			piece: data.piece,
+			piece: piece,
 		}),
 	});
 }
 
+export function listenToNewPlayer() {
+	return dispatch => dispatch({
+		event: 'new-player-connected',
+		handle: ({ player }) => dispatch({
+			type: 'new-player-connected',
+			piece: player,
+		}),
+	});
+}
 /**
  * TODO :
  * - create new-piece
