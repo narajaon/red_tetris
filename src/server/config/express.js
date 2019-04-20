@@ -14,6 +14,8 @@ function setup() {
 	app.use(express.static(path.join(__dirname, staticDir)));
 
 	app.get('/', (req, res) => {
+		console.log('sending from', path.join(__dirname, staticDir, 'index.html'));
+		
 		res.sendFile(path.join(__dirname, staticDir, 'index.html'));
 	});
 

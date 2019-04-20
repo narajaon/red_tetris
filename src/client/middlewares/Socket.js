@@ -1,7 +1,8 @@
 import io from 'socket.io-client';
 
 export default function socketMiddleware() {
-	const socket = io();
+	const socket = process.env.NODE_ENV === 'development' ?
+		io.connect('http://localhost:8080/') : io();
 
 	return ({ dispatch }) => next => (action) => {
 		if (typeof action === 'function') {
@@ -29,7 +30,10 @@ export default function socketMiddleware() {
 
 		let handleEvent = handle;
 		if (typeof handleEvent === 'string') {
-			handleEvent = result => dispatch({ type: handle, data: { ...result } });
+			handleEvent = result => dispatch({
+				type: handle,
+				data: { ...result }
+			});
 		}
 		
 		return socket.on(event, handleEvent);

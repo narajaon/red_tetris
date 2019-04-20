@@ -14,14 +14,24 @@ module.exports = class Socket {
 	connect() {
 		this.io.on(`${this.namespace}connection`, (socket) => {
 			console.log('connected');
-			socket.on('player-ready', (any) => {
-				console.log('ready');
-				socket.emit('new-piece', { piece: new Piece() });
+			socket.on('player-connected', ({ player, room }) => {
+				console.log(`${player} is ready in room ${room}`);
+			});
+
+			socket.on('game-start', () => {
+				const { type } = new Piece();
+				console.log('game has started');
+				socket.emit('new-piece-event', { piece: type });
+			});
+
+			socket.on('game-ended', () => {
+				console.log('game has ended');
 			});
 
 			socket.on('piece-placed', () => {
-				socket.emit('new-piece', { piece: new Piece() });
+				const { type } = new Piece();
 				console.log('a piece has been placed');
+				socket.emit('new-piece-event', { piece: type });
 			});
 		});
 	}
