@@ -2,12 +2,9 @@ import { connect } from 'react-redux';
 import Grid from '../components/Grid';
 import { KEYS } from '../constants';
 import {
-	placePiece,
 	rotatePiece,
 	translatePiece,
-	startAnimation,
 } from '../actions/Grid';
-import { emitPieceRequest } from '../actions/Socket';
 
 const mapStateToProps = ({ gridReducer }) => {
 	const { grid, pieces, interval, overflows } = gridReducer;
@@ -22,10 +19,10 @@ const mapStateToProps = ({ gridReducer }) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		keyPressHandler: (event, pieces) => {
+		keyPressHandler: (event) => {
 			switch (event.keyCode) {
 			case KEYS.R:
-				dispatch(rotatePiece(pieces));
+				dispatch(rotatePiece());
 				break;
 			case KEYS.SPACE:
 				// dispatch(emitPieceRequest('narajaon', 42));
@@ -40,16 +37,6 @@ const mapDispatchToProps = (dispatch) => {
 				dispatch(translatePiece({x: 0, y: 1}));
 				break;
 			}
-		},
-		startAnimation: () => {
-			// dispatch(emitPieceRequest('narajaon', 42));
-			// dispatch(startAnimation(setInterval(() => {
-			// 	dispatch(translatePiece({x: 0, y: 1}));
-			// }, 500)));
-		},
-		stopAnimation: (interval) => {
-			// clearInterval(interval);
-			// dispatch(startAnimation(null));
 		},
 	};
 };
