@@ -4,9 +4,8 @@ import { KEYS, PHASES } from '../constants';
 import {
 	rotatePiece,
 	translatePiece,
+	startAnimation,
 } from '../actions/Grid';
-import { emitPieceRequest } from '../actions/Socket';
-import { switchPhase } from '../actions/Game';
 
 const mapStateToProps = ({ gridReducer, gameReducer }) => {
 	const { grid } = gridReducer;
@@ -27,8 +26,7 @@ const mapDispatchToProps = (dispatch) => {
 				break;
 			case KEYS.SPACE:
 				if (phase === PHASES.CONNECTED) {
-					dispatch(emitPieceRequest('narajaon', 42));
-					dispatch(switchPhase('started'));
+					dispatch(startAnimation());
 				}
 				break;
 			case KEYS.LEFT:

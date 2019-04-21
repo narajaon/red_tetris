@@ -1,25 +1,32 @@
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+
 import App from '../components/App';
 import {
 	listenToNewPiece,
 	listenToNewPlayer,
-	emitPlayerConnected,
-	emitPieceRequest,
 } from '../actions/Socket';
 
 const mapStateToProps = ({ gameReducer }) => {
+	const { players, currentPlayer, room } = gameReducer;
+	
 	return {
+		players,
+		currentPlayer,
+		room,
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
 		listenToSocketEvents: () => {
-			dispatch(emitPlayerConnected('narajaon', 42));
 			dispatch(listenToNewPiece());
 			dispatch(listenToNewPlayer());
+		},
+		initGame(hash) {
+			dispatch({ type: 'parse-hash', hash });
 		}
 	};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

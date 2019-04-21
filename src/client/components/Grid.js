@@ -11,6 +11,7 @@ const Grid = (props) => {
 		keyPressHandler,
 		grid,
 		phase,
+		location,
 	} = props;
 
 	const style = {
@@ -20,19 +21,22 @@ const Grid = (props) => {
 	};
 
 	return (
-		<div
-			tabIndex="0"
-			onKeyDown={ (e) => keyPressHandler(e, phase) }
-			onKeyPress={ (e) => keyPressHandler(e, phase) }
-			className="grid-wrapper">
-			<div style={ style }>
-				{
-					grid.map((elem) => {
-						return elem.map((tile, index) => (
-							<Tile key={ index } isFull={ tile }/>
-						));
-					})
-				}
+		<div>
+			<div>{location}</div>
+			<div
+				tabIndex="0"
+				onKeyDown={ (e) => keyPressHandler(e, phase) }
+				onKeyPress={ (e) => keyPressHandler(e, phase) }
+				className="grid-wrapper">
+				<div style={ style }>
+					{
+						grid.map((elem) => {
+							return elem.map((tile, index) => (
+								<Tile key={ index } isFull={ tile }/>
+							));
+						})
+					}
+				</div>
 			</div>
 		</div>
 	);
@@ -42,6 +46,7 @@ Grid.propTypes = {
 	keyPressHandler: PropTypes.func,
 	grid: PropTypes.array,
 	phase: PropTypes.string,
+	location: PropTypes.string,
 };
 
 export default Grid;

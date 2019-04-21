@@ -9,6 +9,13 @@ const initState = {
 };
 
 const actions = {
+	'init-player-and-room': (state, { player, room }) => {
+		return {
+			...state,
+			currentPlayer: player,
+			room,
+		};
+	},
 	'add-player' : (state, { player }) => {},
 	'add-piece-to-queue' : (state, { piece }) => {},
 	'switch-phase': (state, { phase }) => {

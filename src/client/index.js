@@ -3,13 +3,17 @@ import { render } from 'react-dom';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
+import { Route, BrowserRouter } from 'react-router-dom';
 
-import rootReducer from './rootReducer';
-import socketMiddleware from './middlewares/Socket';
-import App from './containers/App';
 import * as serviceWorker from './serviceWorker';
+import rootReducer from './rootReducer';
+import socketMiddleware from './middlewares/handleSocket';
+import App from './containers/App';
+
 import hijackTranslate from './middlewares/hijackTranlate';
 import startAnimation from './middlewares/startAnimation';
+import parseHash from './middlewares/parseHash';
+import handleErrors from './middlewares/handleErrors';
 
 const store = createStore(
 	rootReducer,
@@ -18,12 +22,16 @@ const store = createStore(
 		hijackTranslate(),
 		startAnimation(),
 		socketMiddleware(),
+		parseHash(),
+		handleErrors(),
 	)
 );
 
 render(
 	<Provider store={ store }>
-		<App />
+		<BrowserRouter>
+			<Route path="/" component={ App }/>
+		</BrowserRouter>
 	</Provider>,
 	document.getElementById('root')
 );
