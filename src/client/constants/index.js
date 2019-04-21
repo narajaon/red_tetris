@@ -23,3 +23,9 @@ export const KEYS = {
 	RIGHT: 39,
 	DOWN: 40,
 };
+
+export const PHASES = {
+	CONNECTED: 'connected',
+	STARTED: 'started',
+	ENDED: 'ended',
+};

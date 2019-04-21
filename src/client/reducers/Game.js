@@ -1,8 +1,10 @@
+import { PHASES } from '../constants';
+
 const initState = {
 	players: [],
 	currentPlayer: '',
 	pieceQueue: [],
-	phase: 'connected',
+	phase: PHASES.CONNECTED, // connected / started / ended
 	room: 42,
 };
 

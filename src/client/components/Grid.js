@@ -10,6 +10,7 @@ const Grid = (props) => {
 	const {
 		keyPressHandler,
 		grid,
+		phase,
 	} = props;
 
 	const style = {
@@ -21,8 +22,8 @@ const Grid = (props) => {
 	return (
 		<div
 			tabIndex="0"
-			onKeyDown={ (e) => keyPressHandler(e) }
-			onKeyPress={ (e) => keyPressHandler(e) }
+			onKeyDown={ (e) => keyPressHandler(e, phase) }
+			onKeyPress={ (e) => keyPressHandler(e, phase) }
 			className="grid-wrapper">
 			<div style={ style }>
 				{
@@ -40,7 +41,7 @@ const Grid = (props) => {
 Grid.propTypes = {
 	keyPressHandler: PropTypes.func,
 	grid: PropTypes.array,
-	pieces: PropTypes.object,
+	phase: PropTypes.string,
 };
 
 export default Grid;

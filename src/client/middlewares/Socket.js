@@ -21,7 +21,6 @@ export default function socketMiddleware() {
 		}
 
 		if (data) {
-			console.log(data);
 			return socket.emit(event, data);
 		}
 

@@ -16,7 +16,6 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		listenToSocketEvents: () => {
 			dispatch(emitPlayerConnected('narajaon', 42));
-			dispatch(emitPieceRequest('narajaon', 42));
 			dispatch(listenToNewPiece());
 			dispatch(listenToNewPlayer());
 		}

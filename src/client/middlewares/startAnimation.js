@@ -1,4 +1,6 @@
 import { translatePiece } from '../actions/Grid';
+import { switchPhase } from '../actions/Game';
+import { PHASES } from '../constants';
 
 export default function startAnimation() {
 	return ({ dispatch, getState }) => next => (action) => {
@@ -14,6 +16,8 @@ export default function startAnimation() {
 					dispatch(translatePiece({x: 0, y: 1}));
 				}, 500);
 			};
+
+			dispatch(switchPhase(PHASES.STARTED));
 
 			return next({ type, interval: interval() });
 		}
