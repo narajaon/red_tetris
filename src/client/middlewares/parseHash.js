@@ -1,9 +1,9 @@
 import { initRoomAndPlayer } from '../actions/Game';
-import { emitPlayerConnected } from '../actions/Socket';
 import { errorAction } from '../actions/errors';
+import { emitPlayerConnected } from '../actions/Socket';
 
 export default function parseHash() {
-	return ({ dispatch, getState }) => next => (action) => {
+	return ({ dispatch }) => next => (action) => {
 		const { type, hash } = action;
 
 		if (type !== 'parse-hash') return next(action);
@@ -23,8 +23,6 @@ export default function parseHash() {
 			return dispatch(errorAction('bad hash'));
 		}
 
-		dispatch(initRoomAndPlayer(player, room));
-
-		return dispatch(emitPlayerConnected(player, room));
+		return dispatch(initRoomAndPlayer(player, room));
 	};
 }

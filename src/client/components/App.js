@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Grid from '../containers/Grid';
 
-const App = ({ listenToSocketEvents, location, initGame }) => {
+const App = ({ listenToSocketEvents, initGame }) => {
 	const style = {
 		display: 'flex',
 		alignItems: 'center',
@@ -22,7 +22,6 @@ const App = ({ listenToSocketEvents, location, initGame }) => {
 App.propTypes = {
 	listenToSocketEvents: PropTypes.func,
 	initGame: PropTypes.func,
-	location: PropTypes.object,
 };
 
 export default App;

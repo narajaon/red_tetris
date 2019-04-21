@@ -7,21 +7,25 @@ import { Route, BrowserRouter } from 'react-router-dom';
 
 import * as serviceWorker from './serviceWorker';
 import rootReducer from './rootReducer';
-import socketMiddleware from './middlewares/handleSocket';
+import handleSocket from './middlewares/handleSocket';
 import App from './containers/App';
 
 import hijackTranslate from './middlewares/hijackTranlate';
 import startAnimation from './middlewares/startAnimation';
 import parseHash from './middlewares/parseHash';
 import handleErrors from './middlewares/handleErrors';
+import newPlayerConnected from './middlewares/newPlayerConnected';
+import requestNewPiece from './middlewares/requestNewPiece';
 
 const store = createStore(
 	rootReducer,
 	applyMiddleware(
 		thunk,
+		handleSocket(),
+		newPlayerConnected(),
+		requestNewPiece(),
 		hijackTranslate(),
 		startAnimation(),
-		socketMiddleware(),
 		parseHash(),
 		handleErrors(),
 	)

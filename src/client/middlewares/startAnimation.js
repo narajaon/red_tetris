@@ -10,6 +10,7 @@ export default function startAnimation() {
 			if (getState().gridReducer.interval !== null) {
 				clearInterval(getState().gridReducer.interval);
 			}
+			// debugger;
 
 			const interval = () => {
 				return setInterval(() => {

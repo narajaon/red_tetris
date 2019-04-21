@@ -1,6 +1,6 @@
 import io from 'socket.io-client';
 
-export default function socketMiddleware() {
+export default function handleSocket() {
 	const socket = process.env.NODE_ENV === 'development' ?
 		io.connect('http://localhost:8080/') : io();
 
@@ -13,15 +13,15 @@ export default function socketMiddleware() {
 			event,
 			leave,
 			handle,
-			data,
+			emit,
 		} = action;
 
 		if (!event) {
 			return next(action);
 		}
 
-		if (data) {
-			return socket.emit(event, data);
+		if (emit) {
+			return next({ event, socket });
 		}
 
 		if (leave) {

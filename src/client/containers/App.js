@@ -4,16 +4,13 @@ import { withRouter } from 'react-router-dom';
 import App from '../components/App';
 import {
 	listenToNewPiece,
-	listenToNewPlayer,
+	// listenToOtherPlayers,
+	listenToNewPlayers,
+	emitPlayerConnected,
 } from '../actions/Socket';
 
-const mapStateToProps = ({ gameReducer }) => {
-	const { players, currentPlayer, room } = gameReducer;
-	
+const mapStateToProps = () => {
 	return {
-		players,
-		currentPlayer,
-		room,
 	};
 };
 
@@ -21,10 +18,11 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		listenToSocketEvents: () => {
 			dispatch(listenToNewPiece());
-			dispatch(listenToNewPlayer());
+			dispatch(listenToNewPlayers());
 		},
-		initGame(hash) {
+		initGame: (hash) => {
 			dispatch({ type: 'parse-hash', hash });
+			dispatch(emitPlayerConnected());
 		}
 	};
 };

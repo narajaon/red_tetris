@@ -13,9 +13,10 @@ module.exports = class Socket {
 
 	connect() {
 		this.io.on(`${this.namespace}connection`, (socket) => {
-			console.log('connected');
-			socket.on('player-connected', ({ player, room }) => {
+			console.log('connection established');
+			socket.on('new-player-connected-event', ({ player, room }) => {
 				console.log(`${player} is ready in room ${room}`);
+				// socket.emit('new-player-connected-event', { player, room });
 			});
 
 			socket.on('game-start', () => {
