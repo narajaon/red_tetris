@@ -4,9 +4,7 @@ import { withRouter } from 'react-router-dom';
 import App from '../components/App';
 import {
 	listenToNewPiece,
-	// listenToOtherPlayers,
 	listenToNewPlayers,
-	emitPlayerConnected,
 } from '../actions/Socket';
 
 const mapStateToProps = () => {
@@ -20,10 +18,6 @@ const mapDispatchToProps = (dispatch) => {
 			dispatch(listenToNewPiece());
 			dispatch(listenToNewPlayers());
 		},
-		initGame: (hash) => {
-			dispatch({ type: 'parse-hash', hash });
-			dispatch(emitPlayerConnected());
-		}
 	};
 };
 

@@ -1,5 +1,5 @@
 export default function newPlayerConnected() {
-	return ({ dispatch, getState }) => next => (action) => {
+	return ({ getState }) => next => action => {
 		const { event, socket } = action;
 
 		if (event !== 'new-player-connected-event') return next(action);

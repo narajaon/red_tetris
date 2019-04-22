@@ -12,7 +12,7 @@ import App from './containers/App';
 
 import hijackTranslate from './middlewares/hijackTranlate';
 import startAnimation from './middlewares/startAnimation';
-import parseHash from './middlewares/parseHash';
+import hijackInitRoomAndPlayer from './middlewares/hijackInitRoomAndPlayer';
 import handleErrors from './middlewares/handleErrors';
 import newPlayerConnected from './middlewares/newPlayerConnected';
 import requestNewPiece from './middlewares/requestNewPiece';
@@ -21,12 +21,12 @@ const store = createStore(
 	rootReducer,
 	applyMiddleware(
 		thunk,
+		hijackInitRoomAndPlayer(),
 		handleSocket(),
 		newPlayerConnected(),
 		requestNewPiece(),
 		hijackTranslate(),
 		startAnimation(),
-		parseHash(),
 		handleErrors(),
 	)
 );
