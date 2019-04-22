@@ -2,7 +2,14 @@ const Piece = require('./piece');
 
 /**
  * TODO:
- * - Handle: 'game-over', 'new-player'
+ * - should listen to player-logged / login + room
+ * - on piece-request send it to all other players
+ * - Clients should queue new pieces on arrival in Game.pieces
+ * - on new-player-connected, queue them in Game.players[]
+ * - should assign a game master in Game.master
+ * - should change game state on game-master-change-state => connected, started
+ * - should listen to all of the game states and change Game.state to ended when all games have ended
+ * - should listen to game-master-restart-game to reinitialize games
  */
 
 module.exports = class Socket {

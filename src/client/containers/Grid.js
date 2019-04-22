@@ -1,33 +1,29 @@
 import { connect } from 'react-redux';
 import Grid from '../components/Grid';
-import { KEYS, PHASES } from '../constants';
+import { KEYS } from '../constants';
 import {
 	rotatePiece,
 	translatePiece,
 	startAnimation,
 } from '../actions/Grid';
 
-const mapStateToProps = ({ gridReducer, gameReducer }) => {
+const mapStateToProps = ({ gridReducer }) => {
 	const { grid } = gridReducer;
-	const { phase } = gameReducer;
 
 	return {
 		grid,
-		phase,
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		keyPressHandler: (event, phase) => {
+		keyPressHandler: (event) => {
 			switch (event.keyCode) {
 			case KEYS.R:
 				dispatch(rotatePiece());
 				break;
 			case KEYS.SPACE:
-				if (phase === PHASES.CONNECTED) {
-					dispatch(startAnimation());
-				}
+				dispatch(startAnimation());
 				break;
 			case KEYS.LEFT:
 				dispatch(translatePiece({x: -1, y: 0}));

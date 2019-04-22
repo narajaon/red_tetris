@@ -15,13 +15,13 @@ import startAnimation from './middlewares/startAnimation';
 import handleErrors from './middlewares/handleErrors';
 import newPlayerConnected from './middlewares/newPlayerConnected';
 import requestNewPiece from './middlewares/requestNewPiece';
-import startGame from './middlewares/startGame';
+import setupGame from './middlewares/setupGame';
 
 const store = createStore(
 	rootReducer,
 	applyMiddleware(
 		thunk,
-		startGame(),
+		setupGame(),
 		handleSocket(),
 		newPlayerConnected(),
 		startAnimation(),

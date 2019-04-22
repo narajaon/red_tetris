@@ -1,10 +1,9 @@
 import { switchPhase, initPlayerAndRoom } from '../actions/Game';
 import { errorAction } from '../actions/errors';
-import { startAnimation } from '../actions/Grid';
 import { listenToNewPiece, listenToNewPlayers, listenToGlobalMessages } from '../actions/Socket';
 import { PHASES } from '../constants';
 
-export default function startGame() {
+export default function setupGame() {
 	return ({ dispatch, getState }) => next => (action) => {
 		const { gameReducer } = getState();
 		const { currentPlayer, room, phase } = gameReducer;
@@ -41,8 +40,7 @@ export default function startGame() {
 		dispatch(listenToNewPiece());
 		dispatch(listenToNewPlayers());
 		dispatch(listenToGlobalMessages());
-
-		// Start animation
-		return dispatch(startAnimation());
+		
+		return next(action);
 	};
 }

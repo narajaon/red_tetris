@@ -10,8 +10,6 @@ const Grid = (props) => {
 	const {
 		keyPressHandler,
 		grid,
-		phase,
-		location,
 	} = props;
 
 	const style = {
@@ -22,11 +20,10 @@ const Grid = (props) => {
 
 	return (
 		<div>
-			<div>{location}</div>
 			<div
 				tabIndex="0"
-				onKeyDown={ (e) => keyPressHandler(e, phase) }
-				onKeyPress={ (e) => keyPressHandler(e, phase) }
+				onKeyDown={ keyPressHandler }
+				onKeyPress={ keyPressHandler }
 				className="grid-wrapper">
 				<div style={ style }>
 					{

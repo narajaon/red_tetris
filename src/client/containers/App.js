@@ -15,8 +15,7 @@ const mapStateToProps = () => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		listenToSocketEvents: () => {
-			// dispatch(listenToNewPiece());
-			// dispatch(listenToNewPlayers());
+			dispatch({type: 'setup'}); // DUMMY action
 		},
 	};
 };
