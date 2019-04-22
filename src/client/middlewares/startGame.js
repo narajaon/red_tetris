@@ -1,7 +1,7 @@
 import { switchPhase, initPlayerAndRoom } from '../actions/Game';
 import { errorAction } from '../actions/errors';
 import { startAnimation } from '../actions/Grid';
-import { listenToNewPiece, listenToNewPlayers } from '../actions/Socket';
+import { listenToNewPiece, listenToNewPlayers, listenToGlobalMessages } from '../actions/Socket';
 import { PHASES } from '../constants';
 
 export default function startGame() {
@@ -40,6 +40,7 @@ export default function startGame() {
 		//  Listen to events
 		dispatch(listenToNewPiece());
 		dispatch(listenToNewPlayers());
+		dispatch(listenToGlobalMessages());
 
 		// Start animation
 		return dispatch(startAnimation());

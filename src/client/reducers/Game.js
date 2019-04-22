@@ -16,6 +16,10 @@ const actions = {
 			room,
 		};
 	},
+	'new-message': (state, { message }) => {
+		console.log(message);
+		return state;
+	},
 	'add-player' : (state, { player }) => {},
 	'add-piece-to-queue' : (state, { piece }) => {},
 	'switch-phase': (state, { phase }) => {

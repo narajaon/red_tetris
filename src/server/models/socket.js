@@ -16,8 +16,14 @@ module.exports = class Socket {
 			console.log('connection established');
 			socket.on('new-player-connected-event', ({ player, room }) => {
 				console.log(`${player} is ready in room ${room}`);
-				// socket.emit('new-player-connected-event', { player, room });
+				// console.log(socket.broadcast.emit(`${player} is ready in room ${room}`));
+				socket.broadcast.emit(`${player} is ready in room ${room}`);
+				
+				// this.io.sockets.emit('broadcast', 'coucou');
+				this.io.sockets.emit('broadcast', { description: `${player} is ready in room ${room}`});
 			});
+
+			// this.io.sockets.broadcast.emit('new player joined');
 
 			socket.on('game-start', () => {
 				const { type } = new Piece();
