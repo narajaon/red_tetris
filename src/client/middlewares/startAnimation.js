@@ -1,6 +1,5 @@
 import { translatePiece } from '../actions/Grid';
-import { switchPhase } from '../actions/Game';
-import { PHASES } from '../constants';
+import { emitPieceRequest } from '../actions/Socket';
 
 export default function startAnimation() {
 	return ({ dispatch, getState }) => next => (action) => {
@@ -10,7 +9,6 @@ export default function startAnimation() {
 			if (getState().gridReducer.interval !== null) {
 				clearInterval(getState().gridReducer.interval);
 			}
-			// debugger;
 
 			const interval = () => {
 				return setInterval(() => {
@@ -18,7 +16,7 @@ export default function startAnimation() {
 				}, 500);
 			};
 
-			dispatch(switchPhase(PHASES.STARTED));
+			dispatch(emitPieceRequest());
 
 			return next({ type, interval: interval() });
 		}
