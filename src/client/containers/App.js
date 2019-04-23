@@ -3,8 +3,6 @@ import { withRouter } from 'react-router-dom';
 
 import App from '../components/App';
 import {
-	listenToNewPiece,
-	listenToNewPlayers,
 } from '../actions/Socket';
 
 const mapStateToProps = () => {
@@ -15,7 +13,7 @@ const mapStateToProps = () => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		listenToSocketEvents: () => {
-			dispatch({type: 'setup'}); // DUMMY action
+			dispatch({type: 'setup-game'}); // DUMMY action
 		},
 	};
 };

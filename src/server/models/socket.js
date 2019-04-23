@@ -25,7 +25,7 @@ module.exports = class Socket {
 				console.log(`${player} is ready in room ${room}`);
 				// console.log(socket.broadcast.emit(`${player} is ready in room ${room}`));
 				socket.broadcast.emit(`${player} is ready in room ${room}`);
-				
+
 				// this.io.sockets.emit('broadcast', 'coucou');
 				this.io.sockets.emit('broadcast', { description: `${player} is ready in room ${room}`});
 			});

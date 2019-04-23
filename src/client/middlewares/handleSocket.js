@@ -39,6 +39,9 @@ export default function handleSocket() {
 			};
 		}
 
+		console.log(event);
+		
+
 		return socket.on(event, handleEvent);
 	};
 }
