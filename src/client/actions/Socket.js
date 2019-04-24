@@ -1,3 +1,5 @@
+import { placePiece } from './Grid';
+
 export function emitPlayerConnected(socket) {
 	return {
 		event: 'new-player-connected-event',
@@ -21,7 +23,7 @@ export function listenToNewPiece() {
 	return dispatch => dispatch({
 		event: 'new-piece-event',
 		handle: ({ pieces }) => {
-			dispatch({ type: 'place-piece', pieces });
+			dispatch(placePiece(pieces));
 		},
 	});
 }

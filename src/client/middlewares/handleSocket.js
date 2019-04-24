@@ -1,8 +1,9 @@
 import io from 'socket.io-client';
+import { serverURI } from '../constants';
 
 export default function handleSocket() {
 	const socket = process.env.NODE_ENV === 'development' ?
-		io.connect('http://localhost:8080/') : io();
+		io.connect(serverURI) : io();
 
 	return ({ dispatch }) => next => (action) => {
 		if (typeof action === 'function') {
@@ -38,9 +39,6 @@ export default function handleSocket() {
 				});
 			};
 		}
-
-		console.log(event);
-		
 
 		return socket.on(event, handleEvent);
 	};

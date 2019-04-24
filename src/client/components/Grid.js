@@ -25,7 +25,7 @@ const Grid = (props) => {
 				onKeyDown={ keyPressHandler }
 				onKeyPress={ keyPressHandler }
 				className="grid-wrapper">
-				<div style={ style }>
+				<div className="grid" style={ style }>
 					{
 						grid.map((elem) => {
 							return elem.map((tile, index) => (
@@ -42,8 +42,6 @@ const Grid = (props) => {
 Grid.propTypes = {
 	keyPressHandler: PropTypes.func,
 	grid: PropTypes.array,
-	phase: PropTypes.string,
-	location: PropTypes.string,
 };
 
 export default Grid;

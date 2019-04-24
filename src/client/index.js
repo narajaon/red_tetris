@@ -7,9 +7,9 @@ import { Route, BrowserRouter } from 'react-router-dom';
 
 import * as serviceWorker from './serviceWorker';
 import rootReducer from './rootReducer';
-import handleSocket from './middlewares/handleSocket';
 import App from './containers/App';
 
+import handleSocket from './middlewares/handleSocket';
 import hijackTranslate from './middlewares/hijackTranlate';
 import startAnimation from './middlewares/startAnimation';
 import handleErrors from './middlewares/handleErrors';

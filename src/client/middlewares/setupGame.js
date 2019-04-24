@@ -28,7 +28,6 @@ export default function setupGame() {
 			!groups[1] ||
 			!groups[2] ||
 			hash === '') {
-			// debugger;
 			newRoom = 0;
 			newPlayer = 'unknownPlayer';
 		} else {

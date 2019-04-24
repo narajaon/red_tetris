@@ -10,7 +10,7 @@ const Tile = ({ isFull }) => {
 	};
 
 	return (
-		<div style={style}></div>
+		<div className="tile" style={style}></div>
 	);
 };
 
