@@ -3,11 +3,12 @@ import { render } from 'react-dom';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
-import { Route, BrowserRouter } from 'react-router-dom';
+import { Route, BrowserRouter, Switch } from 'react-router-dom';
 
 import * as serviceWorker from './serviceWorker';
 import rootReducer from './rootReducer';
 import App from './containers/App';
+import Login from './containers/Login';
 
 import handleSocket from './middlewares/handleSocket';
 import hijackTranslate from './middlewares/hijackTranlate';
@@ -34,7 +35,10 @@ const store = createStore(
 render(
 	<Provider store={ store }>
 		<BrowserRouter>
-			<Route path="/" component={ App }/>
+			<Switch>
+				<Route exact path="/" component={ App }/>
+				<Login path="/login"/>
+			</Switch>
 		</BrowserRouter>
 	</Provider>,
 	document.getElementById('root')

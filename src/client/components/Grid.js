@@ -6,12 +6,7 @@ import Tile from './Tile';
  * TODO:
  * - Change grid for flex
  */
-const Grid = (props) => {
-	const {
-		keyPressHandler,
-		grid,
-	} = props;
-
+const Grid = ({ keyPressHandler, grid }) => {
 	const style = {
 		display: 'grid',
 		gridTemplateColumns: 'repeat(10, min-content)',
