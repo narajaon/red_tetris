@@ -13,3 +13,7 @@ export function translatePiece(translation){
 export function startAnimation(interval){
 	return { type: 'start-animation', interval };
 }
+
+export function resetGrid(){
+	return { type: 'reset-grid' };
+}

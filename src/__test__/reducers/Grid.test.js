@@ -1,7 +1,10 @@
+import chai, { expect } from 'chai';
 import reducer from '../../client/reducers/Grid';
 import { initGrid, createNewPieces, getUpdatedGrid } from '../../client/helpers/Grid';
-import { placePiece, translatePiece } from '../../client/actions/Grid';
+import { placePiece, translatePiece, rotatePiece, resetGrid } from '../../client/actions/Grid';
 import { TETRIS } from '../../client/constants';
+
+chai.config.truncateThreshold = 0;
 
 describe('grid reducers', () => {
 	const emptyGrid = initGrid();
@@ -13,9 +16,9 @@ describe('grid reducers', () => {
 	};
 
 	const translations = [
-		{ x: 0, y: 1 },
 		{ x: -1, y: 0 },
-		{ x: 1, y: 1 },
+		{ x: 1, y: 0 },
+		{ x: 0, y: 1 },
 	];
 
 	function translatePiecesOrigin(translation, pieces) {
@@ -28,19 +31,12 @@ describe('grid reducers', () => {
 		};
 	}
 
-	function overrideOrigin(newOrigin, pieces) {
-		return {
-			...pieces,
-			origin: newOrigin,
-		};
-	}
-
 	it('should return the initial state on empty action', () => {
-		expect(reducer(undefined, {})).toEqual(initState);
+		expect(reducer(undefined, {})).to.eql(initState);
 	});
 
 	it('should return the initial state on unknown action', () => {
-		expect(reducer(undefined, { type: 'uknown' })).toEqual(initState);
+		expect(reducer(undefined, { type: 'uknown' })).to.eql(initState);
 	});
 
 	it('should place a piece and return a fresh grid', () => {
@@ -48,7 +44,8 @@ describe('grid reducers', () => {
 		const newPieces = createNewPieces({ current: TETRIS[pieceID], name: pieceID });
 		const { origin, current } = newPieces;
 		const freshGrid = getUpdatedGrid(emptyGrid, origin, current);
-		expect(reducer(undefined, placePiece(newPieces))).toEqual({
+
+		expect(reducer(undefined, placePiece(newPieces))).to.eql({
 			grid: freshGrid,
 			pieces: newPieces,
 			interval: null,
@@ -61,17 +58,15 @@ describe('grid reducers', () => {
 		const newPieces = createNewPieces({ current: TETRIS[pieceID], name: pieceID });
 		const state = reducer(undefined, placePiece(newPieces));
 
-		let translatedPieces;
-		let freshGrid;
 		translations.forEach((tranlation) => {
-			translatedPieces = translatePiecesOrigin(tranlation, newPieces);
-			freshGrid = getUpdatedGrid(
+			const translatedPieces = translatePiecesOrigin(tranlation, newPieces);
+			const freshGrid = getUpdatedGrid(
 				emptyGrid,
 				translatedPieces.origin,
 				translatedPieces.current
 			);
 
-			expect(reducer(state, translatePiece(tranlation))).toEqual({
+			expect(reducer(state, translatePiece(tranlation))).to.eql({
 				grid: freshGrid,
 				pieces: translatedPieces,
 				interval: null,
@@ -80,20 +75,38 @@ describe('grid reducers', () => {
 		});
 	});
 
-	/**
-	 * TODO :
-	 * - create pieces with custom default origin that are at the edge of the grid
-	 * - translate them at all directions and check if they move
-	 */
-	it('should place a piece at an edge try to translate it 1 unit at all directions and fail to do so', () => {
-		const pieceID = Math.floor(Math.random() * (TETRIS.length));
-		const newPieces = createNewPieces({ current: TETRIS[pieceID], name: pieceID });		
-		const topLeftOrigin = { x: 0, y: 0 };
-		const topRightOrigin = { x: 9, y: 0 };
-		const bottomLeftOrigin = { x: 0, y: 9 };
-		const bottomRightOrigin = { x: 9, y: 9 };
+	it('should rotate pieces', () => {
+		let pieceID = 2;
+		let newPieces = createNewPieces({ current: TETRIS[pieceID], name: pieceID });
+		let state = reducer(undefined, placePiece(newPieces));
 
-		const state = reducer(undefined, placePiece(newPieces));
+		expect(reducer(state, rotatePiece(newPieces)).pieces.current).to.eql([
+			[0, 0, 0],
+			[0, 1, 1],
+			[1, 1, 0],
+		]);
 
+		pieceID = 1;
+		newPieces = createNewPieces({ current: TETRIS[pieceID], name: pieceID });
+		state = reducer(undefined, placePiece(newPieces));
+
+		expect(reducer(state, rotatePiece(newPieces)).pieces).to.eql({
+			...newPieces,
+			current: [
+				[0, 0, 0, 0],
+				[0, 0, 0, 0],
+				[1, 1, 1, 1],
+				[0, 0, 0, 0],
+			],
+			name: pieceID,
+		});
+	});
+
+	it('reset-grid', () => {
+		let pieceID = 2;
+		let newPieces = createNewPieces({ current: TETRIS[pieceID], name: pieceID });
+		let state = reducer(undefined, placePiece(newPieces));
+
+		expect(reducer(state, resetGrid())).to.eql(initState);
 	});
 });

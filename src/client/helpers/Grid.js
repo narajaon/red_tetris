@@ -56,6 +56,16 @@ export function pieceCanMove(grid, origin, piece) {
 	return moveAllowed;
 }
 
+export function applyRotationTopiece(piece) {
+	const n = piece.length;
+	
+	return piece.map((line, y) => {
+		return line.map((col, x) => {
+			return piece[n - x - 1][y];
+		});
+	});	
+}
+
 export function removeScoredLines(grid) {
 	const filtered = grid.filter(lines => !lines.every(col => col !== 0));
 	const newGrid = initGrid();

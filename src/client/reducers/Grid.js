@@ -9,7 +9,8 @@ import {
 	blockPieceInGrid,
 	removeScoredLines,
 	clone2DGrid,
-	attemptWallKicks
+	attemptWallKicks,
+	applyRotationTopiece
 } from '../helpers/Grid';
 
 const initState = {
@@ -91,13 +92,7 @@ const actions = {
 
 		if (!pieces) return state;
 
-		const pieceCopy = clone2DGrid(current);
-		const n = pieceCopy.length;
-		const rotated = pieceCopy.map((line, y) => {
-			return line.map((col, x) => {
-				return pieceCopy[n - x - 1][y];
-			});
-		});
+		const rotated = applyRotationTopiece(current);
 
 		if (!pieceCanMove(freshGrid, origin, rotated)){
 			return {
