@@ -15,7 +15,6 @@ export default function startAnimation() {
 					dispatch(translatePiece({x: 0, y: 1}));
 				}, 500);
 			};
-
 			dispatch(emitPieceRequest());
 
 			return next({ type, interval: interval() });

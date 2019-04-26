@@ -16,19 +16,20 @@ import startAnimation from './middlewares/startAnimation';
 import handleErrors from './middlewares/handleErrors';
 import newPlayerConnected from './middlewares/newPlayerConnected';
 import requestNewPiece from './middlewares/requestNewPiece';
-import setupGame from './middlewares/setupGame';
+import forceLogout from './middlewares/forceLogout';
+
 
 const store = createStore(
 	rootReducer,
 	applyMiddleware(
 		thunk,
-		setupGame(),
+		forceLogout(),
+		handleErrors(),
 		handleSocket(),
 		newPlayerConnected(),
 		startAnimation(),
 		hijackTranslate(),
 		requestNewPiece(),
-		handleErrors(),
 	)
 );
 
@@ -36,12 +37,11 @@ render(
 	<Provider store={ store }>
 		<BrowserRouter>
 			<Switch>
-				<Route exact path="/" component={ App }/>
-				<Login path="/login"/>
+				<Route exact path="/" component={ App } />
+				<Route path="/login" component={ Login } />
 			</Switch>
 		</BrowserRouter>
-	</Provider>,
-	document.getElementById('root')
+	</Provider>, document.getElementById('root')
 );
 
 // If you want your app to work offline and load faster, you can change

@@ -1,3 +1,5 @@
+const warnOnDev = process.env.NODE_ENV === 'production' ? 'error' : 'warn';
+
 module.exports = {
     parser: 'babel-eslint',
 	extends: [
@@ -39,16 +41,14 @@ module.exports = {
             "classes": true
         }],
         "eqeqeq": ["error", "smart"],
-        "consistent-return": ["error", {
-            "treatUndefinedAsUnspecified": true
-        }],
+        "consistent-return": ["warn"],
         "prefer-destructuring": ["error", {
             "object": true,
             "array": false
         }],
         "import/no-extraneous-dependencies": ["off"],
-        "no-console": process.env.NODE_ENV === 'production' ? 'error' : 'warn',
-        "no-debugger": process.env.NODE_ENV === 'production' ? 'error' : 'warn',
+        "no-console": warnOnDev,
+        "no-debugger": warnOnDev,
         "newline-before-return": ["warn"],
     }
 };

@@ -8,17 +8,17 @@ import { PropTypes } from 'prop-types';
  * - redirect to login on bad credetials
  * - add change listener to hash
  */
-const LoginForm = ({ startGame, history }) => {
+const LoginForm = ({ logToGame, history }) => {
 	const style = {
 		display: 'flex',
 		flexDirection: 'column',
 		width: '200px',
 	};
 
-	const [ credentials, setCredentials ] = useState({ login: '', room: ''});
+	const [ credentials, setCredentials ] = useState({ name: '', room: ''});
 
 	function handleLogin(e) {
-		setCredentials({ ...credentials, login: e.target.value });
+		setCredentials({ ...credentials, name: e.target.value });
 	}
 
 	function handleRoom(e) {
@@ -27,13 +27,12 @@ const LoginForm = ({ startGame, history }) => {
 
 	return (
 		<div>
-			<div>{ credentials.login } { credentials.room }</div>
 			<form
 				style={ style }
-				onSubmit={ startGame(history) }
+				onSubmit={ logToGame(credentials, history) }
 				className="login-form"
 			>
-				<input type="text" onChange={ handleLogin } placeholder="login"/>
+				<input autoFocus type="text" onChange={ handleLogin } placeholder="name"/>
 				<input type="text" onChange={ handleRoom } placeholder="room"/>
 				<input type="submit" value="Let's GO"/>
 			</form>
@@ -42,7 +41,7 @@ const LoginForm = ({ startGame, history }) => {
 };
 
 LoginForm.propTypes = {
-	startGame: PropTypes.func,
+	logToGame: PropTypes.func,
 	history: PropTypes.object,
 };
 

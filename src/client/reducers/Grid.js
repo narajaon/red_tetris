@@ -8,7 +8,6 @@ import {
 	pieceOverflows,
 	blockPieceInGrid,
 	removeScoredLines,
-	clone2DGrid,
 	attemptWallKicks,
 	applyRotationTopiece
 } from '../helpers/Grid';

@@ -4,7 +4,7 @@ const initState = {
 	players: [],
 	currentPlayer: null,
 	pieceQueue: [],
-	phase: PHASES.CONNECTED, // connected / started / ended
+	phase: PHASES.ARRIVED,
 	room: null,
 };
 

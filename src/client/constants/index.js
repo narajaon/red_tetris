@@ -25,6 +25,7 @@ export const KEYS = {
 };
 
 export const PHASES = {
+	ARRIVED: 'arrived',
 	CONNECTED: 'connected',
 	STARTED: 'started',
 	ENDED: 'ended',
