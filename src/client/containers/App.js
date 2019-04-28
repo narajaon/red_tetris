@@ -48,6 +48,11 @@ const mapDispatchToProps = (dispatch) => {
 	};
 };
 
+/**
+ * TODO
+ * - tell the server to delete the player from the lobby
+ */
+
 const App = ({ grid, phase, interval, keyPressHandler, setupGame, history, removeListeners }) => {
 	const style = {
 		display: 'flex',
@@ -76,7 +81,7 @@ const App = ({ grid, phase, interval, keyPressHandler, setupGame, history, remov
 			disconnectPlayer();
 		}
 		setIsMouted(true);
-	}, [history.location.hash]);
+	}, [history]);
 
 	if (!isAllowed || phase === PHASES.ARRIVED) return (<Redirect to="/login" />);
 
