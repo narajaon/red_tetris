@@ -29,17 +29,6 @@ export default function handleSocket() {
 			return socket.removeAllListeners();
 		}
 
-		let handleEvent = handle;
-
-		if (typeof handleEvent === 'string') {
-			handleEvent = result => {	
-				dispatch({
-					type: handle,
-					data: { ...result }
-				});
-			};
-		}
-
-		return socket.on(event, handleEvent);
+		return socket.on(event, handle);
 	};
 }
