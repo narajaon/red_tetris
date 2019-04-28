@@ -25,18 +25,21 @@ module.exports = class Socket {
 			console.log('connection established');
 			let playerConnected;
 			let roomConnected;
-			client.on('new-player-connected-event', ({ player, room }) => {
-				console.log(`${player} is ready in room ${room}`);
-				this.io.sockets.emit('broadcast', { description: `${player} is ready in room ${room}`});
-			});
 
 			client.on('auth-request', ({ player, room }) => {
-				console.log(`${player} requested auth in room ${room}`);
 				if (this.credentialsAreValid(player, room)) {
 					this.addPlayerToGame(player, room);
+					client.join(room);
 					client.emit('phase-switch-event', { phase: GAME_PHASES.CONNECTED });
 					playerConnected = player;
 					roomConnected = room;
+
+					const gameOfClient = this.getGameOfRoom(room);
+
+					this.io.to(room).emit('new-player-connected-event', {
+						players: gameOfClient.players || []
+					});
+
 					console.log(this.games);
 				}
 			});
@@ -44,7 +47,7 @@ module.exports = class Socket {
 			client.on('piece-request', ({ player, room }) => {
 				const { type } = new Piece();
 				console.log(`a piece has been requested by ${player} in room ${room}`);
-				client.emit('new-piece-event', { pieces: type });
+				this.io.to(room).emit('new-piece-event', { pieces: type });
 			});
 
 			client.on('disconnect', () => {
@@ -57,6 +60,12 @@ module.exports = class Socket {
 	credentialsAreValid(player, room) {
 		return !this.games.some(game => {
 			return game.player === player && game.room === room;
+		});
+	}
+
+	getGameOfRoom(room) {
+		return this.games.find(game => {
+			return game.room === room;
 		});
 	}
 

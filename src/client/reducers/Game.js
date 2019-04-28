@@ -17,11 +17,22 @@ const actions = {
 		};
 	},
 	'new-message': (state, { message }) => {
-		console.log(message);
 		return state;
 	},
-	'add-player' : (state, { player }) => {},
-	'add-piece-to-queue' : (state, { piece }) => {},
+	'add-player' : (state, { players }) => {
+		return {
+			...state,
+			players: [ ...players ],
+		};
+	},
+	'add-piece-to-queue' : (state, { piece }) => {
+		const { pieceQueue } = state;
+
+		return {
+			...state,
+			pieceQueue: [ ...pieceQueue, piece ],
+		};
+	},
 	'switch-phase': (state, { phase }) => {
 		return { ...state, phase };
 	},

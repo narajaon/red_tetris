@@ -44,12 +44,9 @@ export function listenToNewPiece() {
 export function listenToNewPlayers() {
 	return dispatch => dispatch({
 		event: 'new-player-connected-event',
-		handle: ({ player, room }) => dispatch({
-			type: 'new-player-connected',
-			data: {
-				player,
-				room,
-			}
+		handle: ({ players }) => dispatch({
+			type: 'add-player',
+			players,
 		}),
 	});
 }

@@ -8,12 +8,12 @@ import Queue from '../components/Queue';
 import { PHASES } from '../constants';
 import { errorAction } from '../actions/errors';
 import { formIsValid } from '../helpers/Login';
-import { listenToPhaseSwitch, emitAuthRequest } from '../actions/Socket';
+import { listenToPhaseSwitch, emitAuthRequest, listenToNewPlayers } from '../actions/Socket';
 import { initPlayerAndRoom } from '../actions/Game';
 
 const mapStateToProps = ({ gameReducer }) => {
 	const { phase, currentPlayer, room, players } = gameReducer;
-	
+
 	return {
 		phase,
 		currentPlayer,
@@ -28,15 +28,15 @@ const mapDispatchToProps = (dispatch) => {
 			e.preventDefault();
 
 			if (!formIsValid(name, room)) {
-				dispatch(errorAction('Invalid form'));
-
-				return;
+				return dispatch(errorAction('Invalid form'));
 			}
 
-			const parsedRoom = Number.parseInt(room);
-			dispatch(initPlayerAndRoom(name, parsedRoom));
+			// const parsedRoom = Number.parseInt(room);
+			dispatch(initPlayerAndRoom(name, room));
+			dispatch(listenToNewPlayers());
 			dispatch(listenToPhaseSwitch());
-			dispatch(emitAuthRequest(name, parsedRoom));
+
+			return dispatch(emitAuthRequest(name, room));
 		}
 	};
 };
@@ -49,7 +49,7 @@ const Login = ({ logToGame, phase, currentPlayer, room, players }) => {
 	};
 
 	if (phase === PHASES.CONNECTED) {
-		return ( 
+		return (
 			<Redirect
 				to={{
 					pathname: '/',
@@ -71,7 +71,7 @@ Login.propTypes = {
 	logToGame: PropTypes.func,
 	phase: PropTypes.string,
 	currentPlayer: PropTypes.string,
-	room: PropTypes.number,
+	room: PropTypes.string,
 	players: PropTypes.array,
 };
 

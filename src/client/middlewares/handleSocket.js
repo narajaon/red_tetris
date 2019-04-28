@@ -27,7 +27,11 @@ export default function handleSocket() {
 		}
 
 		if (leave) {
-			return socket.removeAllListeners();
+			socket.removeAllListeners();
+			// emit the disconnect event to let the serve know
+			socket.disconnect();
+
+			return socket.connect();
 		}
 
 		return socket.on(event, handle);
