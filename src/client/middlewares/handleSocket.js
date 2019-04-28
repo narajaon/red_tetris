@@ -26,7 +26,7 @@ export default function handleSocket() {
 		}
 
 		if (leave) {
-			socket.removeListener(event);
+			return socket.removeAllListeners();
 		}
 
 		let handleEvent = handle;

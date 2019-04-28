@@ -52,3 +52,13 @@ export function listenToGlobalMessages() {
 		},
 	});
 }
+
+export const listened = [
+	'new-player-connected-event',	
+	'new-piece-event'
+];
+
+export const emitted = [
+	'new-player-connected-event',
+	'piece-request',
+];

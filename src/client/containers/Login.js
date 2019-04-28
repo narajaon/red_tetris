@@ -7,23 +7,12 @@ import LoginForm from '../components/LoginForm';
 import { switchPhase, initPlayerAndRoom } from '../actions/Game';
 import { PHASES } from '../constants';
 import { errorAction } from '../actions/errors';
+import { formIsValid } from '../helpers/Login';
 
 const mapStateToProps = () => {
 	return {
 	};
 };
-
-function formIsValid(player, room) {
-	const newRoom = Number.parseInt(room);
-	const roomIsValid = !(/\D/.test(room)) && (newRoom < 10);
-	const nameIsValid = !(/\W/.test(player))  && (player.length < 15);
-
-	if (!roomIsValid || !nameIsValid) {
-		return false;
-	}
-
-	return true;
-}
 
 const mapDispatchToProps = (dispatch) => {
 	return {
@@ -38,7 +27,7 @@ const mapDispatchToProps = (dispatch) => {
 
 			dispatch(switchPhase(PHASES.CONNECTED));
 			dispatch(initPlayerAndRoom(name, Number.parseInt(room)));
-			hist.push({
+			hist.replace({
 				pathname:'/',
 				hash: `#${room}[${name}]`
 			});

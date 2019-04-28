@@ -1,17 +1,18 @@
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { listenToNewPiece, listenToNewPlayers, listenToGlobalMessages } from '../actions/Socket';
 import { rotatePiece, startAnimation, translatePiece } from '../actions/Grid';
-import { KEYS } from '../constants';
+import { KEYS, PHASES } from '../constants';
 import Grid from '../components/Grid';
 
-const mapStateToProps = ({ gridReducer }) => {
+const mapStateToProps = ({ gridReducer, gameReducer }) => {
 	return {
 		grid: gridReducer.grid,
 		interval: gridReducer.interval,
+		phase: gameReducer.phase,
 	};
 };
 
@@ -41,17 +42,13 @@ const mapDispatchToProps = (dispatch) => {
 			dispatch(listenToNewPlayers());
 			dispatch(listenToGlobalMessages());
 		},
-		disconnectPlayer: (history) => {
-			// dispatch(reinitState)
-			history.replace({
-				pathname: '/login',
-				hash: '',
-			});
-		},
+		removeListeners: () => {
+			dispatch({ event: 'socket-logout', leave: true });
+		}
 	};
 };
 
-const App = ({ grid, keyPressHandler, setupGame, disconnectPlayer, history }) => {
+const App = ({ grid, phase, interval, keyPressHandler, setupGame, history, removeListeners }) => {
 	const style = {
 		display: 'flex',
 		alignItems: 'center',
@@ -59,6 +56,14 @@ const App = ({ grid, keyPressHandler, setupGame, disconnectPlayer, history }) =>
 	};
 
 	const [isMounted, setIsMouted] = useState(false);
+	const [isAllowed, setIsAllowed] = useState(true);
+
+	function disconnectPlayer() {
+		setIsAllowed(false);
+		clearInterval(interval);
+		// remove every socket event listeners
+		removeListeners();
+	}
 
 	// DidMount
 	useEffect(() => {
@@ -68,15 +73,12 @@ const App = ({ grid, keyPressHandler, setupGame, disconnectPlayer, history }) =>
 	// // DidUpdate
 	useEffect(() => {
 		if (isMounted) {
-			disconnectPlayer(history);
+			disconnectPlayer();
 		}
 		setIsMouted(true);
-	}, [location.hash]);
+	}, [history.location.hash]);
 
-	// WillUnmount
-	useEffect(() => {
-		return () => disconnectPlayer(history);
-	}, []);
+	if (!isAllowed || phase === PHASES.ARRIVED) return (<Redirect to="/login" />);
 
 	return (
 		<div className="App" style={ style }>
@@ -87,10 +89,12 @@ const App = ({ grid, keyPressHandler, setupGame, disconnectPlayer, history }) =>
 
 App.propTypes = {
 	grid: PropTypes.array,
+	phase: PropTypes.string,
+	interval: PropTypes.number,
 	keyPressHandler: PropTypes.func,
 	setupGame: PropTypes.func,
 	history: PropTypes.object,
-	disconnectPlayer: PropTypes.func,
+	removeListeners: PropTypes.func,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
