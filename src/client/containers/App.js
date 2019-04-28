@@ -7,6 +7,7 @@ import { listenToNewPiece, listenToNewPlayers, listenToGlobalMessages } from '..
 import { rotatePiece, startAnimation, translatePiece } from '../actions/Grid';
 import { KEYS, PHASES } from '../constants';
 import Grid from '../components/Grid';
+import { switchPhase } from '../actions/Game';
 
 const mapStateToProps = ({ gridReducer, gameReducer }) => {
 	return {
@@ -42,8 +43,10 @@ const mapDispatchToProps = (dispatch) => {
 			dispatch(listenToNewPlayers());
 			dispatch(listenToGlobalMessages());
 		},
-		removeListeners: () => {
+		reinitGame: (interval) => {
 			dispatch({ event: 'socket-logout', leave: true });
+			dispatch(switchPhase(PHASES.ARRIVED));
+			clearInterval(interval);
 		}
 	};
 };
@@ -53,7 +56,7 @@ const mapDispatchToProps = (dispatch) => {
  * - tell the server to delete the player from the lobby
  */
 
-const App = ({ grid, phase, interval, keyPressHandler, setupGame, history, removeListeners }) => {
+const App = ({ grid, phase, interval, keyPressHandler, setupGame, history, reinitGame }) => {
 	const style = {
 		display: 'flex',
 		alignItems: 'center',
@@ -65,9 +68,8 @@ const App = ({ grid, phase, interval, keyPressHandler, setupGame, history, remov
 
 	function disconnectPlayer() {
 		setIsAllowed(false);
-		clearInterval(interval);
 		// remove every socket event listeners
-		removeListeners();
+		reinitGame(interval);
 	}
 
 	// DidMount
@@ -81,9 +83,11 @@ const App = ({ grid, phase, interval, keyPressHandler, setupGame, history, remov
 			disconnectPlayer();
 		}
 		setIsMouted(true);
-	}, [history]);
+	}, [history.location.hash]);
 
-	if (!isAllowed || phase === PHASES.ARRIVED) return (<Redirect to="/login" />);
+	if (!isAllowed || phase === PHASES.ARRIVED) {
+		return (<Redirect to="/login" />);
+	}
 
 	return (
 		<div className="App" style={ style }>
@@ -99,7 +103,7 @@ App.propTypes = {
 	keyPressHandler: PropTypes.func,
 	setupGame: PropTypes.func,
 	history: PropTypes.object,
-	removeListeners: PropTypes.func,
+	reinitGame: PropTypes.func,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

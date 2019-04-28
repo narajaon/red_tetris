@@ -1,12 +1,5 @@
 import { placePiece } from './Grid';
-
-export function emitPlayerConnected(socket) {
-	return {
-		event: 'new-player-connected-event',
-		emit: true,
-		data: socket,
-	};
-}
+import { switchPhase } from './Game';
 
 export function emitPieceRequest(player, room) {
 	return {
@@ -17,6 +10,26 @@ export function emitPieceRequest(player, room) {
 			room,
 		}
 	};
+}
+
+export function emitAuthRequest(player, room) {
+	return {
+		event: 'auth-request',
+		emit: true,
+		data: {
+			player,
+			room,
+		}
+	};
+}
+
+export function listenToPhaseSwitch() {
+	return dispatch => dispatch({
+		event: 'phase-switch-event',
+		handle: ({ phase }) => {
+			dispatch(switchPhase(phase));
+		},
+	});
 }
 
 export function listenToNewPiece() {

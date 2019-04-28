@@ -11,7 +11,7 @@ async function start() {
 	app = config.express.setup();
 	server = http.Server(app);
 	// SETUP GAME
-	config.game.setup(server);
+	config.socket.setup(server);
 	// START SERVER
 	await server.listen(config.server.port);
 

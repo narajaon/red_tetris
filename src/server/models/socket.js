@@ -1,4 +1,6 @@
-const Piece = require('./piece');
+const Piece = require('./Piece');
+const Game = require('./Game');
+const { GAME_PHASES } = require('../constants');
 
 /**
  * TODO:
@@ -13,40 +15,87 @@ const Piece = require('./piece');
  */
 
 module.exports = class Socket {
-	constructor(namespace, io) {
-		this.namespace = namespace ? `${namespace}/` : '';
+	constructor(io) {
 		this.io = io;
+		this.games = [];
 	}
 
 	connect() {
-		this.io.on(`${this.namespace}connection`, (socket) => {
+		this.io.on('connection', (client) => {
 			console.log('connection established');
-			socket.on('new-player-connected-event', ({ player, room }) => {
+			let playerConnected;
+			let roomConnected;
+			client.on('new-player-connected-event', ({ player, room }) => {
 				console.log(`${player} is ready in room ${room}`);
-				// console.log(socket.broadcast.emit(`${player} is ready in room ${room}`));
-				socket.broadcast.emit(`${player} is ready in room ${room}`);
-
-				// this.io.sockets.emit('broadcast', 'coucou');
 				this.io.sockets.emit('broadcast', { description: `${player} is ready in room ${room}`});
 			});
 
-			// this.io.sockets.broadcast.emit('new player joined');
-
-			socket.on('game-start', () => {
-				const { type } = new Piece();
-				console.log('game has started');
-				socket.emit('new-piece-event', { pieces: type });
+			client.on('auth-request', ({ player, room }) => {
+				console.log(`${player} requested auth in room ${room}`);
+				if (this.credentialsAreValid(player, room)) {
+					this.addPlayerToGame(player, room);
+					client.emit('phase-switch-event', { phase: GAME_PHASES.CONNECTED });
+					playerConnected = player;
+					roomConnected = room;
+					console.log(this.games);
+				}
 			});
 
-			socket.on('game-ended', () => {
-				console.log('game has ended');
-			});
-
-			socket.on('piece-request', ({ player, room }) => {
+			client.on('piece-request', ({ player, room }) => {
 				const { type } = new Piece();
 				console.log(`a piece has been requested by ${player} in room ${room}`);
-				socket.emit('new-piece-event', { pieces: type });
+				client.emit('new-piece-event', { pieces: type });
+			});
+
+			client.on('disconnect', () => {
+				this.removePlayerFromGame(playerConnected, roomConnected);
+				console.log(this.games);
 			});
 		});
+	}
+
+	credentialsAreValid(player, room) {
+		return !this.games.some(game => {
+			return game.player === player && game.room === room;
+		});
+	}
+
+	addPlayerToGame(player, room) {
+		const gameToInclude = this.games.find(game => {
+			return game.room === room;
+		});
+
+		if (gameToInclude) {
+			return gameToInclude.addPlayer(player);
+		}
+
+		return this.games.push(new Game(player, room));
+	}
+
+	removePlayerFromGame(player, room) {
+		let gameindex;
+		const roomToSearch = this.games.find((game, i) => {
+			gameindex = i;
+
+			return game.room === room;
+		});
+
+		if (!roomToSearch) return;
+
+		let index;
+		roomToSearch.players.find((current, i) => {
+			index = i;
+
+			return current === player;
+		});
+
+		// NEED TO CHECK IF MASTER DISCONNECTS
+		// if (player === roomToSearch[index].master) {
+		// }
+
+		roomToSearch.removePlayer(index);
+		if (roomToSearch.players.length === 0) {
+			this.games.splice(gameindex, 1);
+		}
 	}
 };

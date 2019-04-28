@@ -5,12 +5,6 @@ import Adapter from 'enzyme-adapter-react-16';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import {
-	listenToNewPiece,
-	emitPlayerConnected,
-	emitPieceRequest
-} from '../../client/actions/Socket';
-
 import handleSocket from '../../client/middlewares/handleSocket';
 import { serverURI, TETRIS } from '../../client/constants';
 import requestNewPiece from '../../client/middlewares/requestNewPiece';

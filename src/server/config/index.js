@@ -1,9 +1,9 @@
 const express = require('./express');
-const game = require('./game');
+const socket = require('./socket');
 const server = require('./server');
 
 module.exports = {
-	game,
+	socket,
 	express,
 	server,
 };

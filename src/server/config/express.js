@@ -5,11 +5,6 @@ const serverConf = require('./server');
 const app = express();
 const staticDir = serverConf.env === 'test' ? '../static/' : '/../../../build/';
 
-/**
- * TODO:
- * - Handle hash-based URLs
- */
-
 function setup() {
 	app.use(express.static(path.join(__dirname, staticDir)));
 

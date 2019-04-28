@@ -15,6 +15,7 @@ export default function handleSocket() {
 			leave,
 			handle,
 			emit,
+			data,
 		} = action;
 
 		if (!event) {
@@ -22,7 +23,7 @@ export default function handleSocket() {
 		}
 
 		if (emit) {
-			return next({ event, socket });
+			return next({ event, socket, data });
 		}
 
 		if (leave) {

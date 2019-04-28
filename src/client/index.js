@@ -14,22 +14,24 @@ import handleSocket from './middlewares/handleSocket';
 import hijackTranslate from './middlewares/hijackTranlate';
 import startAnimation from './middlewares/startAnimation';
 import handleErrors from './middlewares/handleErrors';
-import newPlayerConnected from './middlewares/newPlayerConnected';
+// import newPlayerConnected from './middlewares/newPlayerConnected';
 import requestNewPiece from './middlewares/requestNewPiece';
 import forceLogout from './middlewares/forceLogout';
+import requestAuth from './middlewares/requestAuth';
 
 
 const store = createStore(
 	rootReducer,
 	applyMiddleware(
 		thunk,
-		forceLogout(),
+		// forceLogout(),
 		handleErrors(),
 		handleSocket(),
-		newPlayerConnected(),
+		// newPlayerConnected(),
 		startAnimation(),
 		hijackTranslate(),
 		requestNewPiece(),
+		requestAuth(),
 	)
 );
 

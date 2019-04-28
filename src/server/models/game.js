@@ -1,5 +1,3 @@
-const path = require('path');
-
 /**
  * STATES:
  * - connected
@@ -8,13 +6,14 @@ const path = require('path');
  * - paused ?
  */
 module.exports = class Game {
-	constructor(player, socket) {
-		this.state = 'started';
-		this.players = [player];
-		this.socket = socket;
+	constructor(master, room) {
+		this.phase = 'connected';
+		this.players = [master];
+		this.master = master;
+		this.room = room;
 	}
 
-	player(id) {
+	getPlayer(id) {
 		return this.players[id];
 	}
 
@@ -22,7 +21,7 @@ module.exports = class Game {
 		this.players.push(player);
 	}
 
-	start() {
-		this.socket.connect();
+	removePlayer(index) {
+		this.players.splice(index, 1);
 	}
 };

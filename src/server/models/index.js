@@ -1,7 +1,7 @@
-const Game = require('./game');
-const Piece = require('./piece');
-const Player = require('./player');
-const Socket = require('./socket');
+const Game = require('./Game');
+const Piece = require('./Piece');
+const Player = require('./Player');
+const Socket = require('./Socket');
 
 module.exports = {
 	Game,
