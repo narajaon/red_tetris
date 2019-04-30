@@ -5,10 +5,15 @@ import { withRouter, Redirect } from 'react-router-dom';
 
 import LoginForm from '../components/LoginForm';
 import Queue from '../components/Queue';
-import { PHASES } from '../constants';
+import { PHASES, KEYS } from '../constants';
 import { errorAction } from '../actions/errors';
 import { formIsValid } from '../helpers/Login';
-import { listenToPhaseSwitch, emitAuthRequest, listenToNewPlayers } from '../actions/Socket';
+import {
+	listenToPhaseSwitch,
+	emitAuthRequest,
+	listenToNewPlayers,
+	emitGameStart
+} from '../actions/Socket';
 import { initPlayerAndRoom } from '../actions/Game';
 
 const mapStateToProps = ({ gameReducer }) => {
@@ -31,38 +36,51 @@ const mapDispatchToProps = (dispatch) => {
 				return dispatch(errorAction('Invalid form'));
 			}
 
-			// const parsedRoom = Number.parseInt(room);
 			dispatch(initPlayerAndRoom(name, room));
 			dispatch(listenToNewPlayers());
 			dispatch(listenToPhaseSwitch());
 
 			return dispatch(emitAuthRequest(name, room));
-		}
+		},
+		startGame: ({ room }) => (e) => {
+			if (e.keyCode !== KEYS.ENTER) return;
+			dispatch(emitGameStart(room));
+		},
 	};
 };
 
-const Login = ({ logToGame, phase, currentPlayer, room, players }) => {
+const Login = ({ logToGame, phase, currentPlayer, room, players, startGame }) => {
 	const style = {
 		display: 'flex',
 		alignItems: 'center',
 		flexDirection: 'column',
 	};
 
-	if (phase === PHASES.CONNECTED) {
-		return (
-			<Redirect
-				to={{
-					pathname: '/',
-					hash: `#${room}[${currentPlayer}]`,
-				}}
-			/>
-		);
-	}
-
+	const loginPhases = currenPhase => {
+		switch (currenPhase) {
+		case PHASES.STARTED:
+			return (
+				<Redirect
+					to={{
+						pathname: '/',
+						hash: `#${room}[${currentPlayer}]`,
+					}}
+				/>
+			);
+		case PHASES.CONNECTED:
+			return (
+				<Queue players={ players } startGame={ startGame({ room }) }/>
+			);
+		default:
+			return (
+				<LoginForm logToGame={ logToGame }/>
+			);
+		}
+	};
+	
 	return (
 		<div className="login" style={ style }>
-			<LoginForm logToGame={ logToGame }/>
-			<Queue players={ players }/>
+			{ loginPhases(phase) }
 		</div>
 	);
 };
@@ -73,6 +91,7 @@ Login.propTypes = {
 	currentPlayer: PropTypes.string,
 	room: PropTypes.string,
 	players: PropTypes.array,
+	startGame: PropTypes.func,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));

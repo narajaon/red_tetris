@@ -22,6 +22,7 @@ export const KEYS = {
 	LEFT: 37,
 	RIGHT: 39,
 	DOWN: 40,
+	ENTER: 13,
 };
 
 export const PHASES = {

@@ -43,7 +43,10 @@ const GAME_PHASES = {
 	ENDED: 'ended',
 };
 
+const MAX_PLAYERS = 4;
+
 module.exports = {
 	TETRIS,
 	GAME_PHASES,
+	MAX_PLAYERS,
 };

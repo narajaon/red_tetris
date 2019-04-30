@@ -1,6 +1,6 @@
 const Piece = require('./Piece');
 const Game = require('./Game');
-const { GAME_PHASES } = require('../constants');
+const { GAME_PHASES, MAX_PLAYERS } = require('../constants');
 
 /**
  * TODO:
@@ -27,20 +27,37 @@ module.exports = class Socket {
 			let roomConnected;
 
 			client.on('auth-request', ({ player, room }) => {
-				if (this.credentialsAreValid(player, room)) {
-					this.addPlayerToGame(player, room);
-					client.join(room);
-					client.emit('phase-switch-event', { phase: GAME_PHASES.CONNECTED });
-					playerConnected = player;
-					roomConnected = room;
+				if (!this.credentialsAreValid(player, room)) {
+					// emit error('bad credentials')
+					return;
+				}
 
-					const gameOfClient = this.getGameOfRoom(room);
+				const gameOfClient = this.getGameOfRoom(room);
 
-					this.io.to(room).emit('new-player-connected-event', {
-						players: gameOfClient.players || []
-					});
+				if (gameOfClient && gameOfClient.players.length + 1 > MAX_PLAYERS) {
+					// emit error('room is full')
+					return;
+				}
 
-					console.log(this.games);
+				this.addPlayerToGame(player, room);
+				client.join(room);
+				client.emit('phase-switch-event', { phase: GAME_PHASES.CONNECTED });
+				playerConnected = player;
+				roomConnected = room;
+
+				this.emitToRoom('new-player-connected-event', {
+					players: this.getGameOfRoom(room).players || []
+				}, room);
+
+				console.log(this.games);
+			});
+
+			client.on('start-game', ({ room, player }) => {
+				if (this.playerIsMaster(player, room)) {
+					console.log(`game in room ${room} started`);
+					this.emitToRoom('phase-switch-event', {
+						phase: GAME_PHASES.STARTED
+					}, room);
 				}
 			});
 
@@ -52,9 +69,24 @@ module.exports = class Socket {
 
 			client.on('disconnect', () => {
 				this.removePlayerFromGame(playerConnected, roomConnected);
+				const gameOfClient = this.getGameOfRoom(roomConnected) || [];
+				this.emitToRoom('new-player-connected-event', {
+					players: gameOfClient.players || []
+				}, roomConnected);
+
 				console.log(this.games);
 			});
 		});
+	}
+
+	playerIsMaster(player, room) {
+		const currentGame = this.getGameOfRoom(room);
+
+		return player === currentGame.master;
+	}
+
+	emitToRoom(event, data, room) {
+		this.io.to(room).emit(event, data);
 	}
 
 	credentialsAreValid(player, room) {
@@ -98,11 +130,15 @@ module.exports = class Socket {
 			return current === player;
 		});
 
-		// NEED TO CHECK IF MASTER DISCONNECTS
-		// if (player === roomToSearch[index].master) {
-		// }
-
 		roomToSearch.removePlayer(index);
+
+		// CHECK IF MASTER DISCONNECTS
+		if (player === roomToSearch.master) {
+			if (roomToSearch.players.length > 0) {
+				roomToSearch.master = roomToSearch.players[0];
+			}
+		}
+
 		if (roomToSearch.players.length === 0) {
 			this.games.splice(gameindex, 1);
 		}

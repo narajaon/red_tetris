@@ -23,6 +23,14 @@ export function emitAuthRequest(player, room) {
 	};
 }
 
+export function emitGameStart(room) {
+	return {
+		event: 'start-game',
+		emit: true,
+		data: { room },
+	};
+}
+
 export function listenToPhaseSwitch() {
 	return dispatch => dispatch({
 		event: 'phase-switch-event',
