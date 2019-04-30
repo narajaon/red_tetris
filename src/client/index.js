@@ -35,14 +35,32 @@ const store = createStore(
 	)
 );
 
+const tetrisStyle = {
+	width: '500px',
+	height: '900px',
+	backgroundColor: '#dfffe6',
+	display: 'flex',
+	justifyContent: 'center',
+	alignItems: 'center',
+};
+
+const tetrisContainerStyle = {
+	display: 'flex',
+	justifyContent: 'center',
+};
+
 render(
 	<Provider store={ store }>
-		<BrowserRouter>
-			<Switch>
-				<Route exact path="/" component={ App } />
-				<Route path="/login" component={ Login } />
-			</Switch>
-		</BrowserRouter>
+		<div className="tetris-container" style={ tetrisContainerStyle }>
+			<div className="tetris" style={ tetrisStyle }>
+				<BrowserRouter>
+					<Switch>
+						<Route exact path="/" component={ App } />
+						<Route path="/login" component={ Login } />
+					</Switch>
+				</BrowserRouter>
+			</div>
+		</div>
 	</Provider>, document.getElementById('root')
 );
 
