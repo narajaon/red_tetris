@@ -92,6 +92,7 @@ const Home = ({ grid, phase, interval, keyPressHandler, setupGame, history, rein
 	return (
 		<div className="Home" style={ style }>
 			<Grid grid={ grid } keyPressHandler={ keyPressHandler } />
+			{/* <Aside /> */}
 		</div>
 	);
 };

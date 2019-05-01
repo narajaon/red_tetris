@@ -64,7 +64,7 @@ module.exports = class Socket {
 			client.on('piece-request', ({ player, room, grid }) => {
 				const { type } = new Piece();
 				console.log(`a piece has been requested by ${player} in room ${room}`);
-				this.io.to(room).emit('new-piece-event', { pieces: type, grid, player });
+				this.emitToRoom('new-piece-event', { pieces: type, grid, player }, room);
 			});
 
 			client.on('disconnect', () => {

@@ -40,6 +40,7 @@ const tetrisStyle = {
 	height: '100vh',
 	display: 'flex',
 	justifyContent: 'center',
+	alignItems: 'center',
 };
 
 // override default body margin
