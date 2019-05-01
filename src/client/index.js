@@ -7,7 +7,7 @@ import { Route, BrowserRouter, Switch } from 'react-router-dom';
 
 import * as serviceWorker from './serviceWorker';
 import rootReducer from './rootReducer';
-import App from './containers/App';
+import Home from './containers/Home';
 import Login from './containers/Login';
 
 import handleSocket from './middlewares/handleSocket';
@@ -36,30 +36,26 @@ const store = createStore(
 );
 
 const tetrisStyle = {
-	width: '500px',
-	height: '900px',
 	backgroundColor: '#dfffe6',
+	height: '100vh',
 	display: 'flex',
 	justifyContent: 'center',
-	alignItems: 'center',
 };
 
-const tetrisContainerStyle = {
-	display: 'flex',
-	justifyContent: 'center',
-};
+// override default body margin
+Object.assign(document.body.style, {
+	margin: '0',
+});
 
 render(
 	<Provider store={ store }>
-		<div className="tetris-container" style={ tetrisContainerStyle }>
-			<div className="tetris" style={ tetrisStyle }>
-				<BrowserRouter>
-					<Switch>
-						<Route exact path="/" component={ App } />
-						<Route path="/login" component={ Login } />
-					</Switch>
-				</BrowserRouter>
-			</div>
+		<div className="tetris" style={ tetrisStyle }>
+			<BrowserRouter>
+				<Switch>
+					<Route exact path="/" component={ Home } />
+					<Route path="/login" component={ Login } />
+				</Switch>
+			</BrowserRouter>
 		</div>
 	</Provider>, document.getElementById('root')
 );

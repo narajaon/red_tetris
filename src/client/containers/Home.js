@@ -56,7 +56,7 @@ const mapDispatchToProps = (dispatch) => {
  * TODO
  * - tell the server to delete the player from the lobby
  */
-const App = ({ grid, phase, interval, keyPressHandler, setupGame, history, reinitGame }) => {
+const Home = ({ grid, phase, interval, keyPressHandler, setupGame, history, reinitGame }) => {
 	const style = {
 		display: 'flex',
 		alignItems: 'center',
@@ -90,13 +90,13 @@ const App = ({ grid, phase, interval, keyPressHandler, setupGame, history, reini
 	}
 
 	return (
-		<div className="App" style={ style }>
+		<div className="Home" style={ style }>
 			<Grid grid={ grid } keyPressHandler={ keyPressHandler } />
 		</div>
 	);
 };
 
-App.propTypes = {
+Home.propTypes = {
 	grid: PropTypes.array,
 	phase: PropTypes.string,
 	interval: PropTypes.number,
@@ -106,4 +106,4 @@ App.propTypes = {
 	reinitGame: PropTypes.func,
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Home));

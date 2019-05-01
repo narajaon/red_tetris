@@ -1,3 +1,4 @@
+const Player = require('./Player');
 /**
  * STATES:
  * - connected
@@ -8,17 +9,19 @@
 module.exports = class Game {
 	constructor(master, room) {
 		this.phase = 'connected';
-		this.players = [master];
+		this.players = [new Player(master)];
 		this.master = master;
 		this.room = room;
 	}
 
-	getPlayer(id) {
-		return this.players[id];
+	getPlayer(playerName) {
+		return this.players.find(player => {
+			return player.name === playerName;
+		});
 	}
 
-	addPlayer(player) {
-		this.players.push(player);
+	addPlayer(playerName) {
+		this.players.push(new Player(playerName));
 	}
 
 	removePlayer(index) {

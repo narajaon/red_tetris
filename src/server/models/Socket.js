@@ -61,10 +61,10 @@ module.exports = class Socket {
 				}
 			});
 
-			client.on('piece-request', ({ player, room }) => {
+			client.on('piece-request', ({ player, room, grid }) => {
 				const { type } = new Piece();
 				console.log(`a piece has been requested by ${player} in room ${room}`);
-				this.io.to(room).emit('new-piece-event', { pieces: type });
+				this.io.to(room).emit('new-piece-event', { pieces: type, grid, player });
 			});
 
 			client.on('disconnect', () => {
@@ -79,19 +79,26 @@ module.exports = class Socket {
 		});
 	}
 
-	playerIsMaster(player, room) {
+	updateGridOfplayer(playerName, grid, room) {
+		const roomToSearch = this.getGameOfRoom(room);
+		const playerToFind = roomToSearch.getPlayer(playerName);
+
+		playerToFind.updateGrid(grid);
+	}
+
+	playerIsMaster(playerName, room) {
 		const currentGame = this.getGameOfRoom(room);
 
-		return player === currentGame.master;
+		return playerName === currentGame.master;
 	}
 
 	emitToRoom(event, data, room) {
 		this.io.to(room).emit(event, data);
 	}
 
-	credentialsAreValid(player, room) {
+	credentialsAreValid(playerName, room) {
 		return !this.games.some(game => {
-			return game.player === player && game.room === room;
+			return game.playerName === playerName && game.room === room;
 		});
 	}
 
@@ -101,19 +108,19 @@ module.exports = class Socket {
 		});
 	}
 
-	addPlayerToGame(player, room) {
+	addPlayerToGame(playerName, room) {
 		const gameToInclude = this.games.find(game => {
 			return game.room === room;
 		});
 
 		if (gameToInclude) {
-			return gameToInclude.addPlayer(player);
+			return gameToInclude.addPlayer(playerName);
 		}
 
-		return this.games.push(new Game(player, room));
+		return this.games.push(new Game(playerName, room));
 	}
 
-	removePlayerFromGame(player, room) {
+	removePlayerFromGame(playerName, room) {
 		let gameindex;
 		const roomToSearch = this.games.find((game, i) => {
 			gameindex = i;
@@ -127,13 +134,13 @@ module.exports = class Socket {
 		roomToSearch.players.find((current, i) => {
 			index = i;
 
-			return current === player;
+			return current === playerName;
 		});
 
 		roomToSearch.removePlayer(index);
 
 		// CHECK IF MASTER DISCONNECTS
-		if (player === roomToSearch.master) {
+		if (playerName === roomToSearch.master) {
 			if (roomToSearch.players.length > 0) {
 				roomToSearch.master = roomToSearch.players[0];
 			}

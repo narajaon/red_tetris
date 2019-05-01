@@ -53,7 +53,6 @@ const Login = ({ logToGame, phase, currentPlayer, room, players, startGame }) =>
 	const style = {
 		display: 'flex',
 		alignItems: 'center',
-		flexDirection: 'column',
 	};
 
 	const loginPhases = currenPhase => {

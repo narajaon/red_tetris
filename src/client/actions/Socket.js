@@ -43,8 +43,9 @@ export function listenToPhaseSwitch() {
 export function listenToNewPiece() {
 	return dispatch => dispatch({
 		event: 'new-piece-event',
-		handle: ({ pieces }) => {
+		handle: ({ pieces, grid, player }) => {
 			dispatch(placePiece(pieces));
+			// dispatch updateShadow(player, grid)
 		},
 	});
 }
