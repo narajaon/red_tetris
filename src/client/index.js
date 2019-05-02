@@ -32,7 +32,7 @@ const store = createStore(
 	)
 );
 
-// override default body margin
+// override default body margin and make tetris take available space
 Object.assign(document.body.style, {
 	margin: '0',
 	height: '100%',

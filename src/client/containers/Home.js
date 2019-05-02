@@ -9,6 +9,8 @@ import { KEYS, PHASES } from '../constants';
 import Grid from '../components/Grid';
 import { switchPhase } from '../actions/Game';
 
+import { regular } from '../style/grid.module.css';
+
 const mapStateToProps = ({ gridReducer, gameReducer }) => {
 	return {
 		grid: gridReducer.grid,
@@ -91,8 +93,7 @@ const Home = ({ grid, phase, interval, keyPressHandler, setupGame, history, rein
 
 	return (
 		<div className="Home" style={ style }>
-			<Grid grid={ grid } keyPressHandler={ keyPressHandler } />
-			{/* <Aside /> */}
+			<Grid grid={ grid } keyPressHandler={ keyPressHandler } tileStyle={ regular } />
 		</div>
 	);
 };

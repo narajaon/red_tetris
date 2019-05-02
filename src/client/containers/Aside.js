@@ -3,8 +3,11 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { shadow } from '../style/aside.module.css';
+import Grid from '../components/Grid';
+
+import { shadow } from '../style/grid.module.css';
 import { aside } from '../style/tetris.module.css';
+import { initGrid } from '../helpers/Grid';
 
 const mapStateToProps = ({ gameReducer }) => {
 	return {
@@ -16,12 +19,14 @@ const mapDispatchToProps = (dispatch) => {
 	};
 };
 
-const Tetris = () => {
+const Tetris = () => {	
+	const shadowGrid = initGrid();
+	const dummyHandler = () => null;
 	
 	return (
 		<div className={ aside }>
-			<div className={ shadow }></div>
-			<div className={ shadow }></div>
+			<Grid keyPressHandler={ dummyHandler } grid={ shadowGrid } tileStyle={ shadow }/>
+			<Grid keyPressHandler={ dummyHandler } grid={ shadowGrid } tileStyle={ shadow }/>
 		</div>
 	);
 };
