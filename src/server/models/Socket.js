@@ -145,10 +145,8 @@ module.exports = class Socket {
 		roomToSearch.removePlayer(index);
 
 		// CHECK IF MASTER DISCONNECTS
-		if (playerName === roomToSearch.master) {
-			if (roomToSearch.players.length > 0) {
-				roomToSearch.master = roomToSearch.players[0].name;
-			}
+		if (playerName === roomToSearch.master && roomToSearch.players.length > 0) {
+			roomToSearch.master = roomToSearch.players[0].name;
 		}
 
 		if (roomToSearch.players.length === 0) {
