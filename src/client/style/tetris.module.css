@@ -1,0 +1,27 @@
+.wrapper {
+	height: 80%;
+	width: 90%;
+	max-width: 1200px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.aside {
+	width: 25%;
+	height: 100%;
+	border: 1px solid lightgrey;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+}
+
+.main {
+	flex: 1;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border: 1px solid lightgrey;
+}
