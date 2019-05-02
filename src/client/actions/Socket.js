@@ -1,4 +1,4 @@
-import { placePiece } from './Grid';
+import { placePiece, startAnimation, translatePiece } from './Grid';
 import { switchPhase, updatePlayers } from './Game';
 
 export function emitPieceRequest(player, room, grid) {
@@ -46,6 +46,8 @@ export function listenToNewPiece() {
 		event: 'new-piece-event',
 		handle: ({ pieces, players }) => {
 			dispatch(placePiece(pieces));
+			// dispatch(translatePiece({ x: 0, y: 1 }));
+			dispatch(startAnimation());
 			// TODO : dispatch(addPieceToQueue)
 			dispatch(updatePlayers(players));
 		},

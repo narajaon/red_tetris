@@ -3,7 +3,7 @@ import { withRouter, Redirect } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { listenToNewPiece, listenToGlobalMessages } from '../actions/Socket';
+import { listenToNewPiece, listenToGlobalMessages, emitPieceRequest } from '../actions/Socket';
 import { rotatePiece, startAnimation, translatePiece, resetGrid } from '../actions/Grid';
 import { KEYS, PHASES } from '../constants';
 import Grid from '../components/Grid';
@@ -27,7 +27,7 @@ const mapDispatchToProps = (dispatch) => {
 				dispatch(rotatePiece());
 				break;
 			case KEYS.SPACE:
-				dispatch(startAnimation());
+				dispatch(emitPieceRequest());
 				break;
 			case KEYS.LEFT:
 				dispatch(translatePiece({x: -1, y: 0}));

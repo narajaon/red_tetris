@@ -86,6 +86,7 @@ module.exports = class Socket {
 
 	updateGridOfplayer(playerName, grid, room) {
 		const roomToSearch = this.getGameOfRoom(room);
+		// console.log(roomToSearch);
 		const playerToFind = roomToSearch.getPlayer(playerName);
 		playerToFind.updateGrid(grid);
 	}
@@ -135,10 +136,10 @@ module.exports = class Socket {
 		if (!roomToSearch) return;
 
 		let index;
-		roomToSearch.players.find((current, i) => {
+		roomToSearch.players.find((player, i) => {
 			index = i;
 
-			return current === playerName;
+			return player.name === playerName;
 		});
 
 		roomToSearch.removePlayer(index);
@@ -146,7 +147,7 @@ module.exports = class Socket {
 		// CHECK IF MASTER DISCONNECTS
 		if (playerName === roomToSearch.master) {
 			if (roomToSearch.players.length > 0) {
-				roomToSearch.master = roomToSearch.players[0];
+				roomToSearch.master = roomToSearch.players[0].name;
 			}
 		}
 
