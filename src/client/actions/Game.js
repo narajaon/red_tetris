@@ -5,3 +5,7 @@ export function switchPhase(phase) {
 export function initPlayerAndRoom(player, room) {
 	return { type: 'init-player-and-room', player, room };
 }
+
+export function updatePlayers(players) {
+	return { type: 'update-players', players };
+}

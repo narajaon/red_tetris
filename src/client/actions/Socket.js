@@ -1,13 +1,14 @@
 import { placePiece } from './Grid';
-import { switchPhase } from './Game';
+import { switchPhase, updatePlayers } from './Game';
 
-export function emitPieceRequest(player, room) {
+export function emitPieceRequest(player, room, grid) {
 	return {
 		event: 'piece-request',
 		emit: true,
 		data: {
 			player,
 			room,
+			grid,
 		}
 	};
 }
@@ -43,9 +44,10 @@ export function listenToPhaseSwitch() {
 export function listenToNewPiece() {
 	return dispatch => dispatch({
 		event: 'new-piece-event',
-		handle: ({ pieces, grid, player }) => {
+		handle: ({ pieces, players }) => {
 			dispatch(placePiece(pieces));
-			// dispatch updateShadow(player, grid)
+			// TODO : dispatch(addPieceToQueue)
+			dispatch(updatePlayers(players));
 		},
 	});
 }
@@ -53,10 +55,7 @@ export function listenToNewPiece() {
 export function listenToNewPlayers() {
 	return dispatch => dispatch({
 		event: 'new-player-connected-event',
-		handle: ({ players }) => dispatch({
-			type: 'add-player',
-			players,
-		}),
+		handle: ({ players }) => dispatch(updatePlayers(players)),
 	});
 }
 

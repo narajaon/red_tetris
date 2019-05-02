@@ -10,7 +10,14 @@ import Aside from './Aside';
 import { main, wrapper } from '../style/tetris.module.css';
 
 const mapStateToProps = ({ gameReducer }) => {
+	const { players, currentPlayer } = gameReducer;
+	const otherPlayers = players.filter(player => player.name !== currentPlayer);
+	const [ player2, player3, player4 ] = otherPlayers;
+	
 	return {
+		player2,
+		player3,
+		player4,
 	};
 };
 
@@ -26,25 +33,28 @@ const flexStyle = {
 	height: '100%',
 };
 
-const Tetris = () => {
+const Tetris = ({ player2, player3, player4 }) => {
 	
 	return (
 		<div style={ flexStyle }>
 			<div className={ wrapper }>
-				<Aside/>
+				<Aside top={ player2 } bottom={ player3 }/>
 				<div className={ main }>
 					<Switch>
 						<Route exact path="/" component={ Home } />
 						<Route path="/login" component={ Login } />
 					</Switch>
 				</div>
-				<Aside/>
+				<Aside top={ player4 } bottom={ player4 }/>
 			</div>
 		</div>
 	);
 };
 
 Tetris.propTypes = {
+	player2: PropTypes.object,
+	player3: PropTypes.object,
+	player4: PropTypes.object,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Tetris));

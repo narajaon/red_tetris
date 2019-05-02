@@ -45,9 +45,9 @@ module.exports = class Socket {
 				playerConnected = player;
 				roomConnected = room;
 
-				this.emitToRoom('new-player-connected-event', {
+				this.emitToRoom('new-player-connected-event', room, {
 					players: this.getGameOfRoom(room).players || []
-				}, room);
+				});
 
 				console.log(this.games);
 			});
@@ -55,26 +55,31 @@ module.exports = class Socket {
 			client.on('start-game', ({ room, player }) => {
 				if (this.playerIsMaster(player, room)) {
 					console.log(`game in room ${room} started`);
-					this.emitToRoom('phase-switch-event', {
+					this.emitToRoom('phase-switch-event', room, {
 						phase: GAME_PHASES.STARTED
-					}, room);
+					});
 				}
-			});
-
-			client.on('piece-request', ({ player, room, grid }) => {
-				const { type } = new Piece();
-				console.log(`a piece has been requested by ${player} in room ${room}`);
-				this.emitToRoom('new-piece-event', { pieces: type, grid, player }, room);
 			});
 
 			client.on('disconnect', () => {
 				this.removePlayerFromGame(playerConnected, roomConnected);
 				const gameOfClient = this.getGameOfRoom(roomConnected) || [];
-				this.emitToRoom('new-player-connected-event', {
+				this.emitToRoom('new-player-connected-event', roomConnected, {
 					players: gameOfClient.players || []
-				}, roomConnected);
+				});
 
 				console.log(this.games);
+			});
+
+			client.on('piece-request', ({ player, room, grid }) => {
+				const { type } = new Piece();
+				console.log(`a piece has been requested by ${player} in room ${room}`);
+				this.updateGridOfplayer(player, grid, room);
+				const { players } = this.getGameOfRoom(room);
+				this.emitToRoom('new-piece-event', room, {
+					pieces: type,
+					players,
+				});
 			});
 		});
 	}
@@ -82,7 +87,6 @@ module.exports = class Socket {
 	updateGridOfplayer(playerName, grid, room) {
 		const roomToSearch = this.getGameOfRoom(room);
 		const playerToFind = roomToSearch.getPlayer(playerName);
-
 		playerToFind.updateGrid(grid);
 	}
 
@@ -92,7 +96,7 @@ module.exports = class Socket {
 		return playerName === currentGame.master;
 	}
 
-	emitToRoom(event, data, room) {
+	emitToRoom(event, room, data) {
 		this.io.to(room).emit(event, data);
 	}
 

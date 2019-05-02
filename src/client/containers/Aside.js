@@ -19,19 +19,21 @@ const mapDispatchToProps = (dispatch) => {
 	};
 };
 
-const Tetris = () => {	
+const Aside = ({ top, bottom }) => {	
 	const shadowGrid = initGrid();
 	const dummyHandler = () => null;
 	
 	return (
 		<div className={ aside }>
-			<Grid keyPressHandler={ dummyHandler } grid={ shadowGrid } tileStyle={ shadow }/>
-			<Grid keyPressHandler={ dummyHandler } grid={ shadowGrid } tileStyle={ shadow }/>
+			<Grid keyPressHandler={ dummyHandler } grid={ top ? top.grid : initGrid() } tileStyle={ shadow }/>
+			<Grid keyPressHandler={ dummyHandler } grid={ bottom ? bottom.grid : initGrid() } tileStyle={ shadow }/>
 		</div>
 	);
 };
 
-Tetris.propTypes = {
+Aside.propTypes = {
+	top: PropTypes.object,
+	bottom: PropTypes.object,
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Tetris));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Aside));

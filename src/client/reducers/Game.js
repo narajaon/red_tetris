@@ -19,7 +19,7 @@ const actions = {
 	'new-message': (state, { message }) => {
 		return state;
 	},
-	'add-player' : (state, { players }) => {
+	'update-players' : (state, { players }) => {
 		return {
 			...state,
 			players: [ ...players ],
