@@ -71,10 +71,17 @@ module.exports = class Socket {
 				console.log(this.games);
 			});
 
-			client.on('piece-request', ({ player, room, grid }) => {
+			client.on('update-grid', ({ grid, player, room }) => {
+				this.updateGridOfplayer(player, grid, room);
+				const { players } = this.getGameOfRoom(room);
+				this.emitToRoom('update-players', room, {
+					players,
+				});
+			});
+
+			client.on('piece-request', ({ player, room }) => {
 				const { type } = new Piece();
 				console.log(`a piece has been requested by ${player} in room ${room}`);
-				this.updateGridOfplayer(player, grid, room);
 				const { players } = this.getGameOfRoom(room);
 				this.emitToRoom('new-piece-event', room, {
 					pieces: type,
@@ -86,7 +93,6 @@ module.exports = class Socket {
 
 	updateGridOfplayer(playerName, grid, room) {
 		const roomToSearch = this.getGameOfRoom(room);
-		// console.log(roomToSearch);
 		const playerToFind = roomToSearch.getPlayer(playerName);
 		playerToFind.updateGrid(grid);
 	}
@@ -149,6 +155,7 @@ module.exports = class Socket {
 			roomToSearch.master = roomToSearch.players[0].name;
 		}
 
+		// CHECK IF THERES NO PLAYERS LEFT
 		if (roomToSearch.players.length === 0) {
 			this.games.splice(gameindex, 1);
 		}

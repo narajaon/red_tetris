@@ -3,10 +3,9 @@ export default function requestNewPiece() {
 		const { event, socket } = action;
 
 		if (event !== 'piece-request') return next(action);
-		const { gameReducer, gridReducer } = getState();
+		const { gameReducer } = getState();
 		const { currentPlayer , room } = gameReducer;
-		const { grid } = gridReducer;
 
-		return socket.emit(event, { player: currentPlayer, room, grid });
+		return socket.emit(event, { player: currentPlayer, room });
 	};
 }

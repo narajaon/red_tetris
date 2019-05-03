@@ -17,3 +17,11 @@ export function startAnimation(interval){
 export function resetGrid(){
 	return { type: 'reset-grid' };
 }
+
+export function queuePieces(pieces) {
+	return { type: 'queue-pieces', pieces };
+}
+
+export function popPieces() {
+	return { type: 'pop-pieces' };
+}

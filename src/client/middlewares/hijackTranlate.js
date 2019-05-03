@@ -1,15 +1,23 @@
-import { startAnimation } from '../actions/Grid';
-import { emitPieceRequest } from '../actions/Socket';
+import { popPieces, placePiece } from '../actions/Grid';
+import { emitPieceRequest, emitGridUpdate } from '../actions/Socket';
 
 export default function hijackTranslate() {
 	return ({ dispatch, getState }) => next => (action) => {
 		const { type } = action;
-		const { pieces } = getState().gridReducer;
-
+		const { pieces, piecesQueue, grid } = getState().gridReducer;
+		
 		if (type === 'translate-piece' && pieces === null) {
-			dispatch(emitPieceRequest());
+			const { currentPlayer, room } = getState().gameReducer;
 
-			return dispatch(startAnimation());
+			if (piecesQueue.length > 0) {
+				dispatch(popPieces());
+				dispatch(placePiece());
+			} else {
+				dispatch(emitPieceRequest());
+			}
+			dispatch(emitGridUpdate(currentPlayer, grid, room));
+			
+			return null;
 		}
 
 		return next(action);

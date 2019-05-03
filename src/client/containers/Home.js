@@ -3,8 +3,8 @@ import { withRouter, Redirect } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { listenToNewPiece, listenToGlobalMessages, emitPieceRequest } from '../actions/Socket';
-import { rotatePiece, startAnimation, translatePiece, resetGrid } from '../actions/Grid';
+import { listenToNewPiece, listenPlayersUpdate } from '../actions/Socket';
+import { rotatePiece, translatePiece, resetGrid } from '../actions/Grid';
 import { KEYS, PHASES } from '../constants';
 import Grid from '../components/Grid';
 import { switchPhase } from '../actions/Game';
@@ -26,9 +26,6 @@ const mapDispatchToProps = (dispatch) => {
 			case KEYS.R:
 				dispatch(rotatePiece());
 				break;
-			case KEYS.SPACE:
-				dispatch(emitPieceRequest());
-				break;
 			case KEYS.LEFT:
 				dispatch(translatePiece({x: -1, y: 0}));
 				break;
@@ -42,7 +39,7 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		setupGame: () => {
 			dispatch(listenToNewPiece());
-			dispatch(listenToGlobalMessages());
+			dispatch(listenPlayersUpdate());
 		},
 		reinitGame: (interval) => {
 			dispatch({ event: 'socket-logout', leave: true });
@@ -70,7 +67,6 @@ const Home = ({ grid, phase, interval, keyPressHandler, setupGame, history, rein
 
 	function disconnectPlayer() {
 		setIsAllowed(false);
-		// remove every socket event listeners
 		reinitGame(interval);
 	}
 

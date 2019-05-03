@@ -17,16 +17,33 @@ const initState = {
 	pieces: null,
 	interval: null,
 	overflows: false,
+	piecesQueue: [],
 };
 
 const actions = {
 	'start-animation' : (state, { interval }) => {
 		return {
 			...state,
-			interval
+			interval,
 		};
 	},
-	'reset-grid' : (state) => {
+	'queue-pieces': (state, { pieces }) => {
+		return {
+			...state,
+			piecesQueue: [
+				...state.piecesQueue,
+				pieces,
+			],
+		};
+	},
+	'pop-pieces': state => {
+		return {
+			...state,
+			pieces: state.piecesQueue[0],
+			piecesQueue: state.piecesQueue.slice(1),
+		};
+	},
+	'reset-grid' : state => {
 		return {
 			...state,
 			grid: initGrid(),
@@ -35,8 +52,8 @@ const actions = {
 			overflows: false,
 		};
 	},
-	'place-piece' : (state, { pieces }) => {
-		const { grid } = state;
+	'place-piece' : (state) => {
+		const { grid, pieces } = state;
 		const freshGrid = createFreshGrid(grid);
 		const piecesToPlace = createNewPieces(pieces);
 		const { origin, current } = piecesToPlace;

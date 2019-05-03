@@ -8,13 +8,13 @@ import Queue from '../components/Queue';
 import { PHASES, KEYS } from '../constants';
 import { errorAction } from '../actions/errors';
 import { formIsValid } from '../helpers/Login';
+import { initPlayerAndRoom } from '../actions/Game';
 import {
 	listenToPhaseSwitch,
 	emitAuthRequest,
 	listenToNewPlayers,
 	emitGameStart
 } from '../actions/Socket';
-import { initPlayerAndRoom } from '../actions/Game';
 
 const mapStateToProps = ({ gameReducer }) => {
 	const { phase, currentPlayer, room, players } = gameReducer;
@@ -43,7 +43,7 @@ const mapDispatchToProps = (dispatch) => {
 			return dispatch(emitAuthRequest(name, room));
 		},
 		startGame: ({ room }) => (e) => {
-			if (e.keyCode !== KEYS.ENTER) return;
+			if (e.keyCode !== KEYS.SPACE) return;
 			dispatch(emitGameStart(room));
 		},
 	};

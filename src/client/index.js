@@ -15,6 +15,7 @@ import newPlayerConnected from './middlewares/emitNewPlayerConnected';
 import requestNewPiece from './middlewares/emitRequestNewPiece';
 import requestAuth from './middlewares/emitRequestAuth';
 import emitGameStart from './middlewares/emitGameStart';
+import emitGridUpdate from './middlewares/emitGridUpdate';
 import Tetris from './containers/Tetris';
 
 const store = createStore(
@@ -28,6 +29,7 @@ const store = createStore(
 		hijackTranslate(),
 		requestNewPiece(),
 		emitGameStart(),
+		emitGridUpdate(),
 		requestAuth(),
 	)
 );
