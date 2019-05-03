@@ -38,6 +38,11 @@ module.exports = class Socket {
 					// emit error('room is full')
 					return;
 				}
+				
+				if (gameOfClient && gameOfClient.phase !== GAME_PHASES.CONNECTED) {
+					// emit error('game has started)
+					return;
+				}
 
 				this.addPlayerToGame(player, room);
 				client.join(room);
@@ -45,7 +50,7 @@ module.exports = class Socket {
 				playerConnected = player;
 				roomConnected = room;
 
-				this.emitToRoom('new-player-connected-event', room, {
+				this.emitToRoom('update-players', room, {
 					players: this.getGameOfRoom(room).players || []
 				});
 
@@ -64,7 +69,13 @@ module.exports = class Socket {
 			client.on('disconnect', () => {
 				this.removePlayerFromGame(playerConnected, roomConnected);
 				const gameOfClient = this.getGameOfRoom(roomConnected) || [];
-				this.emitToRoom('new-player-connected-event', roomConnected, {
+
+				// REMOVE SOCKET CONNECTION WHEN GAME IS EMPTY
+				// if (gameOfClient.players.length === 0) {
+					
+				// }
+
+				this.emitToRoom('update-players', roomConnected, {
 					players: gameOfClient.players || []
 				});
 
@@ -81,12 +92,14 @@ module.exports = class Socket {
 
 			client.on('piece-request', ({ player, room }) => {
 				const { type } = new Piece();
-				console.log(`a piece has been requested by ${player} in room ${room}`);
-				const { players } = this.getGameOfRoom(room);
+				console.log(player, 'requested', type);
 				this.emitToRoom('new-piece-event', room, {
 					pieces: type,
-					players,
 				});
+				// this.io.volatile.to(room).emit('new-piece-event', {
+				// 	pieces: type,
+				// });
+
 			});
 		});
 	}

@@ -12,8 +12,8 @@ import { initPlayerAndRoom } from '../actions/Game';
 import {
 	listenToPhaseSwitch,
 	emitAuthRequest,
-	listenToNewPlayers,
-	emitGameStart
+	emitGameStart,
+	listenPlayersUpdate
 } from '../actions/Socket';
 
 const mapStateToProps = ({ gameReducer }) => {
@@ -37,7 +37,8 @@ const mapDispatchToProps = (dispatch) => {
 			}
 
 			dispatch(initPlayerAndRoom(name, room));
-			dispatch(listenToNewPlayers());
+			dispatch(listenPlayersUpdate());
+
 			dispatch(listenToPhaseSwitch());
 
 			return dispatch(emitAuthRequest(name, room));

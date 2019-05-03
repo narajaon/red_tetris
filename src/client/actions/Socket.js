@@ -60,12 +60,10 @@ export function listenToPhaseSwitch() {
 export function listenToNewPiece() {
 	return dispatch => dispatch({
 		event: 'new-piece-event',
-		handle: ({ pieces, players }) => {
-			// dispatch(placePiece(pieces));
-			// dispatch(startAnimation());
+		handle: ({ pieces }) => {
+			console.log('INCOMING', pieces);
+			
 			dispatch(queuePieces(pieces));
-			// dispatch(updatePlayers(players));
-			// dispatch(translatePiece({ x: 0, y: 1 }));
 		},
 	});
 }
@@ -74,19 +72,8 @@ export function listenPlayersUpdate() {
 	return dispatch => dispatch({
 		event: 'update-players',
 		handle: ({ players }) => {
-			// dispatch(placePiece(pieces));
-			// dispatch(startAnimation());
-			// dispatch(queuePieces(pieces));
 			dispatch(updatePlayers(players));
-			// dispatch(translatePiece({ x: 0, y: 1 }));
 		},
-	});
-}
-
-export function listenToNewPlayers() {
-	return dispatch => dispatch({
-		event: 'new-player-connected-event',
-		handle: ({ players }) => dispatch(updatePlayers(players)),
 	});
 }
 

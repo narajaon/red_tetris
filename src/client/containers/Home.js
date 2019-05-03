@@ -39,7 +39,6 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		setupGame: () => {
 			dispatch(listenToNewPiece());
-			dispatch(listenPlayersUpdate());
 		},
 		reinitGame: (interval) => {
 			dispatch({ event: 'socket-logout', leave: true });
