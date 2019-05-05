@@ -21,10 +21,6 @@ module.exports = class Player {
 		this.name = name;
 		this.grid = initGrid();
 		this.score = 0;
-		this.phase = 'connected';
-	}
-
-	updateGrid(grid) {
-		this.grid = grid;
+		this.phase = 'arrived';
 	}
 };

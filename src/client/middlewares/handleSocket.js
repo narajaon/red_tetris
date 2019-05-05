@@ -6,8 +6,8 @@ export default function handleSocket() {
 		io.connect(serverURI) : io();
 	console.log(socket.sendBuffer);
 	console.log(socket.receiveBuffer);
-	
-	return ({ dispatch }) => next => (action) => {
+
+	return ({ dispatch, getState }) => next => (action) => {
 		if (typeof action === 'function') {
 			return next(action);
 		}
@@ -30,11 +30,10 @@ export default function handleSocket() {
 
 		if (leave) {
 			socket.removeAllListeners();
-			// emit the disconnect event to let the serve know
-			
+
 			return socket.close();
 		}
-		
+
 		return socket.on(event, handle);
 	};
 }

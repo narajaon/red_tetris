@@ -61,8 +61,7 @@ export function listenToNewPiece() {
 	return dispatch => dispatch({
 		event: 'new-piece-event',
 		handle: ({ pieces }) => {
-			console.log('INCOMING', pieces);
-			
+			console.log('INCOMING', pieces.current);
 			dispatch(queuePieces(pieces));
 		},
 	});

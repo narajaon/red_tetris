@@ -2,18 +2,6 @@ const Piece = require('./Piece');
 const Game = require('./Game');
 const { GAME_PHASES, MAX_PLAYERS } = require('../constants');
 
-/**
- * TODO:
- * - should listen to player-logged / login + room
- * - on piece-request send it to all other players
- * - Clients should queue new pieces on arrival in Game.pieces
- * - on new-player-connected, queue them in Game.players[]
- * - should assign a game master in Game.master
- * - should change game state on game-master-change-state => connected, started
- * - should listen to all of the game states and change Game.state to ended when all games have ended
- * - should listen to game-master-restart-game to reinitialize games
- */
-
 module.exports = class Socket {
 	constructor(io) {
 		this.io = io;
@@ -29,6 +17,8 @@ module.exports = class Socket {
 			client.on('auth-request', ({ player, room }) => {
 				if (!this.credentialsAreValid(player, room)) {
 					// emit error('bad credentials')
+					console.log('BAD CREDENTIALS');
+
 					return;
 				}
 
@@ -36,17 +26,22 @@ module.exports = class Socket {
 
 				if (gameOfClient && gameOfClient.players.length + 1 > MAX_PLAYERS) {
 					// emit error('room is full')
+					console.log('ROOM IS FULL');
+
 					return;
 				}
-				
+
 				if (gameOfClient && gameOfClient.phase !== GAME_PHASES.CONNECTED) {
 					// emit error('game has started)
+					console.log('GAME HAS STARTED');
+
 					return;
 				}
 
 				this.addPlayerToGame(player, room);
 				client.join(room);
 				client.emit('phase-switch-event', { phase: GAME_PHASES.CONNECTED });
+				this.updatePlayer(player, room, { prop: 'phase', data: GAME_PHASES.CONNECTED });
 				playerConnected = player;
 				roomConnected = room;
 
@@ -63,17 +58,24 @@ module.exports = class Socket {
 					this.emitToRoom('phase-switch-event', room, {
 						phase: GAME_PHASES.STARTED
 					});
+					this.updatePlayer(player, room, { prop: 'phase', data: GAME_PHASES.STARTED });
 				}
 			});
 
 			client.on('disconnect', () => {
 				this.removePlayerFromGame(playerConnected, roomConnected);
+				console.log(client.sendBuffer);
+
+				console.log(`${playerConnected} is disconnected from ${roomConnected}`);
+				client.leave(roomConnected);
 				const gameOfClient = this.getGameOfRoom(roomConnected) || [];
 
 				// REMOVE SOCKET CONNECTION WHEN GAME IS EMPTY
-				// if (gameOfClient.players.length === 0) {
-					
-				// }
+				if (!gameOfClient.players || gameOfClient.players.length === 0) {
+					console.log('GAME IS EMPTY');
+
+					return;
+				}
 
 				this.emitToRoom('update-players', roomConnected, {
 					players: gameOfClient.players || []
@@ -83,7 +85,7 @@ module.exports = class Socket {
 			});
 
 			client.on('update-grid', ({ grid, player, room }) => {
-				this.updateGridOfplayer(player, grid, room);
+				this.updatePlayer(player, room, { prop: 'grid', data: grid });
 				const { players } = this.getGameOfRoom(room);
 				this.emitToRoom('update-players', room, {
 					players,
@@ -96,18 +98,14 @@ module.exports = class Socket {
 				this.emitToRoom('new-piece-event', room, {
 					pieces: type,
 				});
-				// this.io.volatile.to(room).emit('new-piece-event', {
-				// 	pieces: type,
-				// });
-
 			});
 		});
 	}
 
-	updateGridOfplayer(playerName, grid, room) {
-		const roomToSearch = this.getGameOfRoom(room);
-		const playerToFind = roomToSearch.getPlayer(playerName);
-		playerToFind.updateGrid(grid);
+	updatePlayer(playerName, room, { prop, data }) {
+		const gameOfRoom = this.getGameOfRoom(room);
+		const playerToUpdate = gameOfRoom.getPlayer(playerName);
+		playerToUpdate[prop] = data;
 	}
 
 	playerIsMaster(playerName, room) {

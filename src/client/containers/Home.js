@@ -3,7 +3,7 @@ import { withRouter, Redirect } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { listenToNewPiece, listenPlayersUpdate } from '../actions/Socket';
+import { listenToNewPiece } from '../actions/Socket';
 import { rotatePiece, translatePiece, resetGrid } from '../actions/Grid';
 import { KEYS, PHASES } from '../constants';
 import Grid from '../components/Grid';
@@ -46,14 +46,11 @@ const mapDispatchToProps = (dispatch) => {
 			dispatch(resetGrid());
 			// dispatch(resetGame())
 			clearInterval(interval);
+			document.location.reload();
 		}
 	};
 };
 
-/**
- * TODO
- * - tell the server to delete the player from the lobby
- */
 const Home = ({ grid, phase, interval, keyPressHandler, setupGame, history, reinitGame }) => {
 	const style = {
 		display: 'flex',

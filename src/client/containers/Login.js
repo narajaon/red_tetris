@@ -13,7 +13,7 @@ import {
 	listenToPhaseSwitch,
 	emitAuthRequest,
 	emitGameStart,
-	listenPlayersUpdate
+	listenPlayersUpdate,
 } from '../actions/Socket';
 
 const mapStateToProps = ({ gameReducer }) => {
@@ -36,9 +36,8 @@ const mapDispatchToProps = (dispatch) => {
 				return dispatch(errorAction('Invalid form'));
 			}
 
-			dispatch(initPlayerAndRoom(name, room));
 			dispatch(listenPlayersUpdate());
-
+			dispatch(initPlayerAndRoom(name, room));
 			dispatch(listenToPhaseSwitch());
 
 			return dispatch(emitAuthRequest(name, room));

@@ -10,8 +10,6 @@ import { PHASES } from '../constants';
 export default function handleErrors() {
 	return ({ dispatch, getState }) => next => (action) => {
 		const { type, message } = action;
-		const { gameReducer } = getState();
-		const { history } = gameReducer;
 
 		if (type !== 'error') return next(action);
 
