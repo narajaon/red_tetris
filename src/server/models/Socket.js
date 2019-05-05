@@ -40,7 +40,7 @@ module.exports = class Socket {
 				}
 
 				this.addPlayerToGame(player, room);
-				// client.join(room);
+				client.join(room);
 				client.emit('phase-switch-event', { phase: GAME_PHASES.CONNECTED });
 				this.updatePlayer(player, room, { prop: 'phase', data: GAME_PHASES.CONNECTED });
 				playerConnected = player;
@@ -52,7 +52,7 @@ module.exports = class Socket {
 
 				console.log(this.games);
 			});
-
+ 
 			client.on('start-game', ({ room, player }) => {
 				if (this.playerIsMaster(player, room)) {
 					console.log(`game in room ${room} started`);
@@ -65,24 +65,7 @@ module.exports = class Socket {
 
 			client.on('disconnect', () => {
 				this.removePlayerFromGame(playerConnected, roomConnected);
-				console.log(client.sendBuffer);
-
 				console.log(`${playerConnected} is disconnected from ${roomConnected}`);
-				const gameOfClient = this.getGameOfRoom(roomConnected) || [];
-
-				// REMOVE SOCKET CONNECTION WHEN GAME IS EMPTY
-				if (!gameOfClient.players || gameOfClient.players.length === 0) {
-					console.log('GAME IS EMPTY');
-					client.removeAllListeners('piece-request');
-					
-					return;
-				}
-
-				this.emitToRoom('update-players', roomConnected, {
-					players: gameOfClient.players || []
-				});
-
-				console.log(this.games);
 			});
 
 			client.on('update-grid', ({ grid, player, room }) => {
@@ -116,7 +99,7 @@ module.exports = class Socket {
 	}
 
 	emitToRoom(event, room, data) {
-		this.io.sockets.in(room).emit(event, data);
+		this.io.sockets.to(room).emit(event, data);
 	}
 
 	credentialsAreValid(playerName, room) {
