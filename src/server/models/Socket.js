@@ -12,8 +12,8 @@ module.exports = class Socket {
 	connect() {
 		this.io.on('connection', (client) => {
 			console.log('connection established');
-			let playerConnected;
-			let roomConnected;
+			// let playerConnected;
+			// let roomConnected;
 
 			client.on('auth-request', ({ player, room }) => {
 				if (!this.credentialsAreValid(player, room)) {
@@ -43,8 +43,8 @@ module.exports = class Socket {
 				client.join(room);
 				client.emit('phase-switch-event', { phase: GAME_PHASES.CONNECTED });
 				this.updatePlayer(player, room, { prop: 'phase', data: GAME_PHASES.CONNECTED });
-				playerConnected = player;
-				roomConnected = room;
+				// playerConnected = player;
+				// roomConnected = room;
 
 				this.emitToRoom('update-players', room, {
 					players: this.getGameOfRoom(room).players || []
@@ -63,9 +63,16 @@ module.exports = class Socket {
 				}
 			});
 
+			client.on('remove-player', ({ player, room }) => {
+				this.removePlayerFromGame(player, room);				
+				client.removeAllListeners();
+				client.leave(room);
+				console.log(this.games);
+			});
+
 			client.on('disconnect', () => {
-				this.removePlayerFromGame(playerConnected, roomConnected);
-				console.log(`${playerConnected} is disconnected from ${roomConnected}`);
+				// this.removePlayerFromGame(playerConnected, roomConnected);
+				// console.log(`${playerConnected} is disconnected from ${roomConnected}`);
 			});
 
 			client.on('update-grid', ({ grid, player, room }) => {

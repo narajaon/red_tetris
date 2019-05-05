@@ -17,6 +17,7 @@ import requestAuth from './middlewares/emitRequestAuth';
 import emitGameStart from './middlewares/emitGameStart';
 import emitGridUpdate from './middlewares/emitGridUpdate';
 import Tetris from './containers/Tetris';
+import emitRemovePlayer from './middlewares/emitRemovePlayer';
 
 const store = createStore(
 	rootReducer,
@@ -30,6 +31,7 @@ const store = createStore(
 		requestNewPiece(),
 		emitGameStart(),
 		emitGridUpdate(),
+		emitRemovePlayer(),
 		requestAuth(),
 	)
 );

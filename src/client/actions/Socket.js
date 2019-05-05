@@ -33,6 +33,13 @@ export function emitGameStart(room) {
 	};
 }
 
+export function emitRemovePlayer() {
+	return {
+		event: 'remove-player',
+		emit: true,
+	};
+}
+
 export function emitGridUpdate(player, grid, room) {
 	return {
 		event: 'update-grid',

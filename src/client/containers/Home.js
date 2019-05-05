@@ -3,7 +3,7 @@ import { withRouter, Redirect } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { listenToNewPiece } from '../actions/Socket';
+import { listenToNewPiece, emitRemovePlayer } from '../actions/Socket';
 import { rotatePiece, translatePiece, resetGrid } from '../actions/Grid';
 import { KEYS, PHASES } from '../constants';
 import Grid from '../components/Grid';
@@ -39,6 +39,12 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		setupGame: () => {
 			dispatch(listenToNewPiece());
+			window.onbeforeunload = function(e) {
+				e.preventDefault();
+				console.log('coucou');
+				dispatch(emitRemovePlayer());
+				e.returnValue = ''; // eslint-disable-line
+			};
 		},
 		reinitGame: (interval) => {
 			dispatch({ event: 'socket-logout', leave: true });
