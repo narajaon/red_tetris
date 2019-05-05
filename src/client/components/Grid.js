@@ -18,7 +18,7 @@ const Tile = ({ style, content }) => {
 };
 	
 		
-const Grid = ({ keyPressHandler, grid, tileStyle }) => {
+const Grid = ({ keyPressHandler = () => null, grid, tileStyle }) => {
 	const style = {
 		display: 'grid',
 		gridTemplateColumns: 'repeat(10, min-content)',

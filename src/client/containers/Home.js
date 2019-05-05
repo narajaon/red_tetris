@@ -77,7 +77,7 @@ const Home = ({ grid, phase, interval, keyPressHandler, setupGame, history, rein
 			disconnectPlayer();
 		}
 		setIsMouted(true);
-	}, [history.location.hash]);
+	}, [history.location]);
 
 	if (!isAllowed || phase === PHASES.ARRIVED) {
 		return (<Redirect to="/login" />);

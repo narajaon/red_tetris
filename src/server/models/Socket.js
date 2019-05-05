@@ -6,6 +6,7 @@ module.exports = class Socket {
 	constructor(io) {
 		this.io = io;
 		this.games = [];
+		this.piece = new Piece();
 	}
 
 	connect() {
@@ -39,7 +40,7 @@ module.exports = class Socket {
 				}
 
 				this.addPlayerToGame(player, room);
-				client.join(room);
+				// client.join(room);
 				client.emit('phase-switch-event', { phase: GAME_PHASES.CONNECTED });
 				this.updatePlayer(player, room, { prop: 'phase', data: GAME_PHASES.CONNECTED });
 				playerConnected = player;
@@ -67,13 +68,13 @@ module.exports = class Socket {
 				console.log(client.sendBuffer);
 
 				console.log(`${playerConnected} is disconnected from ${roomConnected}`);
-				client.leave(roomConnected);
 				const gameOfClient = this.getGameOfRoom(roomConnected) || [];
 
 				// REMOVE SOCKET CONNECTION WHEN GAME IS EMPTY
 				if (!gameOfClient.players || gameOfClient.players.length === 0) {
 					console.log('GAME IS EMPTY');
-
+					client.removeAllListeners('piece-request');
+					
 					return;
 				}
 
@@ -93,10 +94,10 @@ module.exports = class Socket {
 			});
 
 			client.on('piece-request', ({ player, room }) => {
-				const { type } = new Piece();
-				console.log(player, 'requested', type);
+				const pieces = this.piece.getNewPiece();
+				console.log(player, 'requested', pieces);
 				this.emitToRoom('new-piece-event', room, {
-					pieces: type,
+					pieces,
 				});
 			});
 		});
@@ -115,7 +116,7 @@ module.exports = class Socket {
 	}
 
 	emitToRoom(event, room, data) {
-		this.io.to(room).emit(event, data);
+		this.io.sockets.in(room).emit(event, data);
 	}
 
 	credentialsAreValid(playerName, room) {

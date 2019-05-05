@@ -19,14 +19,13 @@ const mapDispatchToProps = (dispatch) => {
 	};
 };
 
-const Aside = ({ top, bottom }) => {	
-	const shadowGrid = initGrid();
-	const dummyHandler = () => null;
-	
+const defaultGrid = { grid: initGrid() };
+
+const Aside = ({ top = defaultGrid, bottom = defaultGrid }) => {	
 	return (
 		<div className={ aside }>
-			<Grid keyPressHandler={ dummyHandler } grid={ top ? top.grid : initGrid() } tileStyle={ shadow }/>
-			<Grid keyPressHandler={ dummyHandler } grid={ bottom ? bottom.grid : initGrid() } tileStyle={ shadow }/>
+			<Grid grid={ top.grid } tileStyle={ shadow }/>
+			<Grid grid={ bottom.grid } tileStyle={ shadow }/>
 		</div>
 	);
 };
