@@ -10,7 +10,6 @@ export default function hijackTranslate() {
 			const { currentPlayer, room } = getState().gameReducer;
 
 			if (piecesQueue.length > 0) {
-				// console.log(piecesQueue);
 				dispatch(popPieces());
 				dispatch(placePiece());
 			} else {
