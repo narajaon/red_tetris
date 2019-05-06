@@ -13,7 +13,7 @@ import Infos from '../components/Infos';
 
 const mapStateToProps = ({ gameReducer }) => {
 	const { currentPlayer, room, players, gameMaster } = gameReducer;
-	
+
 	return {
 		currentPlayer,
 		room,
@@ -37,7 +37,7 @@ const Aside = ({ top = defaultGrid, bottom = defaultGrid, infos, currentPlayer, 
 
 		return (<Grid { ...props } />);
 	}
-	
+
 	return (
 		<div className={ aside }>
 			<div className={ content }>
@@ -49,7 +49,7 @@ const Aside = ({ top = defaultGrid, bottom = defaultGrid, infos, currentPlayer, 
 						grid: top.grid,
 						tileStyle: shadow,
 						room,
-					}) 
+					})
 				}
 			</div>
 			<div className={ content }>

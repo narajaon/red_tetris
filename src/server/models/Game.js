@@ -27,7 +27,7 @@ module.exports = class Game {
 	removePlayer(index) {
 		const { isMaster } = this.players[index];
 		this.players.splice(index, 1);
-		if (isMaster) {
+		if (this.players[0] && isMaster) {
 			this.players[0].master = true;
 		}
 	}
