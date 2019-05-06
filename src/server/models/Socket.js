@@ -2,6 +2,11 @@ const Piece = require('./Piece');
 const Game = require('./Game');
 const { GAME_PHASES, MAX_PLAYERS } = require('../constants');
 
+/**
+ * TODO:
+ * - DEBUG GAME START WHEN SAME AS MASTER
+ */
+
 module.exports = class Socket {
 	constructor(io) {
 		this.io = io;
@@ -43,7 +48,7 @@ module.exports = class Socket {
 					players: this.getGameOfRoom(room).players || []
 				});
 			});
- 
+
 			client.on('start-game', ({ room, player }) => {
 				if (this.playerIsMaster(player, room)) {
 					console.log(`game in room ${room} started`);
@@ -55,10 +60,12 @@ module.exports = class Socket {
 			});
 
 			client.on('remove-player', ({ player, room }) => {
-				this.removePlayerFromGame(player, room);				
+				console.log('TO REMOVE', player);
+
+				this.removePlayerFromGame(player, room);
 				console.log(this.games);
 			});
-			
+
 			client.on('update-grid', ({ grid, player, room }) => {
 				this.updatePlayer(player, room, { prop: 'grid', data: grid });
 				const { players } = this.getGameOfRoom(room);
@@ -87,9 +94,7 @@ module.exports = class Socket {
 	}
 
 	playerIsMaster(playerName, room) {
-		const currentGame = this.getGameOfRoom(room);
-
-		return playerName === currentGame.master;
+		return playerName === this.getGameOfRoom(room).master;
 	}
 
 	emitToRoom(event, room, data) {
@@ -130,14 +135,7 @@ module.exports = class Socket {
 
 		if (!roomToSearch) return;
 
-		let index;
-		roomToSearch.players.find((player, i) => {
-			index = i;
-
-			return player.name === playerName;
-		});
-
-		roomToSearch.removePlayer(index);
+		roomToSearch.removePlayer(playerName);
 
 		// CHECK IF MASTER DISCONNECTS
 		if (playerName === roomToSearch.master && roomToSearch.players.length > 0) {

@@ -30,13 +30,13 @@ const mapDispatchToProps = (dispatch) => {
 const defaultGrid = { grid: initGrid() };
 
 const Aside = ({ top = defaultGrid, bottom = defaultGrid, infos, currentPlayer, room, players, gameMaster }) => {
-	function renderInfos(infoComponent, props) {
+	const renderInfos = (infoComponent, props) => {
 		if (infoComponent) {
 			return (<Infos { ...props } />);
 		}
 
 		return (<Grid { ...props } />);
-	}
+	};
 
 	return (
 		<div className={ aside }>

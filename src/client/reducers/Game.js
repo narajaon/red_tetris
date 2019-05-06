@@ -11,8 +11,6 @@ const initState = {
 
 const actions = {
 	'init-player-and-room': (state, { player, room }) => {
-		console.log(player, room);
-		
 		return {
 			...state,
 			currentPlayer: player,

@@ -24,11 +24,14 @@ module.exports = class Game {
 		this.players.push(new Player(playerName));
 	}
 
-	removePlayer(index) {
-		const { isMaster } = this.players[index];
-		this.players.splice(index, 1);
-		if (this.players[0] && isMaster) {
-			this.players[0].master = true;
+	removePlayer(playerName) {
+		const filtered = this.players.filter(player => player.name !== playerName);
+		const playerToRemove = this.players.find(player => player.name === playerName);
+		this.players = filtered;
+
+		// Handle master removal
+		if (this.players.length > 0 && playerToRemove.isMaster) {
+			this.players[0].isMaster = true;
 		}
 	}
 };

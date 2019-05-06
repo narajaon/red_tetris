@@ -1,13 +1,12 @@
 import React from 'react';
-import { PropTypes } from 'prop-types';	
+import { PropTypes } from 'prop-types';
 import { infos as style } from '../style/aside.module.css';
 
 const Infos = ({ currentPlayer, gameMaster, room, players }) => {
-	
 	const getGM = (player, gm, playerList) => {
 		if (!playerList || !gm) return null;
-		
-		return player === gm.name  ? 'You are the GM' : `${gm.name} is the GM`;
+
+		return player === gm.name  ? 'You' : `${gm.name}`;
 	};
 
 	return (
@@ -15,7 +14,7 @@ const Infos = ({ currentPlayer, gameMaster, room, players }) => {
 			className={ style }
 		>
 			<div>Name: { currentPlayer }</div>
-			<div>{ getGM(currentPlayer, gameMaster, players) }</div>
+			<div>GM: { getGM(currentPlayer, gameMaster, players) }</div>
 			<div>Room: { room }</div>
 			<div>Other players:</div>
 			<div>
