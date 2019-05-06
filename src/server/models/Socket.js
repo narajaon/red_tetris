@@ -12,12 +12,9 @@ module.exports = class Socket {
 	connect() {
 		this.io.on('connection', (client) => {
 			console.log('connection established');
-			// let playerConnected;
-			// let roomConnected;
 
 			client.on('auth-request', ({ player, room }) => {
 				if (!this.credentialsAreValid(player, room)) {
-					// emit error('bad credentials')
 					console.log('BAD CREDENTIALS');
 
 					return;
@@ -26,14 +23,12 @@ module.exports = class Socket {
 				const gameOfClient = this.getGameOfRoom(room);
 
 				if (gameOfClient && gameOfClient.players.length + 1 > MAX_PLAYERS) {
-					// emit error('room is full')
 					console.log('ROOM IS FULL');
 
 					return;
 				}
 
 				if (gameOfClient && gameOfClient.phase !== GAME_PHASES.CONNECTED) {
-					// emit error('game has started)
 					console.log('GAME HAS STARTED');
 
 					return;
@@ -43,14 +38,10 @@ module.exports = class Socket {
 				client.join(room);
 				client.emit('phase-switch-event', { phase: GAME_PHASES.CONNECTED });
 				this.updatePlayer(player, room, { prop: 'phase', data: GAME_PHASES.CONNECTED });
-				// playerConnected = player;
-				// roomConnected = room;
 
 				this.emitToRoom('update-players', room, {
 					players: this.getGameOfRoom(room).players || []
 				});
-
-				console.log(this.games);
 			});
  
 			client.on('start-game', ({ room, player }) => {
@@ -65,16 +56,9 @@ module.exports = class Socket {
 
 			client.on('remove-player', ({ player, room }) => {
 				this.removePlayerFromGame(player, room);				
-				client.removeAllListeners();
-				client.leave(room);
 				console.log(this.games);
 			});
-
-			client.on('disconnect', () => {
-				// this.removePlayerFromGame(playerConnected, roomConnected);
-				// console.log(`${playerConnected} is disconnected from ${roomConnected}`);
-			});
-
+			
 			client.on('update-grid', ({ grid, player, room }) => {
 				this.updatePlayer(player, room, { prop: 'grid', data: grid });
 				const { players } = this.getGameOfRoom(room);
@@ -95,8 +79,11 @@ module.exports = class Socket {
 
 	updatePlayer(playerName, room, { prop, data }) {
 		const gameOfRoom = this.getGameOfRoom(room);
+		if (!gameOfRoom) return ;
 		const playerToUpdate = gameOfRoom.getPlayer(playerName);
-		playerToUpdate[prop] = data;
+		if (playerToUpdate) {
+			playerToUpdate[prop] = data;
+		}
 	}
 
 	playerIsMaster(playerName, room) {

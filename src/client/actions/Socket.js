@@ -83,18 +83,6 @@ export function listenPlayersUpdate() {
 	});
 }
 
-export function listenToGlobalMessages() {
-	return dispatch => dispatch({
-		event: 'broadcast',
-		handle: (message) => {
-			dispatch({
-				type: 'new-message',
-				message,
-			});
-		},
-	});
-}
-
 export const listened = [
 	'new-player-connected-event',	
 	'new-piece-event'

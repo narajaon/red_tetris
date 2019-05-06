@@ -1,6 +1,5 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-// import { isFull } from '../style/grid.module.css';
 
 /**
  * TODO:
@@ -15,8 +14,7 @@ const Tile = ({ style, content }) => {
 	return (
 		<div className={ style } style={ isFull } ></div>
 	);
-};
-	
+};	
 		
 const Grid = ({ keyPressHandler = () => null, grid, tileStyle }) => {
 	const style = {

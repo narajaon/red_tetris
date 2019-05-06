@@ -38,14 +38,14 @@ const Tetris = ({ player2, player3, player4 }) => {
 	return (
 		<div style={ flexStyle }>
 			<div className={ wrapper }>
-				<Aside top={ player2 } bottom={ player3 }/>
+				<Aside infos={ true } bottom={ player2 }/>
 				<div className={ main }>
 					<Switch>
 						<Route exact path="/" component={ Home } />
 						<Route path="/login" component={ Login } />
 					</Switch>
 				</div>
-				<Aside top={ player4 } bottom={ player4 }/>
+				<Aside top={ player3 } bottom={ player4 }/>
 			</div>
 		</div>
 	);

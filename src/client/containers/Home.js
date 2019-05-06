@@ -39,18 +39,12 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		setupGame: () => {
 			dispatch(listenToNewPiece());
-			window.onbeforeunload = function(e) {
-				e.preventDefault();
-				console.log('coucou');
-				dispatch(emitRemovePlayer());
-				e.returnValue = ''; // eslint-disable-line
-			};
 		},
 		reinitGame: (interval) => {
+			dispatch(emitRemovePlayer());
 			dispatch({ event: 'socket-logout', leave: true });
 			dispatch(switchPhase(PHASES.ARRIVED));
 			dispatch(resetGrid());
-			// dispatch(resetGame())
 			clearInterval(interval);
 			document.location.reload();
 		}
@@ -64,25 +58,15 @@ const Home = ({ grid, phase, interval, keyPressHandler, setupGame, history, rein
 		flexDirection: 'column',
 	};
 
-	const [isMounted, setIsMouted] = useState(false);
 	const [isAllowed, setIsAllowed] = useState(true);
 
-	function disconnectPlayer() {
-		setIsAllowed(false);
-		reinitGame(interval);
-	}
-
-	// DidMount
 	useEffect(() => {
 		setupGame();
-	}, []);
-
-	// // DidUpdate
-	useEffect(() => {
-		if (isMounted) {
-			disconnectPlayer();
-		}
-		setIsMouted(true);
+		
+		return () => {
+			reinitGame(interval);
+			setIsAllowed(false);
+		};
 	}, [history.location]);
 
 	if (!isAllowed || phase === PHASES.ARRIVED) {

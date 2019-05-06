@@ -17,10 +17,11 @@ function initGrid() {
 }
 
 module.exports = class Player {
-	constructor(name) {
+	constructor(name, isMaster = false) {
 		this.name = name;
 		this.grid = initGrid();
 		this.score = 0;
 		this.phase = 'arrived';
+		this.isMaster = isMaster;
 	}
 };
