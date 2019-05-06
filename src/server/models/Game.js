@@ -9,7 +9,7 @@ const Player = require('./Player');
 module.exports = class Game {
 	constructor(master, room) {
 		this.phase = 'connected';
-		this.players = [new Player(master)];
+		this.players = [new Player(master, true)];
 		this.master = master;
 		this.room = room;
 	}
@@ -25,6 +25,10 @@ module.exports = class Game {
 	}
 
 	removePlayer(index) {
+		const { isMaster } = this.players[index];
 		this.players.splice(index, 1);
+		if (this.players[0] && isMaster) {
+			this.players[0].master = true;
+		}
 	}
 };

@@ -1,0 +1,12 @@
+.shadow {
+    height: 10px;
+    width: 10px;
+    border: 1px solid blue;
+}
+
+.regular {
+    height: 40px;
+	width: 40px;
+    border: 1px solid grey;
+    background-color: white;    
+}

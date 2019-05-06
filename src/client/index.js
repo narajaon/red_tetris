@@ -15,7 +15,9 @@ import newPlayerConnected from './middlewares/emitNewPlayerConnected';
 import requestNewPiece from './middlewares/emitRequestNewPiece';
 import requestAuth from './middlewares/emitRequestAuth';
 import emitGameStart from './middlewares/emitGameStart';
+import emitGridUpdate from './middlewares/emitGridUpdate';
 import Tetris from './containers/Tetris';
+import emitRemovePlayer from './middlewares/emitRemovePlayer';
 
 const store = createStore(
 	rootReducer,
@@ -28,11 +30,13 @@ const store = createStore(
 		hijackTranslate(),
 		requestNewPiece(),
 		emitGameStart(),
+		emitGridUpdate(),
+		emitRemovePlayer(),
 		requestAuth(),
 	)
 );
 
-// override default body margin
+// override default body margin and make tetris take available space
 Object.assign(document.body.style, {
 	margin: '0',
 	height: '100%',

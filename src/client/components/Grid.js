@@ -1,35 +1,46 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import Tile from './Tile';
 
 /**
  * TODO:
  * - Change grid for flex
  */
-const style = {
-	display: 'grid',
-	gridTemplateColumns: 'repeat(10, min-content)',
-	gridGap: '1px',
-};
 
-const Grid = ({ keyPressHandler, grid }) => {
+const Tile = ({ style, content }) => {
+	const isFull = {
+		backgroundColor: content ? 'red' : 'white',
+	};
+	
 	return (
-		<div>
-			<div
-				tabIndex="0"
-				onKeyDown={ keyPressHandler }
-				onKeyPress={ keyPressHandler }
-				className="grid-wrapper">
-				<div className="grid" style={ style }>
-					{
-						grid.map((elem) => {
-							return elem.map((tile, index) => (
-								<Tile key={ index } isFull={ tile }/>
-							));
-						})
-					}
-				</div>
-			</div>
+		<div className={ style } style={ isFull } ></div>
+	);
+};	
+		
+const Grid = ({ keyPressHandler = () => null, grid, tileStyle }) => {
+	const style = {
+		display: 'grid',
+		gridTemplateColumns: 'repeat(10, min-content)',
+		gridGap: '1px',
+	};
+
+	return (
+		<div
+			tabIndex="0"
+			onKeyDown={ keyPressHandler }
+			onKeyPress={ keyPressHandler }
+			style={ style }
+		>
+			{
+				grid.map((elem) => {
+					return elem.map((tile, index) => (
+						<Tile
+							key={ index }
+							style={ tileStyle }
+							content={ tile }
+						/>
+					));
+				})
+			}
 		</div>
 	);
 };
@@ -37,6 +48,12 @@ const Grid = ({ keyPressHandler, grid }) => {
 Grid.propTypes = {
 	keyPressHandler: PropTypes.func,
 	grid: PropTypes.array,
+	tileStyle: PropTypes.string,
+};
+
+Tile.propTypes = {
+	style: PropTypes.string,
+	content: PropTypes.number,
 };
 
 export default Grid;

@@ -1,13 +1,15 @@
-import { placePiece } from './Grid';
-import { switchPhase } from './Game';
+import { startAnimation, queuePieces } from './Grid';
+import { switchPhase, updatePlayers } from './Game';
+import { PHASES } from '../constants';
 
-export function emitPieceRequest(player, room) {
+export function emitPieceRequest(player, room, grid) {
 	return {
 		event: 'piece-request',
 		emit: true,
 		data: {
 			player,
 			room,
+			grid,
 		}
 	};
 }
@@ -31,11 +33,33 @@ export function emitGameStart(room) {
 	};
 }
 
+export function emitRemovePlayer() {
+	return {
+		event: 'remove-player',
+		emit: true,
+	};
+}
+
+export function emitGridUpdate(player, grid, room) {
+	return {
+		event: 'update-grid',
+		emit: true,
+		data: {
+			player,
+			grid,
+			room,
+		},
+	};
+}
+
 export function listenToPhaseSwitch() {
 	return dispatch => dispatch({
 		event: 'phase-switch-event',
 		handle: ({ phase }) => {
 			dispatch(switchPhase(phase));
+			if (phase === PHASES.STARTED) {
+				dispatch(startAnimation());
+			}
 		},
 	});
 }
@@ -43,31 +67,18 @@ export function listenToPhaseSwitch() {
 export function listenToNewPiece() {
 	return dispatch => dispatch({
 		event: 'new-piece-event',
-		handle: ({ pieces, grid, player }) => {
-			dispatch(placePiece(pieces));
-			// dispatch updateShadow(player, grid)
+		handle: ({ pieces }) => {
+			console.log('INCOMING', pieces.current);
+			dispatch(queuePieces(pieces));
 		},
 	});
 }
 
-export function listenToNewPlayers() {
+export function listenPlayersUpdate() {
 	return dispatch => dispatch({
-		event: 'new-player-connected-event',
-		handle: ({ players }) => dispatch({
-			type: 'add-player',
-			players,
-		}),
-	});
-}
-
-export function listenToGlobalMessages() {
-	return dispatch => dispatch({
-		event: 'broadcast',
-		handle: (message) => {
-			dispatch({
-				type: 'new-message',
-				message,
-			});
+		event: 'update-players',
+		handle: ({ players }) => {
+			dispatch(updatePlayers(players));
 		},
 	});
 }

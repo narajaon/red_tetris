@@ -3,6 +3,7 @@ import { PHASES } from '../constants';
 const initState = {
 	players: [],
 	currentPlayer: null,
+	gameMaster: null,
 	pieceQueue: [],
 	phase: PHASES.ARRIVED,
 	room: null,
@@ -10,19 +11,21 @@ const initState = {
 
 const actions = {
 	'init-player-and-room': (state, { player, room }) => {
+		console.log(player, room);
+		
 		return {
 			...state,
 			currentPlayer: player,
 			room,
 		};
 	},
-	'new-message': (state, { message }) => {
-		return state;
-	},
-	'add-player' : (state, { players }) => {
+	'update-players' : (state, { players }) => {
+		const gm = players.find(({ isMaster }) => isMaster);
+		
 		return {
 			...state,
 			players: [ ...players ],
+			gameMaster: gm,
 		};
 	},
 	'add-piece-to-queue' : (state, { piece }) => {

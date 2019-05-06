@@ -5,15 +5,23 @@
  * - ended
  * - paused ?
  */
-module.exports = class Player {
-	constructor(name) {
-		this.name = name;
-		this.grid = null;
-		this.score = 0;
-		this.phase = 'connected';
+
+
+function initGrid() {
+	const gridBuffer = [];
+	for (let i = 0; i < 20; i += 1) {
+		gridBuffer.push([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
 	}
 
-	updateGrid(grid) {
-		this.grid = grid;
+	return gridBuffer;
+}
+
+module.exports = class Player {
+	constructor(name, isMaster = false) {
+		this.name = name;
+		this.grid = initGrid();
+		this.score = 0;
+		this.phase = 'arrived';
+		this.isMaster = isMaster;
 	}
 };
