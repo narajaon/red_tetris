@@ -18,11 +18,11 @@ const LoginForm = ({ logToGame, history }) => {
 	const [ credentials, setCredentials ] = useState({ name: '', room: ''});
 
 	function handleLogin(e) {
-		setCredentials({ ...credentials, name: e.target.value });
+		setCredentials({ ...credentials, name: e.target.value.trim() });
 	}
 
 	function handleRoom(e) {
-		setCredentials({ ...credentials, room: e.target.value });
+		setCredentials({ ...credentials, room: e.target.value.trim() });
 	}
 
 	return (

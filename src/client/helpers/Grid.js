@@ -2,12 +2,7 @@ import { cloneDeep } from 'lodash';
 import { TILE, WALLKICKS_I, WALLKICKS } from '../constants';
 
 export function initGrid() {
-	const gridBuffer = [];
-	for (let i = 0; i < 20; i += 1) {
-		gridBuffer.push([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
-	}
-
-	return gridBuffer;
+	return Array.from(Array(20), () => [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
 }
 
 export function createNewPieces(pieces) {

@@ -63,6 +63,10 @@ module.exports = class Socket {
 				console.log('TO REMOVE', player);
 
 				this.removePlayerFromGame(player, room);
+				const { players } = this.getGameOfRoom(room);
+				this.emitToRoom('update-players', room, {
+					players,
+				});
 				console.log(this.games);
 			});
 
