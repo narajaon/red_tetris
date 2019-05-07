@@ -2,11 +2,6 @@ const Piece = require('./Piece');
 const Game = require('./Game');
 const { GAME_PHASES, MAX_PLAYERS } = require('../constants');
 
-/**
- * TODO:
- * - DEBUG GAME START WHEN SAME AS MASTER
- */
-
 module.exports = class Socket {
 	constructor(io) {
 		this.io = io;
@@ -52,20 +47,29 @@ module.exports = class Socket {
 			client.on('start-game', ({ room, player }) => {
 				if (this.playerIsMaster(player, room)) {
 					console.log(`game in room ${room} started`);
-					this.emitToRoom('phase-switch-event', room, {
-						phase: GAME_PHASES.STARTED
-					});
+					this.emitToRoom('phase-switch-event', room, { phase: GAME_PHASES.STARTED });
 					this.updatePlayer(player, room, { prop: 'phase', data: GAME_PHASES.STARTED });
 				}
 			});
 
+			client.on('switch-phase', ({ player, room, phase }) => {
+				const game = this.getGameOfRoom(room);
+
+				// TEST IF PLAYER IS UPDATED CORRECTLY
+				game.updatePlayer(player, { propName: 'phase', prop: phase });
+				this.emitToRoom('update-players', room, {
+					players: game.players,
+				});
+			});
+
 			client.on('remove-player', ({ player, room }) => {
 				console.log('TO REMOVE', player);
-
 				this.removePlayerFromGame(player, room);
-				const { players } = this.getGameOfRoom(room);
+				const game = this.getGameOfRoom(room);
+				if (!game || !game.players ) return;
+
 				this.emitToRoom('update-players', room, {
-					players,
+					players: game.players,
 				});
 				console.log(this.games);
 			});

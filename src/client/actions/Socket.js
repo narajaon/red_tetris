@@ -33,6 +33,18 @@ export function emitGameStart(room) {
 	};
 }
 
+export function emitPhaseSwitch(player, room, phase) {
+	return {
+		event: 'switch-phase',
+		emit: true,
+		data: {
+			player,
+			room,
+			phase,
+		},
+	};
+}
+
 export function emitRemovePlayer() {
 	return {
 		event: 'remove-player',
@@ -68,7 +80,6 @@ export function listenToNewPiece() {
 	return dispatch => dispatch({
 		event: 'new-piece-event',
 		handle: ({ pieces }) => {
-			console.log('INCOMING', pieces.current);
 			dispatch(queuePieces(pieces));
 		},
 	});

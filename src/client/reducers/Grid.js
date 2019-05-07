@@ -1,4 +1,3 @@
-import { cloneDeep } from 'lodash';
 import {
 	initGrid,
 	createFreshGrid,
@@ -61,7 +60,7 @@ const actions = {
 
 		return {
 			...state,
-			pieces: cloneDeep(piecesToPlace),
+			pieces: piecesToPlace,
 			grid: gridBuffer,
 		};
 	},
@@ -88,9 +87,10 @@ const actions = {
 				pieces: null,
 			};
 		}
+
 		if (!canMove) return state;
 		const gridBuffer = getUpdatedGrid(freshGrid, updatedOrigin, current);
-		const newPieces = { ...cloneDeep(pieces), origin: {...updatedOrigin}};
+		const newPieces = { ...pieces, origin: { ...updatedOrigin }};
 
 		return {
 			...state,
@@ -120,14 +120,15 @@ const actions = {
 		return {
 			...state,
 			grid: getUpdatedGrid(freshGrid, origin, rotated),
-			pieces: { ...cloneDeep(pieces), current: rotated},
+			pieces: { ...pieces, current: rotated},
 		};
 	},
 };
 
 const gridReducer = (state = initState, action) => {
 	if (state.overflows && action.type !== 'reset-grid') {
-		// console.log('OVER', state);
+		console.log('OVER');
+
 		return state;
 	}
 

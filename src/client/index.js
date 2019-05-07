@@ -5,8 +5,10 @@ import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 
+import Tetris from './containers/Tetris';
 import * as serviceWorker from './serviceWorker';
 import rootReducer from './rootReducer';
+
 import handleSocket from './middlewares/handleSocket';
 import hijackTranslate from './middlewares/hijackTranlate';
 import startAnimation from './middlewares/startAnimation';
@@ -16,13 +18,15 @@ import requestNewPiece from './middlewares/emitRequestNewPiece';
 import requestAuth from './middlewares/emitRequestAuth';
 import emitGameStart from './middlewares/emitGameStart';
 import emitGridUpdate from './middlewares/emitGridUpdate';
-import Tetris from './containers/Tetris';
 import emitRemovePlayer from './middlewares/emitRemovePlayer';
+import endGame from './middlewares/endGame';
+import emitSwitchPhase from './middlewares/emitSwitchPhase';
 
 const store = createStore(
 	rootReducer,
 	applyMiddleware(
 		thunk,
+		endGame(),
 		handleErrors(),
 		handleSocket(),
 		newPlayerConnected(),
@@ -31,6 +35,7 @@ const store = createStore(
 		requestNewPiece(),
 		emitGameStart(),
 		emitGridUpdate(),
+		emitSwitchPhase(),
 		emitRemovePlayer(),
 		requestAuth(),
 	)
@@ -60,5 +65,5 @@ render(
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
+// Learn more about service workers:
 serviceWorker.unregister();

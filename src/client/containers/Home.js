@@ -10,6 +10,7 @@ import Grid from '../components/Grid';
 import { switchPhase } from '../actions/Game';
 
 import { regular } from '../style/grid.module.css';
+import Restart from '../components/Restart';
 
 const mapStateToProps = ({ gridReducer, gameReducer }) => {
 	return {
@@ -47,15 +48,28 @@ const mapDispatchToProps = (dispatch) => {
 			dispatch(resetGrid());
 			clearInterval(interval);
 			document.location.reload();
+		},
+		restartHandler() {
+			console.log('COUCOU');
 		}
 	};
 };
 
-const Home = ({ grid, phase, interval, keyPressHandler, setupGame, history, reinitGame }) => {
+const Home = ({ grid, phase, interval, keyPressHandler, setupGame, history, reinitGame, restartHandler }) => {
 	const style = {
 		display: 'flex',
 		alignItems: 'center',
 		flexDirection: 'column',
+	};
+
+	const displayGrid = (gamePhase, props) => {
+		if (gamePhase === PHASES.ENDED){
+			return (<Restart { ...props } />);
+		}
+
+		return (
+			<Grid { ...props } />
+		);
 	};
 
 	const [isAllowed, setIsAllowed] = useState(true);
@@ -75,7 +89,14 @@ const Home = ({ grid, phase, interval, keyPressHandler, setupGame, history, rein
 
 	return (
 		<div className="Home" style={ style }>
-			<Grid grid={ grid } keyPressHandler={ keyPressHandler } tileStyle={ regular } />
+			{
+				displayGrid(phase, {
+					grid,
+					keyPressHandler,
+					tileStyle: regular,
+					restartHandler,
+				})
+			}
 		</div>
 	);
 };
@@ -88,6 +109,7 @@ Home.propTypes = {
 	setupGame: PropTypes.func,
 	history: PropTypes.object,
 	reinitGame: PropTypes.func,
+	restartHandler: PropTypes.func,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Home));

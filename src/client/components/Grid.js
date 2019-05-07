@@ -10,12 +10,12 @@ const Tile = ({ style, content }) => {
 	const isFull = {
 		backgroundColor: content ? 'red' : 'white',
 	};
-	
+
 	return (
 		<div className={ style } style={ isFull } ></div>
 	);
-};	
-		
+};
+
 const Grid = ({ keyPressHandler = () => null, grid, tileStyle }) => {
 	const style = {
 		display: 'grid',

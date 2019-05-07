@@ -1,4 +1,3 @@
-import { cloneDeep } from 'lodash';
 import { TILE, WALLKICKS_I, WALLKICKS } from '../constants';
 
 export function initGrid() {
@@ -67,7 +66,7 @@ export function removeScoredLines(grid) {
 	let n = newGrid.length - 1;
 
 	for (let i = filtered.length - 1; i >= 0; i -= 1) {
-		filtered[i].map((col, index) => {
+		filtered[i].forEach((col, index) => {
 			newGrid[n][index] = col;
 		});
 		n -= 1;
@@ -141,7 +140,7 @@ export function attemptWallKicks(pieces, current, freshGrid) {
 
 	return {
 		grid: newGrid,
-		pieces: { ...cloneDeep(pieces), current: rotatedPiece, origin: newOrigin},
+		pieces: { ...pieces, current: rotatedPiece, origin: newOrigin},
 	};
 }
 

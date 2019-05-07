@@ -6,7 +6,7 @@ const Infos = ({ currentPlayer, gameMaster, room, players }) => {
 	const getGM = (player, gm, playerList) => {
 		if (!playerList || !gm) return null;
 
-		return player === gm.name  ? 'You' : `${gm.name}`;
+		return player === gm.name  ? 'YOU' : `${gm.name}`;
 	};
 
 	return (

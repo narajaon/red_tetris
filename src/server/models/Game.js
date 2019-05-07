@@ -20,6 +20,11 @@ module.exports = class Game {
 		});
 	}
 
+	updatePlayer(playerName, { propName, prop }) {
+		const player = this.players.find(p => p.name === playerName);
+		player[propName] = prop;
+	}
+
 	addPlayer(playerName) {
 		this.players.push(new Player(playerName));
 	}
