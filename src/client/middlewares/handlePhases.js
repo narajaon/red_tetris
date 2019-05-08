@@ -15,6 +15,7 @@ export default function handlePhases() {
 		switch (phase) {
 		case PHASES.ARRIVED:
 			dispatch(emitRemovePlayer());
+			debugger;
 			dispatch(resetGrid());
 			clearInterval(interval);
 			dispatch({ event: 'socket-connect', connect: true });

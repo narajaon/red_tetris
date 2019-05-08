@@ -12,9 +12,9 @@ export default function endGame() {
 		if (overflows && type !== 'reset-grid') {
 			clearInterval(interval);
 			dispatch(resetGrid());
-			dispatch(emitPhaseSwitch(PHASES.ENDED));
+			// dispatch(switchPhase(PHASES.ENDED));
 
-			return dispatch(switchPhase(PHASES.ENDED));
+			return dispatch(emitPhaseSwitch(PHASES.ENDED));
 		}
 
 		return next(action);

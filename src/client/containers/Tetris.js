@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { withRouter, Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -8,6 +8,8 @@ import Login from './Login';
 import Aside from './Aside';
 
 import { main, wrapper } from '../style/tetris.module.css';
+import { listenToPhaseSwitch, emitPhaseSwitch } from '../actions/Socket';
+import { PHASES } from '../constants';
 
 const mapStateToProps = ({ gameReducer }) => {
 	const { players, currentPlayer } = gameReducer;
@@ -23,6 +25,12 @@ const mapStateToProps = ({ gameReducer }) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
+		resetSocket: () => {
+			// debugger;
+			dispatch(emitPhaseSwitch(PHASES.ARRIVED));
+			dispatch({ event: 'socket-logout', leave: true });
+		},
+		listenToPhases: () => dispatch(listenToPhaseSwitch()),
 	};
 };
 
@@ -33,8 +41,14 @@ const flexStyle = {
 	height: '100%',
 };
 
-const Tetris = ({ player2, player3, player4 }) => {
-	
+const Tetris = ({ player2, player3, player4, listenToPhases, resetSocket }) => {
+	useEffect(() => {
+		listenToPhases();
+		// debugger;
+		
+		return resetSocket;
+	}, []);
+
 	return (
 		<div style={ flexStyle }>
 			<div className={ wrapper }>
@@ -55,6 +69,8 @@ Tetris.propTypes = {
 	player2: PropTypes.object,
 	player3: PropTypes.object,
 	player4: PropTypes.object,
+	resetSocket: PropTypes.func,
+	listenToPhases: PropTypes.func,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Tetris));

@@ -1,6 +1,5 @@
-import { switchPhase } from '../actions/Game';
 import { PHASES } from '../constants';
-
+import { emitPhaseSwitch } from '../actions/Socket';
 
 /**
  * TODO :
@@ -13,7 +12,7 @@ export default function handleErrors() {
 
 		if (type !== 'error') return next(action);
 
-		next((switchPhase(PHASES.ARRIVED)));
+		dispatch(emitPhaseSwitch(PHASES.ARRIVED));
 
 		return console.warn('ERROR:', message);
 	};

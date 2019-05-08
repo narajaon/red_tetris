@@ -39,9 +39,11 @@ module.exports = class Socket {
 				client.emit('phase-switch-event', { phase: GAME_PHASES.CONNECTED });
 				this.updatePlayer(player, room, { prop: 'phase', data: GAME_PHASES.CONNECTED });
 
+				const playersInRoom = this.getGameOfRoom(room).players || [];
 				this.emitToRoom('update-players', room, {
-					players: this.getGameOfRoom(room).players || []
+					players: playersInRoom
 				});
+				console.log('GAME', playersInRoom);
 			});
 
 			client.on('start-game', ({ room, player }) => {
@@ -53,6 +55,8 @@ module.exports = class Socket {
 			});
 
 			client.on('switch-phase', ({ player, room, phase }) => {
+				console.log('SWITCH', phase);
+				
 				client.emit('phase-switch-event', { phase });
 				const game = this.getGameOfRoom(room);
 
