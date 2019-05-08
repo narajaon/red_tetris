@@ -8,7 +8,7 @@ const Queue = ({ players, startGame }) => {
 			onKeyDown={ startGame }
 		>
 			<div>Current players : { players.length } / 4</div>
-			<div>Press ENTER to begin the game</div>
+			<div>Press SPACE to begin the game</div>
 		</div>
 	);
 };

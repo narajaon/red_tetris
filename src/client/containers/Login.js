@@ -49,11 +49,11 @@ const mapDispatchToProps = (dispatch) => {
 			dispatch(initPlayerAndRoom(name, room));
 			dispatch(listenToPhaseSwitch());
 
-			return dispatch(emitAuthRequest(name, room));
+			return dispatch(emitAuthRequest());
 		},
-		startGame: ({ room }) => (e) => {
+		startGame: () => (e) => {
 			if (e.keyCode !== KEYS.SPACE) return;
-			dispatch(emitGameStart(room));
+			dispatch(emitGameStart());
 		},
 	};
 };

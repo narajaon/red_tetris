@@ -13,14 +13,7 @@ import handleSocket from './middlewares/handleSocket';
 import hijackTranslate from './middlewares/hijackTranlate';
 import startAnimation from './middlewares/startAnimation';
 import handleErrors from './middlewares/handleErrors';
-import newPlayerConnected from './middlewares/emitNewPlayerConnected';
-import requestNewPiece from './middlewares/emitRequestNewPiece';
-import requestAuth from './middlewares/emitRequestAuth';
-import emitGameStart from './middlewares/emitGameStart';
-import emitGridUpdate from './middlewares/emitGridUpdate';
-import emitRemovePlayer from './middlewares/emitRemovePlayer';
 import endGame from './middlewares/endGame';
-import emitSwitchPhase from './middlewares/emitSwitchPhase';
 
 const store = createStore(
 	rootReducer,
@@ -29,16 +22,9 @@ const store = createStore(
 		endGame(),
 		handleErrors(),
 		handleSocket(),
-		newPlayerConnected(),
 		startAnimation(),
 		hijackTranslate(),
-		requestNewPiece(),
-		emitGameStart(),
-		emitGridUpdate(),
-		emitSwitchPhase(),
-		emitRemovePlayer(),
-		requestAuth(),
-	)
+	),
 );
 
 // override default body margin and make tetris take available space

@@ -2,44 +2,35 @@ import { startAnimation, queuePieces } from './Grid';
 import { switchPhase, updatePlayers } from './Game';
 import { PHASES } from '../constants';
 
-export function emitPieceRequest(player, room, grid) {
+export function emitPieceRequest(grid) {
 	return {
 		event: 'piece-request',
 		emit: true,
 		data: {
-			player,
-			room,
 			grid,
 		}
 	};
 }
 
-export function emitAuthRequest(player, room) {
+export function emitAuthRequest() {
 	return {
 		event: 'auth-request',
 		emit: true,
-		data: {
-			player,
-			room,
-		}
 	};
 }
 
-export function emitGameStart(room) {
+export function emitGameStart() {
 	return {
 		event: 'start-game',
 		emit: true,
-		data: { room },
 	};
 }
 
-export function emitPhaseSwitch(player, room, phase) {
+export function emitPhaseSwitch(phase) {
 	return {
 		event: 'switch-phase',
 		emit: true,
 		data: {
-			player,
-			room,
 			phase,
 		},
 	};
@@ -52,14 +43,12 @@ export function emitRemovePlayer() {
 	};
 }
 
-export function emitGridUpdate(player, grid, room) {
+export function emitGridUpdate(grid) {
 	return {
 		event: 'update-grid',
 		emit: true,
 		data: {
-			player,
 			grid,
-			room,
 		},
 	};
 }

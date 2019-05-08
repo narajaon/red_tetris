@@ -6,10 +6,13 @@ export default function handleSocket() {
 	const socket = process.env.NODE_ENV === 'development' ?
 		io.connect(serverURI) : io();
 
-	return () => next => (action) => {
+	return ({ getState }) => next => (action) => {
 		if (typeof action === 'function') {
 			return next(action);
 		}
+
+		const { gameReducer } = getState();
+		const { currentPlayer, room } = gameReducer;
 
 		const {
 			event,
@@ -24,11 +27,10 @@ export default function handleSocket() {
 		}
 
 		if (emit) {
-			return next({ event, socket, data });
+			return socket.emit(event, { ...data, player: currentPlayer, room });
 		}
 
 		if (leave) {
-			// console.log('LISTENERS', socket.listeners('new-piece-event'));
 			listened.forEach(e => {
 				socket.removeAllListeners(e);
 			});

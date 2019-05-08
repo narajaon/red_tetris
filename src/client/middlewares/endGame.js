@@ -13,7 +13,7 @@ export default function endGame() {
 		if (overflows && type !== 'reset-grid') {
 			clearInterval(interval);
 			dispatch(resetGrid());
-			dispatch(emitPhaseSwitch(currentPlayer, room, PHASES.ENDED));
+			dispatch(emitPhaseSwitch(PHASES.ENDED));
 
 			return dispatch(switchPhase(PHASES.ENDED));
 		}

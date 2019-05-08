@@ -7,17 +7,15 @@ export default function hijackTranslate() {
 		const { pieces, piecesQueue, grid } = getState().gridReducer;
 
 		if (type === 'translate-piece' && pieces === null) {
-			const { currentPlayer, room } = getState().gameReducer;
-
 			if (piecesQueue.length > 0) {
 				dispatch(popPieces());
 				dispatch(placePiece());
 			} else {
 				console.log('EMIT');
-				dispatch(emitPieceRequest(currentPlayer, room, grid));
+				dispatch(emitPieceRequest(grid));
 			}
 
-			dispatch(emitGridUpdate(currentPlayer, grid, room));
+			dispatch(emitGridUpdate(grid));
 
 			return null;
 		}
