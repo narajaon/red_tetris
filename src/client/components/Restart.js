@@ -9,6 +9,7 @@ const Restart = ({ restartHandler }) => {
 		>
 			<div>GAME OVER</div>
 			<button onClick={ restartHandler }>RESTART ?</button>
+			<button onClick={ () => null }>QUIT</button>
 		</div>
 	);
 };

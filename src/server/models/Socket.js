@@ -54,8 +54,6 @@ module.exports = class Socket {
 
 			client.on('switch-phase', ({ player, room, phase }) => {
 				const game = this.getGameOfRoom(room);
-
-				// TEST IF PLAYER IS UPDATED CORRECTLY
 				game.updatePlayer(player, { propName: 'phase', prop: phase });
 				this.emitToRoom('update-players', room, {
 					players: game.players,

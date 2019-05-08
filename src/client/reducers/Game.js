@@ -10,6 +10,9 @@ const initState = {
 };
 
 const actions = {
+	'restart-game': () => {
+		return initState;
+	},
 	'init-player-and-room': (state, { player, room }) => {
 		return {
 			...state,
@@ -18,20 +21,16 @@ const actions = {
 		};
 	},
 	'update-players' : (state, { players }) => {
-		const gm = players.find(({ isMaster }) => isMaster);
-		
 		return {
 			...state,
 			players: [ ...players ],
-			gameMaster: gm,
+			gameMaster: players.find(({ isMaster }) => isMaster),
 		};
 	},
 	'add-piece-to-queue' : (state, { piece }) => {
-		const { pieceQueue } = state;
-
 		return {
 			...state,
-			pieceQueue: [ ...pieceQueue, piece ],
+			pieceQueue: [ ...state.pieceQueue, piece ],
 		};
 	},
 	'switch-phase': (state, { phase }) => {

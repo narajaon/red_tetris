@@ -41,7 +41,7 @@ const mapDispatchToProps = (dispatch) => {
 		setupGame: () => {
 			dispatch(listenToNewPiece());
 		},
-		reinitGame: (interval) => {
+		disconnectPlayer: (interval) => {
 			dispatch(emitRemovePlayer());
 			dispatch({ event: 'socket-logout', leave: true });
 			dispatch(switchPhase(PHASES.ARRIVED));
@@ -49,13 +49,13 @@ const mapDispatchToProps = (dispatch) => {
 			clearInterval(interval);
 			document.location.reload();
 		},
-		restartHandler() {
-			console.log('COUCOU');
-		}
+		restartHandler: (interval) => {
+			console.log('RESTARTED');
+		},
 	};
 };
 
-const Home = ({ grid, phase, interval, keyPressHandler, setupGame, history, reinitGame, restartHandler }) => {
+const Home = ({ grid, phase, interval, keyPressHandler, setupGame, history, disconnectPlayer, restartHandler }) => {
 	const style = {
 		display: 'flex',
 		alignItems: 'center',
@@ -78,7 +78,7 @@ const Home = ({ grid, phase, interval, keyPressHandler, setupGame, history, rein
 		setupGame();
 		
 		return () => {
-			reinitGame(interval);
+			disconnectPlayer(interval);
 			setIsAllowed(false);
 		};
 	}, [history.location]);
@@ -108,7 +108,7 @@ Home.propTypes = {
 	keyPressHandler: PropTypes.func,
 	setupGame: PropTypes.func,
 	history: PropTypes.object,
-	reinitGame: PropTypes.func,
+	disconnectPlayer: PropTypes.func,
 	restartHandler: PropTypes.func,
 };
 
