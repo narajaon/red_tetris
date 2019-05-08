@@ -5,7 +5,6 @@ export default function startAnimation() {
 		const { type } = action;
 
 		if (type === 'start-animation') {
-			// debugger;
 			const { gridReducer } = getState();
 			const { interval } = gridReducer;
 			if (interval !== null) {

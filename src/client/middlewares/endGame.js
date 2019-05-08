@@ -7,7 +7,6 @@ export default function endGame() {
 	return ({ dispatch, getState }) => next => action => {
 		const { gridReducer, gameReducer } = getState();
 		const { interval, overflows } = gridReducer;
-		const { currentPlayer, room } = gameReducer;
 		const { type } = action;
 
 		if (overflows && type !== 'reset-grid') {

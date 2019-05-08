@@ -84,8 +84,9 @@ export function listenPlayersUpdate() {
 }
 
 export const listened = [
-	'new-player-connected-event',	
-	'new-piece-event'
+	'phase-switch-event',
+	'new-piece-event',
+	'update-players',
 ];
 
 export const emitted = [

@@ -10,10 +10,6 @@ export default function handleSocket() {
 		if (typeof action === 'function') {
 			return next(action);
 		}
-
-		const { gameReducer } = getState();
-		const { currentPlayer, room } = gameReducer;
-
 		const {
 			event,
 			leave,
@@ -27,6 +23,9 @@ export default function handleSocket() {
 		}
 
 		if (emit) {
+			const { gameReducer } = getState();
+			const { currentPlayer, room } = gameReducer;
+	
 			return socket.emit(event, { ...data, player: currentPlayer, room });
 		}
 

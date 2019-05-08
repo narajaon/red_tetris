@@ -1,9 +1,9 @@
 /**
  * STATES:
+ * - arrived
  * - connected
  * - started
  * - ended
- * - paused ?
  */
 
 function initGrid() {
