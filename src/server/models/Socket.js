@@ -53,7 +53,12 @@ module.exports = class Socket {
 			});
 
 			client.on('switch-phase', ({ player, room, phase }) => {
+				client.emit('phase-switch-event', { phase });
 				const game = this.getGameOfRoom(room);
+
+				// No more games in ROOM
+				if (!game) return ;
+
 				game.updatePlayer(player, { propName: 'phase', prop: phase });
 				this.emitToRoom('update-players', room, {
 					players: game.players,

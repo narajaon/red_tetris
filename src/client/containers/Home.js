@@ -3,20 +3,21 @@ import { withRouter, Redirect } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { listenToNewPiece, emitRemovePlayer } from '../actions/Socket';
-import { rotatePiece, translatePiece, resetGrid } from '../actions/Grid';
+import { listenToNewPiece, emitGameStart, emitPhaseSwitch } from '../actions/Socket';
+import { rotatePiece, translatePiece } from '../actions/Grid';
 import { KEYS, PHASES } from '../constants';
 import Grid from '../components/Grid';
-import { switchPhase } from '../actions/Game';
 
 import { regular } from '../style/grid.module.css';
 import Restart from '../components/Restart';
+import Queue from '../components/Queue';
 
 const mapStateToProps = ({ gridReducer, gameReducer }) => {
 	return {
 		grid: gridReducer.grid,
 		interval: gridReducer.interval,
 		phase: gameReducer.phase,
+		players: gameReducer.players,
 	};
 };
 
@@ -41,60 +42,73 @@ const mapDispatchToProps = (dispatch) => {
 		setupGame: () => {
 			dispatch(listenToNewPiece());
 		},
-		disconnectPlayer: (interval) => {
-			dispatch(emitRemovePlayer());
+		disconnectPlayer: () => {
+			dispatch(emitPhaseSwitch(PHASES.ARRIVED));
 			dispatch({ event: 'socket-logout', leave: true });
-			dispatch(switchPhase(PHASES.ARRIVED));
-			dispatch(resetGrid());
-			clearInterval(interval);
-			document.location.reload();
 		},
-		restartHandler: (interval) => {
-			console.log('RESTARTED');
+		restartHandler: () => {
+			dispatch(emitPhaseSwitch(PHASES.CONNECTED));
+		},
+		quitHandler: () => {
+			dispatch(emitPhaseSwitch(PHASES.ARRIVED));
+		},
+		startGame: (e) => {
+			if (e.keyCode !== KEYS.SPACE) return;
+			dispatch(emitGameStart());
 		},
 	};
 };
 
-const Home = ({ grid, phase, interval, keyPressHandler, setupGame, history, disconnectPlayer, restartHandler }) => {
+const Home = (props) => {
+	const {
+		phase,
+		interval,
+		setupGame,
+		history,
+		disconnectPlayer,
+	} = props;
+
 	const style = {
 		display: 'flex',
 		alignItems: 'center',
 		flexDirection: 'column',
 	};
 
-	const displayGrid = (gamePhase, props) => {
-		if (gamePhase === PHASES.ENDED){
-			return (<Restart { ...props } />);
-		}
-
-		return (
-			<Grid { ...props } />
-		);
-	};
-
 	const [isAllowed, setIsAllowed] = useState(true);
 
 	useEffect(() => {
 		setupGame();
-		
+
 		return () => {
 			disconnectPlayer(interval);
 			setIsAllowed(false);
 		};
 	}, [history.location]);
 
-	if (!isAllowed || phase === PHASES.ARRIVED) {
-		return (<Redirect to="/login" />);
-	}
+	const displayContent = (playerIsAllowed, gamePhase, mainProps) => {
+		if (gamePhase === PHASES.CONNECTED){
+			return (<Queue { ...mainProps } />);
+		}
+
+		if (!playerIsAllowed || gamePhase === PHASES.ARRIVED) {
+			return (<Redirect to="/login" />);
+		}
+
+		if (gamePhase === PHASES.ENDED){
+			return (<Restart { ...mainProps } />);
+		}
+
+		return (
+			<Grid { ...mainProps } />
+		);
+	};
 
 	return (
 		<div className="Home" style={ style }>
 			{
-				displayGrid(phase, {
-					grid,
-					keyPressHandler,
+				displayContent(isAllowed, phase, {
+					...props,
 					tileStyle: regular,
-					restartHandler,
 				})
 			}
 		</div>
@@ -102,14 +116,11 @@ const Home = ({ grid, phase, interval, keyPressHandler, setupGame, history, disc
 };
 
 Home.propTypes = {
-	grid: PropTypes.array,
 	phase: PropTypes.string,
 	interval: PropTypes.number,
-	keyPressHandler: PropTypes.func,
 	setupGame: PropTypes.func,
 	history: PropTypes.object,
 	disconnectPlayer: PropTypes.func,
-	restartHandler: PropTypes.func,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Home));

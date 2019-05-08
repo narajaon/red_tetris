@@ -15,6 +15,7 @@ export default function handleSocket() {
 			leave,
 			handle,
 			emit,
+			connect,
 			data,
 		} = action;
 
@@ -27,6 +28,10 @@ export default function handleSocket() {
 			const { currentPlayer, room } = gameReducer;
 	
 			return socket.emit(event, { ...data, player: currentPlayer, room });
+		}
+
+		if (connect) {
+			return socket.connect(serverURI);
 		}
 
 		if (leave) {

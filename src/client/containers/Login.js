@@ -1,20 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter, Redirect } from 'react-router-dom';
 
 import LoginForm from '../components/LoginForm';
-import Queue from '../components/Queue';
-import { PHASES, KEYS } from '../constants';
+import { PHASES } from '../constants';
 import { errorAction } from '../actions/errors';
 import { formIsValid } from '../helpers/Login';
-import { initPlayerAndRoom, switchPhase } from '../actions/Game';
+import { initPlayerAndRoom } from '../actions/Game';
 import {
 	listenToPhaseSwitch,
 	emitAuthRequest,
-	emitGameStart,
 	listenPlayersUpdate,
-	emitRemovePlayer,
+	emitPhaseSwitch,
 } from '../actions/Socket';
 
 const mapStateToProps = ({ gameReducer }) => {
@@ -39,56 +37,37 @@ const mapDispatchToProps = (dispatch) => {
 
 			window.addEventListener('unload', event => {
 				event.preventDefault();
-				dispatch(emitRemovePlayer());
-				dispatch({ event: 'socket-logout', leave: true });
-				dispatch(switchPhase(PHASES.ARRIVED));
-				document.location.reload();
+				dispatch(emitPhaseSwitch(PHASES.ARRIVED));
 			});
 
 			dispatch(listenPlayersUpdate());
 			dispatch(initPlayerAndRoom(name, room));
-			dispatch(listenToPhaseSwitch());
-
+			
 			return dispatch(emitAuthRequest());
-		},
-		startGame: () => (e) => {
-			if (e.keyCode !== KEYS.SPACE) return;
-			dispatch(emitGameStart());
 		},
 	};
 };
 
-const Login = ({ logToGame, phase, currentPlayer, room, players, startGame }) => {
+const Login = ({ logToGame, phase, currentPlayer, room }) => {
 	const style = {
 		display: 'flex',
 		alignItems: 'center',
 	};
 
-	const loginPhases = currenPhase => {
-		switch (currenPhase) {
-		case PHASES.STARTED:
-			return (
-				<Redirect
-					to={{
-						pathname: '/',
-						hash: `#${room}[${currentPlayer}]`,
-					}}
-				/>
-			);
-		case PHASES.CONNECTED:
-			return (
-				<Queue players={ players } startGame={ startGame({ room }) }/>
-			);
-		default:
-			return (
-				<LoginForm logToGame={ logToGame }/>
-			);
-		}
-	};
-	
+	if (phase !== PHASES.ARRIVED) {
+		return (
+			<Redirect
+				to={{
+					pathname: '/',
+					hash: `#${room}[${currentPlayer}]`,
+				}}
+			/>
+		);
+	}
+
 	return (
 		<div className="login" style={ style }>
-			{ loginPhases(phase) }
+			<LoginForm logToGame={ logToGame }/>
 		</div>
 	);
 };

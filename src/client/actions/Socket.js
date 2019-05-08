@@ -1,6 +1,5 @@
 import { startAnimation, queuePieces } from './Grid';
 import { switchPhase, updatePlayers } from './Game';
-import { PHASES } from '../constants';
 
 export function emitPieceRequest(grid) {
 	return {
@@ -27,6 +26,8 @@ export function emitGameStart() {
 }
 
 export function emitPhaseSwitch(phase) {
+	console.log('EMIT PHASE', phase);
+
 	return {
 		event: 'switch-phase',
 		emit: true,
@@ -58,9 +59,6 @@ export function listenToPhaseSwitch() {
 		event: 'phase-switch-event',
 		handle: ({ phase }) => {
 			dispatch(switchPhase(phase));
-			if (phase === PHASES.STARTED) {
-				dispatch(startAnimation());
-			}
 		},
 	});
 }
