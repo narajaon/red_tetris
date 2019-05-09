@@ -13,6 +13,7 @@ import {
 	emitAuthRequest,
 	listenPlayersUpdate,
 	emitPhaseSwitch,
+	emitRemovePlayer,
 } from '../actions/Socket';
 
 const mapStateToProps = ({ gameReducer }) => {
@@ -35,9 +36,10 @@ const mapDispatchToProps = (dispatch) => {
 				return dispatch(errorAction('Invalid form'));
 			}
 
-			window.addEventListener('unload', event => {
+			window.addEventListener('beforeunload', event => {
 				event.preventDefault();
-				dispatch(emitPhaseSwitch(PHASES.ARRIVED));
+				dispatch(emitRemovePlayer());
+				dispatch({ event: 'update-players', leave: true });
 			});
 
 			dispatch(listenPlayersUpdate());

@@ -43,7 +43,7 @@ module.exports = class Socket {
 				this.emitToRoom('update-players', room, {
 					players: playersInRoom
 				});
-				console.log('GAME', playersInRoom);
+				console.log('Players in game : ', playersInRoom.length);
 			});
 
 			client.on('start-game', ({ room, player }) => {

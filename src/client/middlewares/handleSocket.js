@@ -31,15 +31,11 @@ export default function handleSocket() {
 		}
 
 		if (connect) {
-			return socket.connect(serverURI);
+			return socket.connect();
 		}
 
 		if (leave) {
-			listened.forEach(e => {
-				socket.removeAllListeners(e);
-			});
-			
-			return socket.disconnect();
+			return socket.removeEventListener(event);
 		}
 
 		return socket.on(event, handle);

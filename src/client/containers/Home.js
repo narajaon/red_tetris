@@ -3,7 +3,7 @@ import { withRouter, Redirect } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { listenToNewPiece, emitGameStart, emitPhaseSwitch } from '../actions/Socket';
+import { listenToNewPiece, emitGameStart, emitPhaseSwitch, emitRemovePlayer } from '../actions/Socket';
 import { rotatePiece, translatePiece } from '../actions/Grid';
 import { KEYS, PHASES } from '../constants';
 import Grid from '../components/Grid';
@@ -44,13 +44,10 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		disconnectPlayer: () => {
 			dispatch(emitPhaseSwitch(PHASES.ARRIVED));
-			dispatch({ event: 'socket-logout', leave: true });
+			dispatch({ event: 'new-piece-event', leave: true });
 		},
 		restartHandler: () => {
 			dispatch(emitPhaseSwitch(PHASES.CONNECTED));
-		},
-		quitHandler: () => {
-			dispatch(emitPhaseSwitch(PHASES.ARRIVED));
 		},
 		startGame: (e) => {
 			if (e.keyCode !== KEYS.SPACE) return;
@@ -62,7 +59,6 @@ const mapDispatchToProps = (dispatch) => {
 const Home = (props) => {
 	const {
 		phase,
-		interval,
 		setupGame,
 		history,
 		disconnectPlayer,
@@ -80,7 +76,7 @@ const Home = (props) => {
 		setupGame();
 
 		return () => {
-			disconnectPlayer(interval);
+			disconnectPlayer();
 			setIsAllowed(false);
 		};
 	}, [history.location]);
@@ -109,6 +105,7 @@ const Home = (props) => {
 				displayContent(isAllowed, phase, {
 					...props,
 					tileStyle: regular,
+					quitHandler: disconnectPlayer,
 				})
 			}
 		</div>

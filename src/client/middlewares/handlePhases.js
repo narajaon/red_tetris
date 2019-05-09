@@ -9,22 +9,24 @@ export default function handlePhases() {
 		if (type !== 'switch-phase') return next(action);
 		console.log('SWITCH', phase);
 
-		const { gridReducer } = getState();
+		const { gridReducer, gameReducer } = getState();
+		const { currentPlayer } = gameReducer;
 		const { interval } = gridReducer;
 
 		switch (phase) {
 		case PHASES.ARRIVED:
-			dispatch(emitRemovePlayer());
-			debugger;
-			dispatch(resetGrid());
-			clearInterval(interval);
-			dispatch({ event: 'socket-connect', connect: true });
+			if (currentPlayer) {
+				dispatch(emitRemovePlayer());
+				dispatch(resetGrid());
+				clearInterval(interval);
+			}
+			// dispatch({ event: 'socket-connect', connect: true });
 			break;
 		case PHASES.STARTED:
 			dispatch(startAnimation());
 			break;
-		case PHASES.ENDED:			
-			console.log('ENDED', interval);
+		case PHASES.ENDED:	
+			console.log('ENDED');
 			break;
 		default: // CONNECTED
 			break;

@@ -28,7 +28,7 @@ const mapDispatchToProps = (dispatch) => {
 		resetSocket: () => {
 			// debugger;
 			dispatch(emitPhaseSwitch(PHASES.ARRIVED));
-			dispatch({ event: 'socket-logout', leave: true });
+			dispatch({ event: 'phase-switch-event', leave: true });
 		},
 		listenToPhases: () => dispatch(listenToPhaseSwitch()),
 	};
