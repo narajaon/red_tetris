@@ -1,6 +1,5 @@
 import io from 'socket.io-client';
 import { serverURI } from '../constants';
-import { listened } from '../actions/Socket';
 
 export default function handleSocket() {
 	const socket = process.env.NODE_ENV === 'development' ?

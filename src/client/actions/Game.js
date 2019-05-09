@@ -9,3 +9,7 @@ export function initPlayerAndRoom(player, room) {
 export function updatePlayers(players) {
 	return { type: 'update-players', players };
 }
+
+export function restartGame() {
+	return { type: 'restart-game' };
+}
