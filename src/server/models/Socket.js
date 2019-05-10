@@ -118,7 +118,7 @@ module.exports = class Socket {
 
 	credentialsAreValid(playerName, room) {
 		return !this.games.some(game => {
-			return game.playerName === playerName && game.room === room;
+			return game.players.some(player => player.name === playerName && game.room === room);
 		});
 	}
 
