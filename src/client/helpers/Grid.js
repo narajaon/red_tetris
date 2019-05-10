@@ -4,9 +4,7 @@ export function initGrid() {
 	return Array.from(Array(20), () => [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
 }
 
-export function createNewPieces(pieces) {
-	const { current, name } = pieces;
-
+export function createNewPieces({ current, name }) {
 	return {
 		current,
 		origin: { x: 3, y: 0 },

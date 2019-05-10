@@ -9,10 +9,8 @@ import { errorAction } from '../actions/errors';
 import { formIsValid } from '../helpers/Login';
 import { initPlayerAndRoom } from '../actions/Game';
 import {
-	listenToPhaseSwitch,
 	emitAuthRequest,
 	listenPlayersUpdate,
-	emitPhaseSwitch,
 	emitRemovePlayer,
 } from '../actions/Socket';
 
@@ -83,4 +81,4 @@ Login.propTypes = {
 	startGame: PropTypes.func,
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

@@ -4,8 +4,8 @@ import configureStore from 'redux-mock-store';
 import { expect } from 'chai';
 import Adapter from 'enzyme-adapter-react-16';
 
-import Grid from '../../client/components/Grid';
-import { initGrid, } from '../../client/helpers/Grid';
+import Grid from '../../../client/components/Grid';
+import { initGrid } from '../../../client/helpers/Grid';
 
 const middlewares = [
 	// thunk,
@@ -46,8 +46,8 @@ describe('Grid component testing', () => {
 	it('renders 200 white tiles', () => {
 		const { enzymeWrapper } = setup(initState, initProps);
 		expect(enzymeWrapper).to.not.be.an('undefined');
-		expect(enzymeWrapper.find('.tile')).to.have.lengthOf(200);
-		enzymeWrapper.find('.tile').forEach(node => {
+		expect(enzymeWrapper.find('[data-jest="tile"]')).to.have.lengthOf(200);
+		enzymeWrapper.find('[data-jest="tile"]').forEach(node => {
 			expect(node.props().style).to.have.property('backgroundColor', 'white');
 		});
 	});

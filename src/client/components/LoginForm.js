@@ -2,12 +2,6 @@ import { withRouter } from 'react-router-dom';
 import React, { useState } from 'react';
 import { PropTypes } from 'prop-types';
 
-/**
- * TODO :
- * - add history.push to startGame
- * - redirect to login on bad credetials
- * - add change listener to hash
- */
 const LoginForm = ({ logToGame, history }) => {
 	const style = {
 		display: 'flex',
@@ -32,9 +26,9 @@ const LoginForm = ({ logToGame, history }) => {
 				onSubmit={ logToGame(credentials, history) }
 				className="login-form"
 			>
-				<input autoFocus type="text" onChange={ handleLogin } placeholder="name"/>
-				<input type="text" onChange={ handleRoom } placeholder="room"/>
-				<input type="submit" value="Let's GO"/>
+				<input data-jest="name" autoFocus type="text" onChange={ handleLogin } placeholder="name"/>
+				<input data-jest="room" type="text" onChange={ handleRoom } placeholder="room"/>
+				<input data-jest="submit" type="submit" value="Let's GO"/>
 			</form>
 		</div>
 	);

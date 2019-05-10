@@ -4,7 +4,6 @@ const initState = {
 	players: [],
 	currentPlayer: null,
 	gameMaster: null,
-	pieceQueue: [],
 	phase: PHASES.ARRIVED,
 	room: null,
 };
@@ -25,12 +24,6 @@ const actions = {
 			...state,
 			players: [ ...players ],
 			gameMaster: players.find(({ isMaster }) => isMaster),
-		};
-	},
-	'add-piece-to-queue' : (state, { piece }) => {
-		return {
-			...state,
-			pieceQueue: [ ...state.pieceQueue, piece ],
 		};
 	},
 	'switch-phase': (state, { phase }) => {

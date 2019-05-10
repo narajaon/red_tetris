@@ -12,7 +12,11 @@ const Tile = ({ style, content }) => {
 	};
 
 	return (
-		<div className={ style } style={ isFull } ></div>
+		<div
+			className={ style }
+			style={ isFull }
+			data-jest="tile"
+		></div>
 	);
 };
 
@@ -29,6 +33,7 @@ const Grid = ({ keyPressHandler = () => null, grid, tileStyle }) => {
 			onKeyDown={ keyPressHandler }
 			onKeyPress={ keyPressHandler }
 			style={ style }
+			data-jest="grid"
 		>
 			{
 				grid.map((elem) => {
