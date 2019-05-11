@@ -1,6 +1,5 @@
 const Piece = require('./Piece');
 const Game = require('./Game');
-const { GAME_PHASES, MAX_PLAYERS } = require('../constants');
 
 module.exports = class Socket {
 	constructor(io) {
@@ -9,93 +8,10 @@ module.exports = class Socket {
 		this.piece = new Piece();
 	}
 
-	connect() {
-		this.io.on('connection', (client) => {
+	connect(setupListeners) {
+		return this.io.on('connection', client => {
 			console.log('connection established');
-
-			client.on('auth-request', ({ player, room }) => {
-				if (!this.credentialsAreValid(player, room)) {
-					console.log('BAD CREDENTIALS');
-
-					return;
-				}
-
-				const gameOfClient = this.getGameOfRoom(room);
-
-				if (gameOfClient && gameOfClient.players.length + 1 > MAX_PLAYERS) {
-					console.log('ROOM IS FULL');
-
-					return;
-				}
-
-				if (gameOfClient && gameOfClient.phase !== GAME_PHASES.CONNECTED) {
-					console.log('GAME HAS STARTED');
-
-					return;
-				}
-
-				this.addPlayerToGame(player, room);
-				client.join(room);
-				client.emit('phase-switch-event', { phase: GAME_PHASES.CONNECTED });
-				this.updatePlayer(player, room, { prop: 'phase', data: GAME_PHASES.CONNECTED });
-
-				const playersInRoom = this.getGameOfRoom(room).players || [];
-				this.emitToRoom('update-players', room, {
-					players: playersInRoom
-				});
-				console.log('Players in game : ', playersInRoom.length);
-			});
-
-			client.on('start-game', ({ room, player }) => {
-				if (this.playerIsMaster(player, room)) {
-					console.log(`game in room ${room} started`);
-					this.emitToRoom('phase-switch-event', room, { phase: GAME_PHASES.STARTED });
-					this.updatePlayer(player, room, { prop: 'phase', data: GAME_PHASES.STARTED });
-				}
-			});
-
-			client.on('switch-phase', ({ player, room, phase }) => {
-				console.log('SWITCH', phase);
-				
-				client.emit('phase-switch-event', { phase });
-				const game = this.getGameOfRoom(room);
-
-				// No more games in ROOM
-				if (!game) return ;
-
-				game.updatePlayer(player, { propName: 'phase', prop: phase });
-				this.emitToRoom('update-players', room, {
-					players: game.players,
-				});
-			});
-
-			client.on('remove-player', ({ player, room }) => {
-				console.log('TO REMOVE', player);
-				this.removePlayerFromGame(player, room);
-				const game = this.getGameOfRoom(room);
-				if (!game || !game.players ) return;
-
-				this.emitToRoom('update-players', room, {
-					players: game.players,
-				});
-				console.log(this.games);
-			});
-
-			client.on('update-grid', ({ grid, player, room }) => {
-				this.updatePlayer(player, room, { prop: 'grid', data: grid });
-				const { players } = this.getGameOfRoom(room);
-				this.emitToRoom('update-players', room, {
-					players,
-				});
-			});
-
-			client.on('piece-request', ({ player, room }) => {
-				const pieces = this.piece.getNewPiece();
-				console.log(player, 'requested', pieces);
-				this.emitToRoom('new-piece-event', room, {
-					pieces,
-				});
-			});
+			setupListeners(client);
 		});
 	}
 
