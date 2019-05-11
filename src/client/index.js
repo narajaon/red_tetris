@@ -13,13 +13,11 @@ import handleSocket from './middlewares/handleSocket';
 import hijackTranslate from './middlewares/hijackTranlate';
 import handleErrors from './middlewares/handleErrors';
 import endGame from './middlewares/endGame';
-import handlePhases from './middlewares/handlePhases';
 
 const store = createStore(
 	rootReducer,
 	applyMiddleware(
 		thunk,
-		handlePhases(),
 		endGame(),
 		handleErrors(),
 		handleSocket(),
