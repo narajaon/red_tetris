@@ -11,13 +11,10 @@ export default function hijackTranslate() {
 				dispatch(popPieces());
 				dispatch(placePiece());
 			} else {
-				console.log('EMIT');
 				dispatch(emitPieceRequest(grid));
 			}
 
-			dispatch(emitGridUpdate(grid));
-
-			return null;
+			return dispatch(emitGridUpdate(grid));
 		}
 
 		return next(action);

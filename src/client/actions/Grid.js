@@ -10,10 +10,6 @@ export function translatePiece(translation){
 	return { type: 'translate-piece', translation };
 }
 
-export function startAnimation(interval){
-	return { type: 'start-animation', interval };
-}
-
 export function resetGrid(){
 	return { type: 'reset-grid' };
 }
@@ -24,4 +20,16 @@ export function queuePieces(pieces) {
 
 export function popPieces() {
 	return { type: 'pop-pieces' };
+}
+
+export function startAnimation() {
+	return dispatch => {
+		const newInterval = () => {
+			return setInterval(() => {
+				dispatch(translatePiece({x: 0, y: 1}));
+			}, 500);
+		};
+
+		return dispatch({ type: 'start-animation', interval: newInterval() });
+	};
 }

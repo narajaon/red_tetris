@@ -1,4 +1,4 @@
-import { startAnimation, queuePieces } from './Grid';
+import { queuePieces } from './Grid';
 import { switchPhase, updatePlayers } from './Game';
 
 export function emitPieceRequest(grid) {
@@ -26,8 +26,6 @@ export function emitGameStart() {
 }
 
 export function emitPhaseSwitch(phase) {
-	console.log('EMIT PHASE', phase);
-
 	return {
 		event: 'switch-phase',
 		emit: true,

@@ -11,7 +11,6 @@ import rootReducer from './rootReducer';
 
 import handleSocket from './middlewares/handleSocket';
 import hijackTranslate from './middlewares/hijackTranlate';
-import startAnimation from './middlewares/startAnimation';
 import handleErrors from './middlewares/handleErrors';
 import endGame from './middlewares/endGame';
 import handlePhases from './middlewares/handlePhases';
@@ -24,7 +23,6 @@ const store = createStore(
 		endGame(),
 		handleErrors(),
 		handleSocket(),
-		startAnimation(),
 		hijackTranslate(),
 	),
 );

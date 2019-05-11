@@ -1,7 +1,6 @@
 import { resetGrid } from '../actions/Grid';
 import { PHASES } from '../constants';
 import { emitPhaseSwitch } from '../actions/Socket';
-import { switchPhase } from '../actions/Game';
 
 export default function endGame() {
 	return ({ dispatch, getState }) => next => action => {

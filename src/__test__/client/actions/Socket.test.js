@@ -5,8 +5,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import handleSocket from '../../../client/middlewares/handleSocket';
-import { serverURI, TETRIS } from '../../../client/constants';
+import { TETRIS } from '../../../client/constants';
 import { placePiece } from '../../../client/actions/Grid';
 
 const middlewares = [
