@@ -35,3 +35,8 @@
 .queue {
 	outline: 0;
 }
+
+.restart {
+    display: flex;
+    flex-direction: column;
+}

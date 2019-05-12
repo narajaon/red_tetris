@@ -17,28 +17,15 @@
 
 .isFull {
     background-color: red;
+    box-shadow: inset 0px 0px 20px -2px rgba(0,0,0,0.5);
 }
 
 .isPlaced {
     background-color: grey;
-}
-
-/* RESTART */
-.restart {
-    display: flex;
-    flex-direction: column;
+    box-shadow: inset 0px 0px 20px -2px rgba(0,0,0,0.5);
 }
 
 /* GRID CONTAINER */
-@keyframes bounce {
-    from {
-        transform: translateY(0px);
-    }
-    to {
-        transform: translateY(5px);
-    }
-}
-
 .container {
     outline: 0;
     border: 1px solid lightgrey;
@@ -55,4 +42,13 @@
 
 .placed {
     animation: bounce .1s ease-out alternate;
+}
+
+@keyframes bounce {
+    from {
+        transform: translateY(0px);
+    }
+    to {
+        transform: translateY(5px);
+    }
 }

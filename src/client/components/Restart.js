@@ -1,6 +1,6 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import { restart as style } from '../style/grid.module.css';
+import { restart as style } from '../style/tetris.module.css';
 
 const Restart = ({ restartHandler, quitHandler }) => {
 	return (
