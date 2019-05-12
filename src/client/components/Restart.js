@@ -8,7 +8,7 @@ const Restart = ({ restartHandler, quitHandler }) => {
 			className={ style }
 		>
 			<div>GAME OVER</div>
-			<button onClick={ restartHandler }>RESTART ?</button>
+			<button onClick={ restartHandler } autoFocus>RESTART ?</button>
 			<button onClick={ quitHandler }>QUIT</button>
 		</div>
 	);
