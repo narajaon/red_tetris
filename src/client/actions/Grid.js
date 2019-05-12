@@ -27,7 +27,7 @@ export function startAnimation() {
 		const newInterval = () => {
 			return setInterval(() => {
 				dispatch(translatePiece({x: 0, y: 1}));
-			}, 500);
+			}, 300);
 		};
 
 		return dispatch({ type: 'start-animation', interval: newInterval() });

@@ -4,12 +4,12 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import Grid from '../components/Grid';
-
-import { shadow } from '../style/grid.module.css';
-import { content } from '../style/aside.module.css';
-import { aside } from '../style/tetris.module.css';
 import { initGrid } from '../helpers/Grid';
 import Infos from '../components/Infos';
+
+import { shadow, isEmpty, isPlaced, isFull, placed, shadowContainer as containerStyle } from '../style/grid.module.css';
+import { content } from '../style/aside.module.css';
+import { aside } from '../style/tetris.module.css';
 
 const mapStateToProps = ({ gameReducer }) => {
 	const { currentPlayer, room, players, gameMaster } = gameReducer;
@@ -29,6 +29,12 @@ const mapDispatchToProps = (dispatch) => {
 
 const defaultGrid = { grid: initGrid() };
 
+const tileClasses = [
+	`${shadow} ${isEmpty}`,
+	`${shadow} ${isFull}`,
+	`${shadow} ${isPlaced}`,
+];
+
 const Aside = ({ top = defaultGrid, bottom = defaultGrid, infos, currentPlayer, room, players, gameMaster }) => {
 	const renderInfos = (infoComponent, props) => {
 		if (infoComponent) {
@@ -47,13 +53,14 @@ const Aside = ({ top = defaultGrid, bottom = defaultGrid, infos, currentPlayer, 
 						players,
 						gameMaster,
 						grid: top.grid,
-						tileStyle: shadow,
 						room,
+						containerStyle,
+						tileStyle: tileClasses,
 					})
 				}
 			</div>
 			<div className={ content }>
-				<Grid grid={ bottom.grid } tileStyle={ shadow }/>
+				<Grid grid={ bottom.grid } tileStyle={ tileClasses } containerStyle={ containerStyle }/>
 			</div>
 		</div>
 	);

@@ -1,39 +1,38 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { PropTypes } from 'prop-types';
 
-/**
- * TODO:
- * - Change grid for flex
- */
-
 const Tile = ({ style, content }) => {
-	const isFull = {
-		backgroundColor: content ? 'red' : 'white',
-	};
-
 	return (
 		<div
-			className={ style }
-			style={ isFull }
+			className={ style[content] }
 			data-jest="tile"
 		></div>
 	);
 };
 
-const Grid = ({ keyPressHandler = () => null, grid, tileStyle }) => {
-	const style = {
-		display: 'grid',
-		gridTemplateColumns: 'repeat(10, min-content)',
-		gridGap: '1px',
+const Grid = ({ keyPressHandler, grid, placed, tileStyle, containerStyle }) => {
+	const [contentRef, setRef] = useState(null);
+
+	useEffect(() => {
+		if (contentRef) {
+			contentRef.focus();
+		}
+	});
+
+	const keyHandler = (handler) => {
+		return handler ? handler : () => null;
 	};
 
 	return (
 		<div
-			tabIndex="0"
-			onKeyDown={ keyPressHandler }
-			onKeyPress={ keyPressHandler }
-			style={ style }
+			tabIndex={ keyPressHandler ? 0 : '' }
+			onKeyDown={ keyHandler(keyPressHandler) }
+			onKeyPress={ keyHandler(keyPressHandler) }
+			ref={ element => {
+				setRef(element);
+			}}
 			data-jest="grid"
+			className={ `${containerStyle} ${placed}` }
 		>
 			{
 				grid.map((elem) => {
@@ -53,11 +52,13 @@ const Grid = ({ keyPressHandler = () => null, grid, tileStyle }) => {
 Grid.propTypes = {
 	keyPressHandler: PropTypes.func,
 	grid: PropTypes.array,
-	tileStyle: PropTypes.string,
+	tileStyle: PropTypes.array,
+	containerStyle: PropTypes.string,
+	placed: PropTypes.string,
 };
 
 Tile.propTypes = {
-	style: PropTypes.string,
+	style: PropTypes.array,
 	content: PropTypes.number,
 };
 

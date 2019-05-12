@@ -1,17 +1,58 @@
+/* TILES */
 .shadow {
     height: 10px;
     width: 10px;
-    border: 1px solid blue;
+    border: 1px solid lightgrey;
+    background-color: black;
 }
 
 .regular {
     height: 40px;
 	width: 40px;
-    border: 1px solid grey;
-    background-color: white;    
 }
 
+.isEmpty {
+    background-color: white;
+}
+
+.isFull {
+    background-color: red;
+}
+
+.isPlaced {
+    background-color: grey;
+}
+
+/* RESTART */
 .restart {
     display: flex;
     flex-direction: column;
+}
+
+/* GRID CONTAINER */
+@keyframes bounce {
+    from {
+        transform: translateY(0px);
+    }
+    to {
+        transform: translateY(5px);
+    }
+}
+
+.container {
+    outline: 0;
+    border: 1px solid lightgrey;
+    display: grid;
+    grid-template-columns: repeat(10, min-content);
+    grid-gap: 1px;
+}
+
+.shadowContainer {
+    display: grid;
+    grid-template-columns: repeat(10, min-content);
+    grid-gap: 1px;
+}
+
+.placed {
+    animation: bounce .1s ease-out alternate;
 }

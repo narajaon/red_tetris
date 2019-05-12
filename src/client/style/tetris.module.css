@@ -25,3 +25,13 @@
 	align-items: center;
 	border: 1px solid lightgrey;
 }
+
+.home {
+    display: 'flex';
+    align-items: 'center';
+    flex-direction: 'column';
+}
+
+.queue {
+	outline: 0;
+}

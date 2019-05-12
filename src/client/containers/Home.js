@@ -3,19 +3,21 @@ import { withRouter, Redirect } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { listenToNewPiece, emitGameStart, emitPhaseSwitch, emitRemovePlayer } from '../actions/Socket';
+import { listenToNewPiece, emitGameStart, emitPhaseSwitch } from '../actions/Socket';
 import { rotatePiece, translatePiece } from '../actions/Grid';
 import { KEYS, PHASES } from '../constants';
 import Grid from '../components/Grid';
-
-import { regular } from '../style/grid.module.css';
 import Restart from '../components/Restart';
 import Queue from '../components/Queue';
+
+import { regular, isEmpty, isPlaced, isFull, placed, container as containerStyle } from '../style/grid.module.css';
+import { home as style } from '../style/tetris.module.css';
 
 const mapStateToProps = ({ gridReducer, gameReducer }) => {
 	return {
 		grid: gridReducer.grid,
 		interval: gridReducer.interval,
+		pieces: gridReducer.pieces,
 		phase: gameReducer.phase,
 		players: gameReducer.players,
 	};
@@ -56,19 +58,20 @@ const mapDispatchToProps = (dispatch) => {
 	};
 };
 
+const tileClasses = [
+	`${regular} ${isEmpty}`,
+	`${regular} ${isFull}`,
+	`${regular} ${isPlaced}`,
+];
+
 const Home = (props) => {
 	const {
 		phase,
 		setupGame,
 		history,
 		disconnectPlayer,
+		pieces,
 	} = props;
-
-	const style = {
-		display: 'flex',
-		alignItems: 'center',
-		flexDirection: 'column',
-	};
 
 	const [isAllowed, setIsAllowed] = useState(true);
 
@@ -100,12 +103,14 @@ const Home = (props) => {
 	};
 
 	return (
-		<div className="Home" style={ style }>
+		<div className={ style }>
 			{
 				displayContent(isAllowed, phase, {
 					...props,
-					tileStyle: regular,
+					tileStyle: tileClasses,
 					quitHandler: disconnectPlayer,
+					containerStyle,
+					placed: pieces ? '' : placed,
 				})
 			}
 		</div>
@@ -118,6 +123,7 @@ Home.propTypes = {
 	setupGame: PropTypes.func,
 	history: PropTypes.object,
 	disconnectPlayer: PropTypes.func,
+	pieces: PropTypes.object,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Home));

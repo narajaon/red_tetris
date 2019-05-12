@@ -7,6 +7,8 @@ import Adapter from 'enzyme-adapter-react-16';
 import Grid from '../../../client/components/Grid';
 import { initGrid } from '../../../client/helpers/Grid';
 
+import { regular, isEmpty, isPlaced, isFull, placed, container as containerStyle } from '../../../client/style/grid.module.css';
+
 const middlewares = [
 	// thunk,
 	// handleSocket(),
@@ -30,6 +32,11 @@ function setup(initState, initProps) {
 describe('Grid component testing', () => {
 	let initState;
 	let initProps;
+	const regClass = [
+		`${regular} ${isEmpty}`,
+		`${regular} ${isFull}`,
+		`${regular} ${isPlaced}`,
+	];
 
 	beforeEach(() => {
 		initState = {
@@ -40,6 +47,7 @@ describe('Grid component testing', () => {
 		initProps = {
 			keyPressHandler: jest.fn(),
 			grid: initGrid(),
+			tileStyle: regClass,
 		};
 	});
 
@@ -47,8 +55,5 @@ describe('Grid component testing', () => {
 		const { enzymeWrapper } = setup(initState, initProps);
 		expect(enzymeWrapper).to.not.be.an('undefined');
 		expect(enzymeWrapper.find('[data-jest="tile"]')).to.have.lengthOf(200);
-		enzymeWrapper.find('[data-jest="tile"]').forEach(node => {
-			expect(node.props().style).to.have.property('backgroundColor', 'white');
-		});
 	});
 });
