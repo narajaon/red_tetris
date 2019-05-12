@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { withRouter, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 import LoginForm from '../components/LoginForm';
 import { PHASES } from '../constants';

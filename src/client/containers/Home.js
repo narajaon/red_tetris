@@ -3,7 +3,7 @@ import { withRouter, Redirect } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { listenToNewPiece, emitGameStart, emitPhaseSwitch } from '../actions/Socket';
+import { listenToNewPiece, emitGameStart, emitPhaseSwitch, listenToAddBlocks } from '../actions/Socket';
 import { rotatePiece, translatePiece } from '../actions/Grid';
 import { KEYS, PHASES } from '../constants';
 import Grid from '../components/Grid';
@@ -43,10 +43,12 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		setupGame: () => {
 			dispatch(listenToNewPiece());
+			dispatch(listenToAddBlocks());
 		},
 		disconnectPlayer: () => {
 			dispatch(emitPhaseSwitch(PHASES.ARRIVED));
 			dispatch({ event: 'new-piece-event', leave: true });
+			dispatch({ event: 'add-lines', leave: true });
 		},
 		restartHandler: () => {
 			dispatch(emitPhaseSwitch(PHASES.CONNECTED));

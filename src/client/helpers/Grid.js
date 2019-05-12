@@ -171,7 +171,6 @@ export function getUpdatedGrid(gameGrid, origin, piece) {
 	const xOrigin = origin.x;
 	piece.forEach(line => {
 		line.forEach((col) => {
-
 			if (x === gridCopy[0].length && col === 0 ||
 				gridCopy[y] === undefined) {
 				return;

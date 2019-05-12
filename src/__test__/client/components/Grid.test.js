@@ -7,7 +7,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import Grid from '../../../client/components/Grid';
 import { initGrid } from '../../../client/helpers/Grid';
 
-import { regular, isEmpty, isPlaced, isFull, placed, container as containerStyle } from '../../../client/style/grid.module.css';
+import { regular, isEmpty, isPlaced, isFull, isUndestructible } from '../../../client/style/grid.module.css';
 
 const middlewares = [
 	// thunk,
@@ -36,6 +36,7 @@ describe('Grid component testing', () => {
 		`${regular} ${isEmpty}`,
 		`${regular} ${isFull}`,
 		`${regular} ${isPlaced}`,
+		`${regular} ${isUndestructible}`,
 	];
 
 	beforeEach(() => {

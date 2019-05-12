@@ -22,6 +22,14 @@ export function popPieces() {
 	return { type: 'pop-pieces' };
 }
 
+export function resetGridScoreLine() {
+	return { type: 'reset-grid-score-line' };
+}
+
+export function insertLines(lines) {
+	return { type: 'insert-lines', lines };
+}
+
 export function startAnimation() {
 	return dispatch => {
 		const newInterval = () => {

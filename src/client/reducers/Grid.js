@@ -28,6 +28,15 @@ const actions = {
 	'reset-grid' : () => {
 		return initState;
 	},
+	'reset-grid-score-line': state => {
+		return {
+			...state,
+			score: {
+				...state.score,
+				lines: 0,
+			}
+		};
+	},
 	'start-animation' : (state, { interval }) => {
 		return {
 			...state,
@@ -62,6 +71,11 @@ const actions = {
 			pieces: piecesToPlace,
 			grid: gridBuffer,
 		};
+	},
+	'insert-lines' : (state, { lines }) => {
+		console.log('ADDED LINES');
+		
+		return state;
 	},
 	'translate-piece' : (state, { translation }) => {
 		const { pieces, grid, score } = state;

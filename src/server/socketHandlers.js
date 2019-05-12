@@ -69,10 +69,12 @@ module.exports = {
 			console.log(this.games);
 		};
 	},
-	'update-grid': function () {
-		return ({ grid, player, room }) => {
+	'update-grid': function (client) {
+		return ({ grid, score , player, room }) => {
 			this.updatePlayer(player, room, { prop: 'grid', data: grid });
+			this.updatePlayer(player, room, { prop: 'score', data: score.total });
 			const { players } = this.getGameOfRoom(room);
+			client.to(room).emit('add-lines', { lines: score.lines });
 			this.emitToRoom('update-players', room, {
 				players,
 			});
