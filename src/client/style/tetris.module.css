@@ -1,3 +1,11 @@
+.bodyWrapper {
+	background-color: rgb(236, 236, 236);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+}
+
 .wrapper {
 	height: 80%;
 	width: 90%;
@@ -27,9 +35,9 @@
 }
 
 .home {
-    display: 'flex';
-    align-items: 'center';
-    flex-direction: 'column';
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 }
 
 .queue {

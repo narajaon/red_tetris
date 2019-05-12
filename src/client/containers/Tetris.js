@@ -7,7 +7,7 @@ import Home from './Home';
 import Login from './Login';
 import Aside from './Aside';
 
-import { main, wrapper } from '../style/tetris.module.css';
+import { main, wrapper, bodyWrapper } from '../style/tetris.module.css';
 import { listenToPhaseSwitch, emitPhaseSwitch } from '../actions/Socket';
 import { PHASES } from '../constants';
 
@@ -50,7 +50,7 @@ const Tetris = ({ player2, player3, player4, listenToPhases, resetSocket }) => {
 	}, []);
 
 	return (
-		<div style={ flexStyle }>
+		<div className={ bodyWrapper }>
 			<div className={ wrapper }>
 				<Aside infos={ true } bottom={ player2 }/>
 				<div className={ main }>
