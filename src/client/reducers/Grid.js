@@ -20,6 +20,9 @@ const initState = {
 };
 
 const actions = {
+	'reset-grid' : () => {
+		return initState;
+	},
 	'start-animation' : (state, { interval }) => {
 		return {
 			...state,
@@ -40,15 +43,6 @@ const actions = {
 			...state,
 			pieces: state.piecesQueue[0],
 			piecesQueue: state.piecesQueue.slice(1),
-		};
-	},
-	'reset-grid' : state => {
-		return {
-			...state,
-			grid: initGrid(),
-			pieces: null,
-			interval: null,
-			overflows: false,
 		};
 	},
 	'place-piece' : (state) => {
@@ -127,8 +121,6 @@ const actions = {
 
 const gridReducer = (state = initState, action) => {
 	if (state.overflows && action.type !== 'reset-grid') {
-		console.log('OVER');
-
 		return state;
 	}
 
