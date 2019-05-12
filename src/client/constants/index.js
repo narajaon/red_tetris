@@ -14,7 +14,7 @@ export const TILE = {
 	EMPTY: 0,
 	CURRENT: 1,
 	FULL: 2,
-	UNDESTRUCTIBLE: 3,
+	BLOCKED: 3,
 };
 
 export const KEYS = {

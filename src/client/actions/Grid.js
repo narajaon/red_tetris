@@ -22,6 +22,7 @@ export function popPieces() {
 	return { type: 'pop-pieces' };
 }
 
+
 export function resetGridScoreLine() {
 	return { type: 'reset-grid-score-line' };
 }
@@ -35,7 +36,7 @@ export function startAnimation() {
 		const newInterval = () => {
 			return setInterval(() => {
 				dispatch(translatePiece({x: 0, y: 1}));
-			}, 300);
+			}, 800);
 		};
 
 		return dispatch({ type: 'start-animation', interval: newInterval() });

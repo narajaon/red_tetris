@@ -11,6 +11,7 @@ import {
 	removeFullLines,
 	updateGridWithScore,
 } from '../helpers/Grid';
+import { TILE } from '../constants';
 
 const initState = {
 	grid: initGrid(),
@@ -73,8 +74,25 @@ const actions = {
 		};
 	},
 	'insert-lines' : (state, { lines }) => {
-		console.log('ADDED LINES');
-		
+		function generateBlockedLines(li) {
+			const empty = initGrid();
+			let line = li;
+			let len = empty.length - 1;
+
+			for (line; line > 0; line -= 1) {
+				empty[len].forEach((elem, i) => {
+					empty[len][i] = TILE.BLOCKED;
+				});
+				len -= 1;
+			}
+
+			return empty;
+		}
+
+		// TODO: Add prev grid to newly generated blocked grid and check if it overflows
+		// if overflow end party
+		const blocked = generateBlockedLines(lines);
+
 		return state;
 	},
 	'translate-piece' : (state, { translation }) => {
