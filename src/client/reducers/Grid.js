@@ -6,9 +6,10 @@ import {
 	pieceCanMove,
 	pieceOverflows,
 	blockPieceInGrid,
-	removeScoredLines,
 	attemptWallKicks,
-	applyRotationTopiece
+	applyRotationTopiece,
+	removeFullLines,
+	updateGridWithScore,
 } from '../helpers/Grid';
 
 const initState = {
@@ -17,6 +18,10 @@ const initState = {
 	interval: null,
 	overflows: false,
 	piecesQueue: [],
+	score: {
+		lines: 0,
+		total: 0,
+	}
 };
 
 const actions = {
@@ -59,7 +64,7 @@ const actions = {
 		};
 	},
 	'translate-piece' : (state, { translation }) => {
-		const { pieces, grid } = state;
+		const { pieces, grid, score } = state;
 		const { origin, current } = pieces;
 		const freshGrid = createFreshGrid(grid);
 		if (!current) return state;
@@ -73,12 +78,18 @@ const actions = {
 		if (!canMove && translation.y > 0) {
 			if (pieceOverflows(grid)) return { ...state, overflows: true };
 			const blocked = blockPieceInGrid(grid);
-			const scored = removeScoredLines(blocked);
+			const filtered = removeFullLines(blocked);
+			const scored = updateGridWithScore(filtered);
+			const lines = grid.length - filtered.length;
 
 			return {
 				...state,
 				grid: scored,
 				pieces: null,
+				score: {
+					lines,
+					total: score.total + lines * lines * 10,
+				},
 			};
 		}
 

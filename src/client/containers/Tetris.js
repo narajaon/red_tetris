@@ -26,7 +26,6 @@ const mapStateToProps = ({ gameReducer }) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		resetSocket: () => {
-			// debugger;
 			dispatch(emitPhaseSwitch(PHASES.ARRIVED));
 			dispatch({ event: 'phase-switch-event', leave: true });
 		},
@@ -34,17 +33,9 @@ const mapDispatchToProps = (dispatch) => {
 	};
 };
 
-const flexStyle = {
-	display: 'flex',
-	justifyContent: 'center',
-	alignItems: 'center',
-	height: '100%',
-};
-
 const Tetris = ({ player2, player3, player4, listenToPhases, resetSocket }) => {
 	useEffect(() => {
 		listenToPhases();
-		// debugger;
 		
 		return resetSocket;
 	}, []);

@@ -2,7 +2,7 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import { infos as style } from '../style/aside.module.css';
 
-const Infos = ({ currentPlayer, gameMaster, room, players }) => {
+const Infos = ({ currentPlayer, gameMaster, room, players, score }) => {
 	const getGM = (player, gm, playerList) => {
 		if (!playerList || !gm) return null;
 
@@ -14,6 +14,7 @@ const Infos = ({ currentPlayer, gameMaster, room, players }) => {
 			className={ style }
 		>
 			<div>Name: { currentPlayer }</div>
+			<div>Score: { score.total }</div>
 			<div>GM: { getGM(currentPlayer, gameMaster, players) }</div>
 			<div>Room: { room }</div>
 			<div>Other players:</div>
@@ -37,6 +38,7 @@ Infos.propTypes = {
 	gameMaster: PropTypes.object,
 	room: PropTypes.string,
 	players: PropTypes.array,
+	score: PropTypes.object,
 };
 
 export default Infos;

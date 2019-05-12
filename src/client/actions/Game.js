@@ -27,7 +27,6 @@ export function switchPhase(phase) {
 				dispatch(emitRemovePlayer());
 				dispatch(restartGame());
 				dispatch(resetGrid());
-				
 				clearInterval(interval);
 			}
 			break;

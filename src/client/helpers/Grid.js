@@ -58,8 +58,11 @@ export function applyRotationTopiece(piece) {
 	});	
 }
 
-export function removeScoredLines(grid) {
-	const filtered = grid.filter(lines => !lines.every(col => col !== 0));
+export function removeFullLines(grid) {
+	return grid.filter(lines => !lines.every(col => col !== 0));
+}
+
+export function updateGridWithScore(filtered) {
 	const newGrid = initGrid();
 	let n = newGrid.length - 1;
 

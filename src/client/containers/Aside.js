@@ -11,14 +11,16 @@ import { shadow, isEmpty, isPlaced, isFull, placed, shadowContainer as container
 import { content } from '../style/aside.module.css';
 import { aside } from '../style/tetris.module.css';
 
-const mapStateToProps = ({ gameReducer }) => {
+const mapStateToProps = ({ gameReducer, gridReducer }) => {
 	const { currentPlayer, room, players, gameMaster } = gameReducer;
+	const { score } = gridReducer;
 
 	return {
 		currentPlayer,
 		room,
 		players,
 		gameMaster,
+		score,
 	};
 };
 
@@ -35,7 +37,7 @@ const tileClasses = [
 	`${shadow} ${isPlaced}`,
 ];
 
-const Aside = ({ top = defaultGrid, bottom = defaultGrid, infos, currentPlayer, room, players, gameMaster }) => {
+const Aside = ({ top = defaultGrid, bottom = defaultGrid, infos, currentPlayer, room, players, gameMaster, score }) => {
 	const renderInfos = (infoComponent, props) => {
 		if (infoComponent) {
 			return (<Infos { ...props } />);
@@ -56,6 +58,7 @@ const Aside = ({ top = defaultGrid, bottom = defaultGrid, infos, currentPlayer, 
 						room,
 						containerStyle,
 						tileStyle: tileClasses,
+						score,
 					})
 				}
 			</div>
@@ -74,6 +77,7 @@ Aside.propTypes = {
 	currentPlayer: PropTypes.string,
 	players: PropTypes.array,
 	gameMaster: PropTypes.object,
+	score: PropTypes.object,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Aside));
