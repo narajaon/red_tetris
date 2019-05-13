@@ -77,7 +77,7 @@ module.exports = {
 			if (score.lines > 0) {
 				client.to(room).emit('add-garbage-event', { lines: score.lines });
 			}
-			this.emitToRoom('update-players', room, {
+			client.to(room).emit('update-players', room, {
 				players,
 			});
 		};

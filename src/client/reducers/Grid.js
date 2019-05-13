@@ -10,6 +10,8 @@ import {
 	applyRotationTopiece,
 	removeFullLines,
 	updateGridWithScore,
+	generateBlockedLines,
+	clone2DGrid,
 } from '../helpers/Grid';
 
 const initState = {
@@ -25,11 +27,29 @@ const initState = {
 	}
 };
 
+function addBlockedLines(grid, blocked, garbage) {
+	const updated = clone2DGrid(blocked);
+	let i = grid.length;
+	let j = blocked.length - 1 - garbage;
+
+	for (j; j >= 0; j -= 1) {
+		grid[i].forEach((elem, index) => {
+			updated[j][index] = elem;
+		});
+
+		i -= 1;
+	}
+
+	return updated;
+}
+
 const actions = {
 	'reset-grid' : () => {
 		return initState;
 	},
 	'set-score': (state, { propName, prop }) => {
+		// console.log('SET', propName, prop);
+
 		return {
 			...state,
 			score: {
@@ -39,7 +59,18 @@ const actions = {
 		};
 	},
 	'place-garbage': (state, { garbage }) => {
-		return state;
+		const { grid: previous, score } = state;
+		const blocked = generateBlockedLines(garbage);
+		const updated = addBlockedLines(previous, blocked, garbage);
+
+		return {
+			...state,
+			grid: updated,
+			score: {
+				...score,
+				garbage: 0,
+			}
+		};
 	},
 	'start-animation' : (state, { interval }) => {
 		return {
@@ -148,6 +179,8 @@ const gridReducer = (state = initState, action) => {
 		return state;
 	}
 
+	// console.log('ACTION LOG', action.type, state.score.garbage);
+	
 	return actions[action.type] ? actions[action.type](state, action) : state;
 };
 

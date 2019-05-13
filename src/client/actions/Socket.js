@@ -78,10 +78,10 @@ export function listenToNewPiece() {
 export function listenToAddBlocks() {
 	return (dispatch, getState) => dispatch({
 		event: 'add-garbage-event',
-		handle: ({ lines: garbage }) => {
+		handle: ({ lines }) => {
 			const { gridReducer } = getState();
 			const { score } = gridReducer;
-			dispatch(setScore({ propName: 'garbage', prop: garbage + score.garbage }));
+			dispatch(setScore({ propName: 'garbage', prop: lines + score.garbage }));
 		},
 	});
 }
@@ -90,6 +90,7 @@ export function listenPlayersUpdate() {
 	return dispatch => dispatch({
 		event: 'update-players',
 		handle: ({ players }) => {
+			// console.log('RECEIVED UPDATE', players);
 			dispatch(updatePlayers(players));
 		},
 	});
@@ -98,8 +99,8 @@ export function listenPlayersUpdate() {
 export const listened = [
 	'phase-switch-event',
 	'new-piece-event',
-	'update-players',
 	'add-garbage-event',
+	'update-players',
 ];
 
 export const emitted = [
