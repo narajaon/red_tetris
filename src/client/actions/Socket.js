@@ -1,4 +1,4 @@
-import { queuePieces, resetGridScoreLine, insertLines } from './Grid';
+import { queuePieces, setScore } from './Grid';
 import { switchPhase, updatePlayers } from './Game';
 
 export function emitPieceRequest(grid) {
@@ -53,7 +53,7 @@ export function emitGridUpdate(grid, score) {
 			},
 		});
 
-		return dispatch(resetGridScoreLine());
+		return dispatch(setScore({ propName: 'lines', prop: 0 }));
 	};
 }
 
@@ -76,10 +76,12 @@ export function listenToNewPiece() {
 }
 
 export function listenToAddBlocks() {
-	return dispatch => dispatch({
-		event: 'add-lines',
-		handle: ({ lines }) => {
-			dispatch(insertLines(lines));
+	return (dispatch, getState) => dispatch({
+		event: 'add-garbage-event',
+		handle: ({ lines: garbage }) => {
+			const { gridReducer } = getState();
+			const { score } = gridReducer;
+			dispatch(setScore({ propName: 'garbage', prop: garbage + score.garbage }));
 		},
 	});
 }
@@ -97,7 +99,7 @@ export const listened = [
 	'phase-switch-event',
 	'new-piece-event',
 	'update-players',
-	'add-lines',
+	'add-garbage-event',
 ];
 
 export const emitted = [

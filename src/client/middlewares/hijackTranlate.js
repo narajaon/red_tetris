@@ -1,4 +1,4 @@
-import { popPieces, placePiece } from '../actions/Grid';
+import { popPieces, placePiece, setScore } from '../actions/Grid';
 import { emitPieceRequest, emitGridUpdate } from '../actions/Socket';
 
 export default function hijackTranslate() {
@@ -10,6 +10,10 @@ export default function hijackTranslate() {
 			if (piecesQueue.length > 0) {
 				dispatch(popPieces());
 				dispatch(placePiece());
+				
+				// ADD PLACE-BLOCKED-PIECES HERE
+				// dispatch(placeGarbage(score.garbage));
+				dispatch(setScore({ propName: 'garbage', prop: 0 }));
 			} else {
 				dispatch(emitPieceRequest(grid));
 			}

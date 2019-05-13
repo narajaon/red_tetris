@@ -74,7 +74,9 @@ module.exports = {
 			this.updatePlayer(player, room, { prop: 'grid', data: grid });
 			this.updatePlayer(player, room, { prop: 'score', data: score.total });
 			const { players } = this.getGameOfRoom(room);
-			client.to(room).emit('add-lines', { lines: score.lines });
+			if (score.lines > 0) {
+				client.to(room).emit('add-garbage-event', { lines: score.lines });
+			}
 			this.emitToRoom('update-players', room, {
 				players,
 			});

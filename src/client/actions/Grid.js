@@ -22,13 +22,12 @@ export function popPieces() {
 	return { type: 'pop-pieces' };
 }
 
-
-export function resetGridScoreLine() {
-	return { type: 'reset-grid-score-line' };
+export function setScore({ propName, prop }) {
+	return { type: 'set-score', propName, prop };
 }
 
-export function insertLines(lines) {
-	return { type: 'insert-lines', lines };
+export function placeGarbage(garbage) {
+	return { type: 'place-garbage', garbage };
 }
 
 export function startAnimation() {

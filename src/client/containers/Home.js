@@ -48,7 +48,7 @@ const mapDispatchToProps = (dispatch) => {
 		disconnectPlayer: () => {
 			dispatch(emitPhaseSwitch(PHASES.ARRIVED));
 			dispatch({ event: 'new-piece-event', leave: true });
-			dispatch({ event: 'add-lines', leave: true });
+			dispatch({ event: 'add-garbage-event', leave: true });
 		},
 		restartHandler: () => {
 			dispatch(emitPhaseSwitch(PHASES.CONNECTED));

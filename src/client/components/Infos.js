@@ -17,6 +17,7 @@ const Infos = ({ currentPlayer, gameMaster, room, players, score }) => {
 			<div>Score: { score.total }</div>
 			<div>GM: { getGM(currentPlayer, gameMaster, players) }</div>
 			<div>Room: { room }</div>
+			<div>Garbage: { score.garbage }</div>
 			<div>Other players:</div>
 			<div>
 				{

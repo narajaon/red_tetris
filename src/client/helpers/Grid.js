@@ -165,6 +165,21 @@ export function blockPieceInGrid(prevGrid) {
 	return newGrid;
 }
 
+export	function generateBlockedLines(li) {
+	const empty = initGrid();
+	let line = li;
+	let len = empty.length - 1;
+
+	for (line; line > 0; line -= 1) {
+		empty[len].forEach((elem, i) => {
+			empty[len][i] = TILE.BLOCKED;
+		});
+		len -= 1;
+	}
+
+	return empty;
+}
+
 export function getUpdatedGrid(gameGrid, origin, piece) {
 	const gridCopy = clone2DGrid(gameGrid);
 	let { x, y } = origin;

@@ -11,7 +11,6 @@ import {
 	removeFullLines,
 	updateGridWithScore,
 } from '../helpers/Grid';
-import { TILE } from '../constants';
 
 const initState = {
 	grid: initGrid(),
@@ -22,6 +21,7 @@ const initState = {
 	score: {
 		lines: 0,
 		total: 0,
+		garbage: 0,
 	}
 };
 
@@ -29,14 +29,17 @@ const actions = {
 	'reset-grid' : () => {
 		return initState;
 	},
-	'reset-grid-score-line': state => {
+	'set-score': (state, { propName, prop }) => {
 		return {
 			...state,
 			score: {
 				...state.score,
-				lines: 0,
+				[propName] : prop,
 			}
 		};
+	},
+	'place-garbage': (state, { garbage }) => {
+		return state;
 	},
 	'start-animation' : (state, { interval }) => {
 		return {
@@ -72,28 +75,6 @@ const actions = {
 			pieces: piecesToPlace,
 			grid: gridBuffer,
 		};
-	},
-	'insert-lines' : (state, { lines }) => {
-		function generateBlockedLines(li) {
-			const empty = initGrid();
-			let line = li;
-			let len = empty.length - 1;
-
-			for (line; line > 0; line -= 1) {
-				empty[len].forEach((elem, i) => {
-					empty[len][i] = TILE.BLOCKED;
-				});
-				len -= 1;
-			}
-
-			return empty;
-		}
-
-		// TODO: Add prev grid to newly generated blocked grid and check if it overflows
-		// if overflow end party
-		const blocked = generateBlockedLines(lines);
-
-		return state;
 	},
 	'translate-piece' : (state, { translation }) => {
 		const { pieces, grid, score } = state;
