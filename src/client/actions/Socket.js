@@ -90,7 +90,6 @@ export function listenPlayersUpdate() {
 	return dispatch => dispatch({
 		event: 'update-players',
 		handle: ({ players }) => {
-			// console.log('RECEIVED UPDATE', players);
 			dispatch(updatePlayers(players));
 		},
 	});

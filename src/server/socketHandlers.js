@@ -66,7 +66,6 @@ module.exports = {
 			this.emitToRoom('update-players', room, {
 				players: game.players,
 			});
-			console.log(this.games);
 		};
 	},
 	'update-grid': function (client) {
@@ -77,7 +76,7 @@ module.exports = {
 			if (score.lines > 0) {
 				client.to(room).emit('add-garbage-event', { lines: score.lines });
 			}
-			client.to(room).emit('update-players', room, {
+			client.to(room).emit('update-players', {
 				players,
 			});
 		};

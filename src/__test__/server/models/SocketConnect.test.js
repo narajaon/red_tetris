@@ -13,6 +13,14 @@ describe('using Socket methods', () => {
 	let mockSocket;
 	let eventsToRoom = [];
 	let eventsToPlayer = [];
+	let emittedToRoom = [];
+
+	const fakeScore = {
+		lines: 0,
+		total: 0,
+		garbage: 0,
+	};
+
 	const mockIO = {
 		on: () => null,
 		sockets: {
@@ -27,7 +35,12 @@ describe('using Socket methods', () => {
 	};
 	const mockClient = {
 		join: () => null,
-		emit: (event) => eventsToPlayer.push(event),
+		emit: event => eventsToPlayer.push(event),
+		to: room => {
+			return {
+				emit: (event, param) => emittedToRoom.push({ room, event, param })
+			};
+		},
 	};
 	const id = { player: 'player1', room: 1 };
 	const id2 = { player: 'player2', room: 1 };
@@ -82,7 +95,7 @@ describe('using Socket methods', () => {
 	it('should update the grid of a particular player', () => {
 		mockSocket['auth-request'](mockClient)(id);
 		const modifiedGrid = Array.from(Array(20), () => [0, 0, 0, 0, 0, 0, 0, 0, 0, 1]);
-		mockSocket['update-grid'](mockClient)({...id, grid: modifiedGrid});
+		mockSocket['update-grid'](mockClient)({...id, grid: modifiedGrid, score: fakeScore });
 		const game = mockSocket.getGameOfRoom(1);
 		const player = game.players.find(p => p.name === id.player);
 		expect(player).to.eql({

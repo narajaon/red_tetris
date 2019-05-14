@@ -29,7 +29,7 @@ const initState = {
 
 function addBlockedLines(grid, blocked, garbage) {
 	const updated = clone2DGrid(blocked);
-	let i = grid.length;
+	let i = grid.length - 1;
 	let j = blocked.length - 1 - garbage;
 
 	for (j; j >= 0; j -= 1) {
@@ -48,8 +48,6 @@ const actions = {
 		return initState;
 	},
 	'set-score': (state, { propName, prop }) => {
-		// console.log('SET', propName, prop);
-
 		return {
 			...state,
 			score: {
@@ -59,9 +57,9 @@ const actions = {
 		};
 	},
 	'place-garbage': (state, { garbage }) => {
-		const { grid: previous, score } = state;
+		const { grid, score } = state;
 		const blocked = generateBlockedLines(garbage);
-		const updated = addBlockedLines(previous, blocked, garbage);
+		const updated = addBlockedLines(grid, blocked, garbage);
 
 		return {
 			...state,
@@ -131,6 +129,7 @@ const actions = {
 				grid: scored,
 				pieces: null,
 				score: {
+					...score,
 					lines,
 					total: score.total + lines * lines * 10,
 				},

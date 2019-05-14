@@ -36,8 +36,8 @@ const store = createStore(
 	rootReducer,
 	applyMiddleware(
 		thunk,
-		logger,
-		crashReporter,
+		// logger,
+		// crashReporter,
 		endGame(),
 		handleErrors(),
 		handleSocket(),

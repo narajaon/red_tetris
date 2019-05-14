@@ -10,7 +10,7 @@ import Grid from '../components/Grid';
 import Restart from '../components/Restart';
 import Queue from '../components/Queue';
 
-import { regular, isEmpty, isPlaced, isFull, placed, container as containerStyle } from '../style/grid.module.css';
+import { regular, isEmpty, isPlaced, isFull, isBlocked , placed, container as containerStyle } from '../style/grid.module.css';
 import { home as style } from '../style/tetris.module.css';
 
 const mapStateToProps = ({ gridReducer, gameReducer }) => {
@@ -64,6 +64,7 @@ const tileClasses = [
 	`${regular} ${isEmpty}`,
 	`${regular} ${isFull}`,
 	`${regular} ${isPlaced}`,
+	`${regular} ${isBlocked}`,
 ];
 
 const Home = (props) => {

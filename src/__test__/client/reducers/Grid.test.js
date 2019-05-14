@@ -1,7 +1,7 @@
 import chai, { expect, assert } from 'chai';
 import reducer from '../../../client/reducers/Grid';
 import { initGrid, getUpdatedGrid, createNewPieces } from '../../../client/helpers/Grid';
-import { placePiece, translatePiece, rotatePiece, resetGrid, startAnimation, queuePieces, popPieces } from '../../../client/actions/Grid';
+import { placePiece, translatePiece, rotatePiece, resetGrid, queuePieces, popPieces } from '../../../client/actions/Grid';
 import { TETRIS } from '../../../client/constants';
 
 chai.config.truncateThreshold = 0;
@@ -16,6 +16,7 @@ describe('grid reducers', () => {
 		interval: null,
 		overflows: false,
 		piecesQueue: [],
+		score: { lines: 0, total: 0, garbage: 0 }
 	};
 
 	const stateWithPiece = { ...initState, pieces: newPieces };
@@ -55,6 +56,7 @@ describe('grid reducers', () => {
 			interval: null,
 			overflows: false,
 			piecesQueue: [],
+			score: { lines: 0, total: 0, garbage: 0 }
 		});
 	});
 
@@ -75,6 +77,7 @@ describe('grid reducers', () => {
 				interval: null,
 				overflows: false,
 				piecesQueue: [],
+				score: { lines: 0, total: 0, garbage: 0 }
 			});
 		});
 	});

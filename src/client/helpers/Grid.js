@@ -16,7 +16,7 @@ export function createNewPieces({ current, name }) {
 export function pieceOverflows(grid) {
 	const reducer = (acc, curr) => {
 		return acc + curr.reduce((acc2, curr2) => {
-			return acc2 + (curr2 === 1 ? curr2 : 0);
+			return acc2 + (curr2 === TILE.CURRENT ? 1 : 0);
 		}, 0);
 	};
 
@@ -29,12 +29,24 @@ export function pieceCanMove(grid, origin, piece) {
 	let { x, y } = origin;
 	const xOrigin = origin.x;
 	const moveAllowed = piece.every(line => {
-		const lineRet = line.every((col) => {
-			if (grid[y] === undefined && col !== TILE.EMPTY ||
-				grid[y] !== undefined && grid[y][x] === undefined && col !== TILE.EMPTY ||
-				grid[y] !== undefined && grid[y][x] === TILE.FULL && col !== TILE.EMPTY) {
+		const lineRet = line.every(col => {
+			if (grid[y] === undefined && col !== TILE.EMPTY) {
 				return false;
 			}
+
+			if (grid[y] && grid[y][x] === TILE.BLOCKED) {
+				debugger;
+			}
+
+			if (grid[y] && col !== TILE.EMPTY) {
+				switch (grid[y][x]) {
+				case undefined:
+				case TILE.FULL:
+				case TILE.BLOCKED:
+					return false;
+				}
+			}
+
 			x += 1;
 
 			return true;
@@ -50,16 +62,16 @@ export function pieceCanMove(grid, origin, piece) {
 
 export function applyRotationTopiece(piece) {
 	const n = piece.length;
-	
+
 	return piece.map((line, y) => {
 		return line.map((col, x) => {
 			return piece[n - x - 1][y];
 		});
-	});	
+	});
 }
 
 export function removeFullLines(grid) {
-	return grid.filter(lines => !lines.every(col => col !== 0));
+	return grid.filter(lines => lines.some(col => col !== TILE.FULL));
 }
 
 export function updateGridWithScore(filtered) {
@@ -186,12 +198,16 @@ export function getUpdatedGrid(gameGrid, origin, piece) {
 	const xOrigin = origin.x;
 	piece.forEach(line => {
 		line.forEach((col) => {
-			if (x === gridCopy[0].length && col === 0 ||
+			if (x === gridCopy[0].length && col === TILE.EMPTY ||
 				gridCopy[y] === undefined) {
 				return;
 			}
 
-			gridCopy[y][x] = gridCopy[y][x] === TILE.FULL ? TILE.FULL : col;
+			if (gridCopy[y][x] !== TILE.FULL && 
+				gridCopy[y][x] !== TILE.BLOCKED) {
+				gridCopy[y][x] = col;
+			}
+
 			x += 1;
 		});
 		x = xOrigin;

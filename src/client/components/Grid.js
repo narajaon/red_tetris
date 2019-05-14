@@ -21,7 +21,7 @@ const Grid = ({ keyPressHandler, grid, placed, tileStyle, containerStyle }) => {
 	});
 
 	const keyHandler = (handler) => {
-		return handler ? debounce(handler, 200, {
+		return handler ? debounce(handler, 100, {
 			'leading': true,
 			'trailing': false
 		}) : () => null;
