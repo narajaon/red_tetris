@@ -12,6 +12,7 @@ const Infos = ({ currentPlayer, gameMaster, room, players, score }) => {
 	return (
 		<div
 			className={ style }
+			data-jest="infos"
 		>
 			<div>Name: { currentPlayer }</div>
 			<div>Score: { score.total }</div>
@@ -23,7 +24,14 @@ const Infos = ({ currentPlayer, gameMaster, room, players, score }) => {
 				{
 					players.map(({ name }) => {
 						if (name !== currentPlayer) {
-							return (<div key={ name }>{ name }</div>);
+							return (
+								<div
+									key={ name }
+									data-jest="infos-other-players"
+								>
+									{ name }
+								</div>
+							);
 						}
 
 						return null;

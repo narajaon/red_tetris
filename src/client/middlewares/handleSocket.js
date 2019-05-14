@@ -2,8 +2,15 @@ import io from 'socket.io-client';
 import { serverURI } from '../constants';
 
 export default function handleSocket() {
-	const socket = process.env.NODE_ENV === 'development' ?
-		io.connect(serverURI) : io();
+	const options = {
+		'reconnection': true,
+		'reconnectionDelay': 500,
+		'reconnectionAttempts': 10
+	};
+
+	// const socket = process.env.NODE_ENV === 'development' ?
+	// io.connect(serverURI, options) : io(options);
+	const socket = io.connect(serverURI, options);
 
 	return ({ getState }) => next => (action) => {
 		if (typeof action === 'function') {

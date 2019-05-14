@@ -4,10 +4,7 @@ import configureStore from 'redux-mock-store';
 import { expect } from 'chai';
 import Adapter from 'enzyme-adapter-react-16';
 
-import Grid from '../../../client/components/Grid';
-import { initGrid } from '../../../client/helpers/Grid';
-
-import { regular, isEmpty, isPlaced, isFull, isBlocked } from '../../../client/style/grid.module.css';
+import Infos from '../../../client/components/Infos';
 
 const middlewares = [
 	// thunk,
@@ -20,7 +17,7 @@ configure({ adapter: new Adapter() });
 function setup(initState, initProps) {
 	const mockStore = configureStore(middlewares);
 	const store = mockStore(initState);
-	const enzymeWrapper = mount(<Grid { ...initProps  } />);
+	const enzymeWrapper = mount(<Infos { ...initProps  } { ...initState }/>);
 
 	return {
 		initProps,
@@ -32,29 +29,28 @@ function setup(initState, initProps) {
 describe('Grid component testing', () => {
 	let initState;
 	let initProps;
-	const regClass = [
-		`${regular} ${isEmpty}`,
-		`${regular} ${isFull}`,
-		`${regular} ${isPlaced}`,
-		`${regular} ${isBlocked}`,
-	];
 
 	beforeEach(() => {
 		initState = {
-			grid: initGrid(),
-			pieces: null,
+			currentPlayer: 'FOO',
+			room: '42',
+			players: [{ name: 'coucou' }, { name: 'coco' }],
+			gameMaster: null,
+			score: {
+				lines: 0,
+				total: 0,
+				garbage: 0,
+			}
 		};
 	
 		initProps = {
-			keyPressHandler: jest.fn(),
-			grid: initGrid(),
-			tileStyle: regClass,
 		};
 	});
 
 	it('renders 200 white tiles', () => {
 		const { enzymeWrapper } = setup(initState, initProps);
 		expect(enzymeWrapper).to.not.be.an('undefined');
-		expect(enzymeWrapper.find('[data-jest="tile"]')).to.have.lengthOf(200);
+		expect(enzymeWrapper.find('[data-jest="infos"]')).to.not.be.an('undefined');
+		expect(enzymeWrapper.find('[data-jest="infos-other-players"]')).to.have.lengthOf(2);
 	});
 });
