@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { PropTypes } from 'prop-types';
 import { debounce } from 'lodash';
+import { DEBOUNCE_VAL } from '../constants';
 
 const Tile = ({ style, content }) => {
 	return (
@@ -21,7 +22,7 @@ const Grid = ({ keyPressHandler, grid, placed, tileStyle, containerStyle }) => {
 	});
 
 	const keyHandler = (handler) => {
-		return handler ? debounce(handler, 100, {
+		return handler ? debounce(handler, DEBOUNCE_VAL, {
 			'leading': true,
 			'trailing': false
 		}) : () => null;

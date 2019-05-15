@@ -1,3 +1,5 @@
+import { GRAVITY_VAL } from '../constants';
+
 export function placePiece(pieces){
 	return { type: 'place-piece', pieces };
 }
@@ -35,7 +37,7 @@ export function startAnimation() {
 		const newInterval = () => {
 			return setInterval(() => {
 				dispatch(translatePiece({x: 0, y: 1}));
-			}, 800);
+			}, GRAVITY_VAL);
 		};
 
 		return dispatch({ type: 'start-animation', interval: newInterval() });
