@@ -14,23 +14,23 @@ import hijackTranslate from './middlewares/hijackTranlate';
 import handleErrors from './middlewares/handleErrors';
 import endGame from './middlewares/endGame';
 
-
-const logger = currentStore => next => action => {
-	console.log('dispatching', action);
-	let result = next(action);
-	console.log('next state', currentStore.getState());
+// DECOMMENT FOR DEBUGGING PURPOSES
+// const logger = currentStore => next => action => {
+// 	console.log('dispatching', action);
+// 	let result = next(action);
+// 	console.log('next state', currentStore.getState());
 	
-	return result;
-};
+// 	return result;
+// };
   
-const crashReporter = () => next => action => {
-	try {
-		return next(action);
-	} catch (err) {
-		console.error('Caught an exception!', err);
-		throw err;
-	}
-};
+// const crashReporter = () => next => action => {
+// 	try {
+// 		return next(action);
+// 	} catch (err) {
+// 		console.error('Caught an exception!', err);
+// 		throw err;
+// 	}
+// };
 
 const store = createStore(
 	rootReducer,

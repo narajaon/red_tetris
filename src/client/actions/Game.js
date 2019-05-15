@@ -16,7 +16,6 @@ export function restartGame() {
 
 export function switchPhase(phase) {
 	return (dispatch, getState) => {
-		console.log('SWITCH', phase);
 		const { gridReducer, gameReducer } = getState();
 		const { currentPlayer } = gameReducer;
 		const { interval } = gridReducer;
@@ -34,7 +33,6 @@ export function switchPhase(phase) {
 			dispatch(startAnimation());
 			break;
 		case PHASES.ENDED:	
-			console.log('ENDED');
 			break;
 		default: // CONNECTED
 			break;

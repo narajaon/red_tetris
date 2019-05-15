@@ -10,7 +10,6 @@ module.exports = class Socket {
 
 	connect(setupListeners) {
 		return this.io.on('connection', client => {
-			console.log('connection established');
 			setupListeners(client);
 		});
 	}

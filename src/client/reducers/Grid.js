@@ -178,8 +178,6 @@ const gridReducer = (state = initState, action) => {
 		return state;
 	}
 
-	// console.log('ACTION LOG', action.type, state.score.garbage);
-	
 	return actions[action.type] ? actions[action.type](state, action) : state;
 };
 

@@ -33,11 +33,7 @@ export function pieceCanMove(grid, origin, piece) {
 			if (grid[y] === undefined && col !== TILE.EMPTY) {
 				return false;
 			}
-
-			if (grid[y] && grid[y][x] === TILE.BLOCKED) {
-				debugger;
-			}
-
+			
 			if (grid[y] && col !== TILE.EMPTY) {
 				switch (grid[y][x]) {
 				case undefined:

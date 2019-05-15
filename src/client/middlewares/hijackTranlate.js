@@ -6,11 +6,8 @@ export default function hijackTranslate() {
 		const { type } = action;
 		const { pieces, piecesQueue, grid, score } = getState().gridReducer;
 
-		// console.log('GARBAGE', score.garbage, type);
 		if (type === 'translate-piece' && pieces === null) {
 			if (piecesQueue.length > 0) {
-				// ADD PLACE-BLOCKED-PIECES HERE
-				console.log('GARBAGE', score.garbage);
 				if (score.garbage > 0) {
 					dispatch(placeGarbage(score.garbage));
 				}
