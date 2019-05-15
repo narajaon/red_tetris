@@ -25,10 +25,11 @@ const LoginForm = ({ logToGame, history }) => {
 				style={ style }
 				onSubmit={ logToGame(credentials, history) }
 				className="login-form"
+				data-jest="login-form"
 			>
 				<input data-jest="name" autoFocus type="text" onChange={ handleLogin } placeholder="name"/>
 				<input data-jest="room" type="text" onChange={ handleRoom } placeholder="room"/>
-				<input data-jest="submit" type="submit" value="Let's GO"/>
+				<input type="submit" value="Let's GO"/>
 			</form>
 		</div>
 	);

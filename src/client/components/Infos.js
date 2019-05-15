@@ -23,18 +23,16 @@ const Infos = ({ currentPlayer, gameMaster, room, players, score }) => {
 			<div>
 				{
 					players.map(({ name }) => {
-						if (name !== currentPlayer) {
-							return (
-								<div
-									key={ name }
-									data-jest="infos-other-players"
-								>
-									{ name }
-								</div>
-							);
-						}
-
-						return null;
+						if (name === currentPlayer) return null;
+						
+						return (
+							<div
+								key={ name }
+								data-jest="infos-other-players"
+							>
+								{ name }
+							</div>
+						);
 					})
 				}
 			</div>

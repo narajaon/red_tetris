@@ -18,6 +18,7 @@ const Queue = ({ players, startGame }) => {
 				setRef(element);
 			}}
 			onKeyDown={ startGame }
+			data-jest="queue"
 			className={ style }
 		>
 			<div>Current players : { players.length } / 4</div>

@@ -4,7 +4,7 @@ import configureStore from 'redux-mock-store';
 import { expect } from 'chai';
 import Adapter from 'enzyme-adapter-react-16';
 
-import Infos from '../../../client/components/Infos';
+import Restart from '../../../client/components/Restart';
 
 const middlewares = [
 	// thunk,
@@ -17,7 +17,7 @@ configure({ adapter: new Adapter() });
 function setup(initState, initProps) {
 	const mockStore = configureStore(middlewares);
 	const store = mockStore(initState);
-	const enzymeWrapper = mount(<Infos { ...initProps  } { ...initState }/>);
+	const enzymeWrapper = mount(<Restart { ...initProps  } { ...initState }/>);
 
 	return {
 		initProps,
@@ -26,31 +26,21 @@ function setup(initState, initProps) {
 	};
 }
 
-describe('Infos component testing', () => {
+describe('Grid component testing', () => {
 	let initState;
 	let initProps;
 
 	beforeEach(() => {
 		initState = {
-			currentPlayer: 'FOO',
-			room: '42',
-			players: [{ name: 'coucou' }, { name: 'coco' }],
-			gameMaster: null,
-			score: {
-				lines: 0,
-				total: 0,
-				garbage: 0,
-			}
 		};
 	
 		initProps = {
 		};
 	});
 
-	it('renders N number of players', () => {
+	it('renders the restart component', () => {
 		const { enzymeWrapper } = setup(initState, initProps);
 		expect(enzymeWrapper).to.not.be.an('undefined');
-		expect(enzymeWrapper.find('[data-jest="infos"]')).to.not.be.an('undefined');
-		expect(enzymeWrapper.find('[data-jest="infos-other-players"]')).to.have.lengthOf(2);
+		expect(enzymeWrapper.find('[data-jest="restart"]')).to.not.be.an('undefined');
 	});
 });

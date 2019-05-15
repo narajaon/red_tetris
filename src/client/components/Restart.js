@@ -6,6 +6,7 @@ const Restart = ({ restartHandler, quitHandler }) => {
 	return (
 		<div
 			className={ style }
+			data-jest="restart"
 		>
 			<div>GAME OVER</div>
 			<button onClick={ restartHandler } autoFocus>RESTART ?</button>
