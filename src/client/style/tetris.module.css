@@ -1,9 +1,13 @@
 .bodyWrapper {
-	background-color: rgb(236, 236, 236);
+	background-color: rgba(0,0,0,0.2);
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	height: 100%;
+	margin: 0px;
+	width: 100%;
+	color: #fff;
+	font-family: 'Permanent Marker', cursive;
 }
 
 .wrapper {
@@ -18,7 +22,6 @@
 .aside {
 	width: 25%;
 	height: 100%;
-	border: 1px solid lightgrey;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
@@ -31,7 +34,6 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	border: 1px solid lightgrey;
 }
 
 .home {

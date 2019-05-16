@@ -15,7 +15,6 @@ const Infos = ({ currentPlayer, gameMaster, room, players, score }) => {
 			data-jest="infos"
 		>
 			<div>Name: { currentPlayer }</div>
-			<div>Score: { score.total }</div>
 			<div>GM: { getGM(currentPlayer, gameMaster, players) }</div>
 			<div>Room: { room }</div>
 			<div>Garbage: { score.garbage }</div>
@@ -36,6 +35,30 @@ const Infos = ({ currentPlayer, gameMaster, room, players, score }) => {
 					})
 				}
 			</div>
+			<div className='score'>{ score.total }</div>
+			<style>
+		{`
+			.score{
+				border: 10px solid #f0f;
+				border-radius: 50%;
+				width: 120px;
+				height: 120px;
+				margin: 50px auto;  
+				background: rgba(0,0,0,0.4);
+				box-shadow:  
+				0 0 20px #f0f,
+				inset 0 0 20px #f0f;
+				display: flex;
+				align-items: center;				
+				justify-content: center;				
+				text-shadow:  
+				0 0 10px #0ff;
+				color:#0ff;  
+				font-size: 60px!important;    
+			}
+			
+		`}
+		</style>
 		</div>
 	);
 };
