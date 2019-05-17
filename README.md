@@ -17,10 +17,10 @@ Rotate piece :		`R` <br>
 
 Enter a name and a room
 
-![ScreenShot](https://image.noelshack.com/fichiers/2019/20/5/1558104276-login.png)
+![ScreenShot](screenshots/login.png)
 
 You can play by yourself
-![ScreenShot](https://image.noelshack.com/fichiers/2019/20/5/1558104069-singleplayer.png)
+![ScreenShot](screenshots/singleplayer.png)
 
 Or with friends
-![ScreenShot](https://image.noelshack.com/fichiers/2019/20/5/1558104069-multiplayer.png)
+![ScreenShot](screenshots/multiplayer.png)
