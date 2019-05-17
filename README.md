@@ -1,7 +1,7 @@
 ## Description
 
 Red tetris is a fullstack web application.
-It's written in JavaScript with React / Redux in the front-end and Node.js / Express in the back-end.
+It's written in JavaScript with React / Redux on the front-end and Node.js / Express on the back-end.
 Red tetris is also a realtime, multiplayer tetris game using socket.io.
 
 ## Getting Started
