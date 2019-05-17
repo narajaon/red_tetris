@@ -19,7 +19,7 @@ Enter a name and a room
 You can play by yourself
 ![alt text](https://image.noelshack.com/fichiers/2019/20/5/1558100376-screen-shot-2019-05-16-at-8-02-40-pm.png)
 
-Or play with friends
+Or with friends
 ![alt text](https://image.noelshack.com/fichiers/2019/20/5/1558100376-screen-shot-2019-05-16-at-7-58-48-pm.png)
 
 
