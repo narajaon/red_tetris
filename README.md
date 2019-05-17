@@ -25,5 +25,3 @@ Or play with friends
 
 Move piece :		`Arrow keys` <br>
 Rotate piece :		`R` <br>
-
-![alt text](https://image.noelshack.com/fichiers/2019/20/5/1558100376-screen-shot-2019-05-16-at-7-58-48-pm.png)
