@@ -14,13 +14,13 @@ Then go to `localhost:3000` in your browser
 
 Enter a name and a room
 
-![alt text](https://image.noelshack.com/fichiers/2019/20/5/1558100376-screen-shot-2019-05-16-at-8-01-08-pm.png)
+![alt text](https://image.noelshack.com/fichiers/2019/20/5/1558104069-login.png)
 
 You can play by yourself
-![alt text](https://image.noelshack.com/fichiers/2019/20/5/1558100376-screen-shot-2019-05-16-at-8-02-40-pm.png)
+![alt text](https://image.noelshack.com/fichiers/2019/20/5/1558104069-singleplayer.png)
 
 Or with friends
-![alt text](https://image.noelshack.com/fichiers/2019/20/5/1558100376-screen-shot-2019-05-16-at-7-58-48-pm.png)
+![alt text](https://image.noelshack.com/fichiers/2019/20/5/1558104069-multiplayer.png)
 
 
 Move piece :		`Arrow keys` <br>
