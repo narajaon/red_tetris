@@ -12,6 +12,9 @@ Then go to `localhost:3000` in your browser
 
 ## Usage
 
+Move piece :		`Arrow keys` <br>
+Rotate piece :		`R` <br>
+
 Enter a name and a room
 
 ![alt text](https://image.noelshack.com/fichiers/2019/20/5/1558104069-login.png)
@@ -21,7 +24,3 @@ You can play by yourself
 
 Or with friends
 ![alt text](https://image.noelshack.com/fichiers/2019/20/5/1558104069-multiplayer.png)
-
-
-Move piece :		`Arrow keys` <br>
-Rotate piece :		`R` <br>
