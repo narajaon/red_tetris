@@ -73,8 +73,9 @@ export function removeFullLines(grid) {
 export function updateGridWithScore(filtered) {
 	const newGrid = initGrid();
 	let n = newGrid.length - 1;
+	let i = filtered.length - 1;
 
-	for (let i = filtered.length - 1; i >= 0; i -= 1) {
+	for (i; i >= 0; i -= 1) {
 		filtered[i].forEach((col, index) => {
 			newGrid[n][index] = col;
 		});
