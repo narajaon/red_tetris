@@ -46,7 +46,7 @@ const Aside = ({ top = defaultGrid, bottom = defaultGrid, infos, currentPlayer, 
 
 		return (<Grid { ...props } />);
 	};
-
+	
 	return (
 		<div className={ aside }>
 			<div className={ content }>
@@ -60,11 +60,12 @@ const Aside = ({ top = defaultGrid, bottom = defaultGrid, infos, currentPlayer, 
 						containerStyle,
 						tileStyle: tileClasses,
 						score,
+						player: top.name,
 					})
 				}
 			</div>
 			<div className={ content }>
-				<Grid grid={ bottom.grid } tileStyle={ tileClasses } containerStyle={ containerStyle }/>
+				<Grid grid={ bottom.grid } tileStyle={ tileClasses } containerStyle={ containerStyle } player={ bottom.name }/>
 			</div>
 		</div>
 	);

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { PropTypes } from 'prop-types';
 import { queue as style } from '../style/tetris.module.css';
+import { innerContainer } from '../style/queue.module.css';
 
 const Queue = ({ players, startGame }) => {
 	const [contentRef, setRef] = useState(null);
@@ -21,8 +22,10 @@ const Queue = ({ players, startGame }) => {
 			data-jest="queue"
 			className={ style }
 		>
-			<div>Current players : { players.length } / 4</div>
-			<div>Press SPACE to begin the game</div>
+					<div className={ innerContainer }>
+			<div>Current players :<br></br> { players.length } / 4</div>
+			<div>Press <span>SPACE</span> to begin the game</div>
+		</div>
 		</div>
 	);
 };
