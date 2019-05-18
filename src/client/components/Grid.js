@@ -12,7 +12,7 @@ const Tile = ({ style, content }) => {
 	);
 };
 
-const Grid = ({ keyPressHandler, grid, placed, tileStyle, containerStyle }) => {
+const Grid = ({ keyPressHandler, grid, placed, tileStyle, containerStyle, player }) => {
 	const [contentRef, setRef] = useState(null);
 
 	useEffect(() => {
@@ -29,27 +29,30 @@ const Grid = ({ keyPressHandler, grid, placed, tileStyle, containerStyle }) => {
 	};
 
 	return (
-		<div
-			tabIndex={ keyPressHandler ? 0 : '' }
-			onKeyDown={ keyHandler(keyPressHandler) }
-			onKeyPress={ keyHandler(keyPressHandler) }
-			ref={ element => {
-				setRef(element);
-			}}
-			data-jest="grid"
-			className={ `${containerStyle} ${placed}` }
-		>
-			{
-				grid.map((elem) => {
-					return elem.map((tile, index) => (
-						<Tile
-							key={ index }
-							style={ tileStyle }
-							content={ tile }
-						/>
-					));
-				})
-			}
+		<div>
+			<span>{ player }</span>
+			<div
+				tabIndex={ keyPressHandler ? 0 : '' }
+				onKeyDown={ keyHandler(keyPressHandler) }
+				onKeyPress={ keyHandler(keyPressHandler) }
+				ref={ element => {
+					setRef(element);
+				}}
+				data-jest="grid"
+				className={ `${containerStyle} ${placed}` }
+			>
+				{
+					grid.map((elem) => {
+						return elem.map((tile, index) => (
+							<Tile
+								key={ index }
+								style={ tileStyle }
+								content={ tile }
+							/>
+						));
+					})
+				}
+			</div>
 		</div>
 	);
 };
@@ -60,6 +63,7 @@ Grid.propTypes = {
 	tileStyle: PropTypes.array,
 	containerStyle: PropTypes.string,
 	placed: PropTypes.string,
+	player: PropTypes.string,
 };
 
 Tile.propTypes = {

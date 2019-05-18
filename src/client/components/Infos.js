@@ -18,23 +18,6 @@ const Infos = ({ currentPlayer, gameMaster, room, players, score }) => {
 			<div>GM: { getGM(currentPlayer, gameMaster, players) }</div>
 			<div>Room: { room }</div>
 			<div>Garbage: { score.garbage }</div>
-			<div>Other players:</div>
-			<div>
-				{
-					players.map(({ name }) => {
-						if (name === currentPlayer) return null;
-						
-						return (
-							<div
-								key={ name }
-								data-jest="infos-other-players"
-							>
-								{ name }
-							</div>
-						);
-					})
-				}
-			</div>
 			<div className='score'>{ score.total }</div>
 			<style>
 		{`

@@ -25,7 +25,6 @@
     opacity: 1;
     animation: tetriscolorplace 5s ease-in-out infinite alternate, turn 1s linear;
     backface-visibility: visible !important;
-   /* border: 1px solid rgba(255,255,255,0.1);*/
 }
 
 .isBlocked {
@@ -65,8 +64,6 @@
 
 /********************                   ANIMATION               ************************/
 
-
-
 @keyframes bounce {
     from {
         transform: translateY(0px);
@@ -88,15 +85,13 @@
 
 
 @keyframes tetriseffect {
-    from {background-color: rgba(0,255,255,0.6);/*border:1px solid rgba(0,255,255,0);*/}
-    to {background-color: rgba(255,255,255,0.2);/*border:1px solid rgba(0,255,255,0);*/}
+    from {
+        background-color: rgba(0,255,255,0.6);
+    }
+    to {
+        background-color: rgba(255,255,255,0.2);
+    }
   }
-/*
-  @keyframes tetriscolor {
-    from {border:1px solid rgba(0,255,255,0);}
-    to {border:1px solid rgba(0,255,255,0);}  
-  }
-*/
   @keyframes tetriscolorplace {
     from {background-color:#f0f;box-shadow: 0 0 10px #f0f;}
     to {background-color: #0ff; box-shadow: 0 0 10px #0ff;}
@@ -108,19 +103,18 @@
   }
   
   
-  /*
 @keyframes appearance{
 0% {
-    transform: scaleY(0);
-    opacity: 0;
+        transform: scaleY(0);
+        opacity: 0;
     }
   
 100% {
-    transform: scaleY(1);
-    opacity: 1;
+        transform: scaleY(1);
+        opacity: 1;
     }  
 }
-*/
+
 @keyframes neonboxshadow {
  from{ 
     box-shadow:  
