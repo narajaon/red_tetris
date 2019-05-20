@@ -1,7 +1,7 @@
 import { withRouter } from 'react-router-dom';
 import React, { useState } from 'react';
 import { PropTypes } from 'prop-types';
-import { container, box, buttoneon } from '../style/loginForm.module.css';
+import { container, box, buttonBlue } from '../style/loginForm.module.css';
 
 const LoginForm = ({ logToGame, history }) => {
 	const [ credentials, setCredentials ] = useState({ name: '', room: ''});
@@ -24,7 +24,7 @@ const LoginForm = ({ logToGame, history }) => {
 				<div className={ box }>
 					<input data-jest="name" autoFocus type="text" onChange={ handleLogin } placeholder="name"/>
 					<input data-jest="room" type="text" onChange={ handleRoom } placeholder="room"/>
-					<button className={ buttoneon } data-jest="submit"><span>Start</span></button>
+					<button className={ buttonBlue } data-jest="submit"><span>Start</span></button>
 				</div>
 			</div>
 			</form>

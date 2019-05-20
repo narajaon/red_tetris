@@ -1,0 +1,23 @@
+.infocolor {
+    color:#f0f;
+    text-shadow: 0 0 10px #f0f;
+}
+
+.scored {
+    border: 10px solid #f0f;
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    margin: 50px auto;  
+    background: rgba(0,0,0,0.4);
+    box-shadow:  
+    0 0 20px #f0f,
+    inset 0 0 20px #f0f;
+    display: flex;
+    align-items: center;				
+    justify-content: center;				
+    text-shadow:  
+    0 0 10px #0ff;
+    color:#0ff;  
+    font-size: 60px!important;    
+}

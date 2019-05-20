@@ -6,6 +6,14 @@
 .content {
     width: 200px;
     height: 400px;
+    text-align: center;
+}
+
+span {color: #0ff;
+    font-size: 26px;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center!important;
 }
 
 .infos { 
@@ -23,5 +31,14 @@
     font-size: 26px;
     text-shadow:  
     0 0 10px #0ff;
+    animation: Appearance 5s;
 }
 
+@keyframes Appearance {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity:1;
+    }
+}
