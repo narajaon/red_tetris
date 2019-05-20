@@ -7,7 +7,7 @@ import Grid from '../components/Grid';
 import { initGrid } from '../helpers/Grid';
 import Infos from '../components/Infos';
 
-import { shadow, isEmpty, isPlaced, isFull, isUndestructible, shadowContainer as containerStyle } from '../style/grid.module.css';
+import { shadow, isEmpty, isPlaced, isFull, isBlocked, shadowContainer as containerStyle } from '../style/grid.module.css';
 import { content } from '../style/aside.module.css';
 import { aside } from '../style/tetris.module.css';
 
@@ -35,7 +35,7 @@ const tileClasses = [
 	`${shadow} ${isEmpty}`,
 	`${shadow} ${isFull}`,
 	`${shadow} ${isPlaced}`,
-	`${shadow} ${isUndestructible}`,
+	`${shadow} ${isBlocked}`,
 ];
 
 const Aside = ({ top = defaultGrid, bottom = defaultGrid, infos, currentPlayer, room, players, gameMaster, score }) => {
