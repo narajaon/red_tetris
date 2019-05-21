@@ -171,3 +171,31 @@ h1 span {
         0 0 30px #FF00DE;
     }
 }
+
+/*** Responsive Desktop ***/
+
+@media screen and (max-width: 820px)
+{
+    .container {
+        width:340px;
+        height:340px;
+        top:calc(50vh - 180px);
+        left:calc(50vw - 180px);
+    }
+    .box{
+        padding:40px 0px;
+    }
+    .box input {
+        display:block;
+        width:260px;
+        margin:20px auto;
+        padding:10px;
+    }
+    .box button {
+        border:0;
+        color:#000;
+        font-size:20px;
+        width:280px;
+        margin:30px auto;
+    }    
+}

@@ -189,3 +189,54 @@ to {
         transform: translateY(10px);
     }
 }
+
+
+
+/*** Responsive Desktop ***/
+
+@media screen and (max-width: 1280px)
+{
+    .shadow {
+        height: 15px;
+        width: 15px;
+    }
+    
+    .regular {
+        height: 40px;
+        width: 40px;   
+    }
+
+    .shadowContainer {
+        width: 220px;
+        height: 380px;
+    }    
+}
+
+@media all and (min-width: 820px) and (max-width: 1280px)
+{
+    .shadow {
+        height: 15px;
+        width: 15px;
+    }
+    
+    .regular {
+        height: 35px;
+        width: 35px;   
+    }
+
+    .shadowContainer {
+        width: 160px;
+        height: 300px;
+    }    
+}
+
+@media screen and (max-width: 820px)
+{
+    .shadowContainer {
+        display: none;
+    }    
+    .regular {
+        height: 36px;
+        width: 36px;   
+    }
+}
