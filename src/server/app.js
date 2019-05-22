@@ -26,11 +26,6 @@ async function stop() {
 
 start();
 
-/**
- * TODO :
- * - Handle different rooms
- */
-
 module.exports = {
 	start,
 	stop,
