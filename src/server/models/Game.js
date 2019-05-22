@@ -1,11 +1,5 @@
 const Player = require('./Player');
-/**
- * STATES:
- * - connected
- * - started
- * - ended
- * - paused ?
- */
+
 module.exports = class Game {
 	constructor(master, room) {
 		this.phase = 'connected';
