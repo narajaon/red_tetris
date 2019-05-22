@@ -1,7 +1,7 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import { restart as style } from '../style/tetris.module.css';
-import { innerContainer, buttoneon1, buttoneon2 } from '../style/restart.module.css';
+import { innerContainer, buttonBlue, buttonPink } from '../style/restart.module.css';
 
 const Restart = ({ restartHandler, quitHandler }) => {
 	return (
@@ -11,8 +11,8 @@ const Restart = ({ restartHandler, quitHandler }) => {
 		>
 		<div className={ innerContainer }>
 			<div>GAME OVER</div>
-			<button className={ buttoneon1 } onClick={ restartHandler } autoFocus><span>RESTART</span></button>
-			<button className={ buttoneon2 } onClick={ quitHandler }><span>QUIT</span></button>
+			<button className={ buttonBlue } onClick={ restartHandler } autoFocus><span>RESTART</span></button>
+			<button className={ buttonPink } onClick={ quitHandler }><span>QUIT</span></button>
 			</div>
 		</div>
 	);

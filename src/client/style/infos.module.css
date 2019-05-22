@@ -1,0 +1,42 @@
+.infocolor {
+    color:#f0f;
+    text-shadow: 0 0 10px #f0f;
+}
+
+.scored {
+    border: 10px solid #f0f;
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    margin: 50px auto;  
+    background: rgba(0,0,0,0.4);
+    box-shadow:  
+    0 0 20px #f0f,
+    inset 0 0 20px #f0f;
+    display: flex;
+    align-items: center;				
+    justify-content: center;				
+    text-shadow:  
+    0 0 10px #0ff;
+    color:#0ff;  
+    font-size: 60px!important;    
+}
+
+/*** Responsive Desktop ***/
+
+@media all and (min-width: 620px) and (max-width: 1280px)
+{
+    .scored {
+        width: 100px;
+        height: 100px;
+        margin: 20px auto 0;
+        font-size: 40px!important;  
+    }
+}
+
+@media screen and (max-width: 620px)
+{
+    .scored {
+        display: none;
+    }    
+}
