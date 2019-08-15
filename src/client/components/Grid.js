@@ -5,14 +5,16 @@ import styled, { css } from 'styled-components';
 import uuid from 'uuid';
 
 import { DEBOUNCE_VAL } from '../constants';
+import { tileStates, tileTypes } from '../style/Grid';
 
-const Tile = ({ content, isMain }) => {
+const Tile = ({ content, type }) => {
+	
 	return (
 		<StyledTile
 			content={content}
-			isMain={isMain}
+			type={type}
 			data-jest="tile"
-		></StyledTile>
+		/>
 	);
 };
 
@@ -23,7 +25,7 @@ const keyHandler = (handler) => {
 	}) : () => null;
 };
 
-const Grid = ({ keyPressHandler, grid, placed, containerStyle, player }) => {
+const Grid = ({ keyPressHandler, grid, placed, player, type }) => {
 	const [contentRef, setRef] = useState(null);
 
 	useEffect(() => {
@@ -50,6 +52,7 @@ const Grid = ({ keyPressHandler, grid, placed, containerStyle, player }) => {
 							<Tile
 								key={ uuid() }
 								content={ tile }
+								type={ type }
 							/>
 						));
 					})
@@ -59,40 +62,9 @@ const Grid = ({ keyPressHandler, grid, placed, containerStyle, player }) => {
 	);
 };
 
-
-// TODO : transform states into array
-const tileStates = {
-	isEmpty: css`
-	    background-color: rgba(255,255,255,0.1);
-	`,
-	isFull: css`
-	    opacity: 1;
-	`,
-	isPlaced: css`
-		opacity: 1;
-	`,
-	isBlocked: css`
-	    background:${({theme}) => theme.colors.secondary};
-    	box-shadow: 0 0 10px ${({theme}) => theme.colors.secondary};
-	`,
-};
-
-const tileTypes = {
-	shadow: css`
-		height: 10px;
-		width: 10px;
-	`,
-	regular: css`
-	    height: 30px;
-		width: 30px;
-		background:${({theme}) => theme.colors.main};
-    	box-shadow: 0 0 10px ${({theme}) => theme.colors.main};
-	`,
-};
-
 const StyledTile = styled.div`
+	${({ type }) => tileTypes[type]}
 	${({ content }) => tileStates[content]}
-	${({ isMain }) => isMain ? tileTypes.regular : tileTypes.shadow}
 	border: 1px solid black;
 `;
 

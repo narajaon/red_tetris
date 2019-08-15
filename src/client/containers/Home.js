@@ -114,6 +114,7 @@ const Home = (props) => {
 					quitHandler: disconnectPlayer,
 					containerStyle,
 					placed: pieces ? '' : placed,
+					type: 'regular'
 				})
 			}
 		</div>

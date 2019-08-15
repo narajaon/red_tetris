@@ -60,9 +60,14 @@ const Aside = ({ top = defaultGrid, bottom = defaultGrid, infos, currentPlayer, 
 					tileStyle: tileClasses,
 					score,
 					player: top.name,
+					type: 'shadow'
 				})
 			}
-			<Grid grid={ bottom.grid } tileStyle={ tileClasses } containerStyle={ containerStyle } player={ bottom.name }/>
+			<Grid
+				grid={ bottom.grid }
+				tileStyle={ tileClasses }
+				type="shadow"
+				player={ bottom.name }/>
 		</div>
 	);
 };

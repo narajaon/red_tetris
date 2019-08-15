@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { withRouter, Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import styled, { css } from 'styled-components';
 
 import Home from './Home';
 import Login from './LoginV2';
@@ -41,18 +42,28 @@ const Tetris = ({ player2, player3, player4, listenToPhases, resetSocket }) => {
 	}, []);
 
 	return (
-		<Container flexed>
-			<Aside infos bottom={ player2 }/>
-			<Container color="blue" flexed>
-				<Switch>
-					<Route exact path="/" component={ Home } />
-					<Route path="/login" component={ Login } />
-				</Switch>
-			</Container>
-			<Aside top={ player3 } bottom={ player4 }/>
-		</Container>
+		<Wrapper flexed justify="center">
+			<StyledContainer flexed justify="space-between">
+				<Aside infos bottom={ player2 }/>
+				<Container color="blue" flexed>
+					<Switch>
+						<Route exact path="/" component={ Home } />
+						<Route path="/login" component={ Login } />
+					</Switch>
+				</Container>
+				<Aside top={ player3 } bottom={ player4 }/>
+			</StyledContainer>
+		</Wrapper>
 	);
 };
+
+const Wrapper = styled(Container)`
+	height: 100%;
+`;
+
+const StyledContainer = styled(Container)`
+	width: 90%;
+`;
 
 Tetris.propTypes = {
 	player2: PropTypes.object,
