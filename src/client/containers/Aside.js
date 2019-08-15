@@ -48,25 +48,21 @@ const Aside = ({ top = defaultGrid, bottom = defaultGrid, infos, currentPlayer, 
 	};
 	
 	return (
-		<div className={ aside }>
-			<div className={ content }>
-				{
-					renderInfos(infos, {
-						currentPlayer,
-						players,
-						gameMaster,
-						grid: top.grid,
-						room,
-						containerStyle,
-						tileStyle: tileClasses,
-						score,
-						player: top.name,
-					})
-				}
-			</div>
-			<div className={ content }>
-				<Grid grid={ bottom.grid } tileStyle={ tileClasses } containerStyle={ containerStyle } player={ bottom.name }/>
-			</div>
+		<div>
+			{
+				renderInfos(infos, {
+					currentPlayer,
+					players,
+					gameMaster,
+					grid: top.grid,
+					room,
+					containerStyle,
+					tileStyle: tileClasses,
+					score,
+					player: top.name,
+				})
+			}
+			<Grid grid={ bottom.grid } tileStyle={ tileClasses } containerStyle={ containerStyle } player={ bottom.name }/>
 		</div>
 	);
 };

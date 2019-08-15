@@ -1,36 +1,42 @@
 import { withRouter } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { PropTypes } from 'prop-types';
-import { container, box, buttonBlue } from '../style/loginForm.module.css';
+import styled, { css } from 'styled-components';
+import { Container } from '../style/Layouts';
 
 const LoginForm = ({ logToGame, history }) => {
 	const [ credentials, setCredentials ] = useState({ name: '', room: ''});
 
-	function handleLogin(e) {
-		setCredentials({ ...credentials, name: e.target.value.trim() });
-	}
-
-	function handleRoom(e) {
-		setCredentials({ ...credentials, room: e.target.value.trim() });
-	}
+	const updateInputField = useCallback((inputField) => (e) => {
+		setCredentials({ ...credentials, [inputField]: e.target.value.trim() });
+	}, [credentials]);
 
 	return (
-		<div>
-			<h1>TET<span>R</span>IS</h1>
+		<Container>
+			<StyledTitle>TET<StyledR>R</StyledR>IS</StyledTitle>
 			<form
 				onSubmit={ logToGame(credentials, history) }
 			>
-			<div className={ container }>
-				<div className={ box }>
-					<input data-jest="name" autoFocus type="text" onChange={ handleLogin } placeholder="name"/>
-					<input data-jest="room" type="text" onChange={ handleRoom } placeholder="room"/>
-					<button className={ buttonBlue } data-jest="submit"><span>Start</span></button>
-				</div>
-			</div>
+				<Container flexed direction="column">
+					<input data-jest="name" autoFocus type="text" onChange={ updateInputField('name') } placeholder="name"/>
+					<input data-jest="room" type="text" onChange={ updateInputField('room') } placeholder="room"/>
+					<button data-jest="submit">Start</button>
+				</Container>
 			</form>
-		</div>
+		</Container>
 	);
 };
+
+const StyledTitle = styled.h1`
+	text-align: center;
+    text-shadow: 0 0 10px ${({ theme }) => theme.colors.main};
+    color: ${({ theme }) => theme.colors.main};
+`;
+
+const StyledR = styled.span`
+	color:${({ theme }) => theme.colors.secondary};
+    text-shadow: 0 0 10px ${({ theme }) => theme.colors.secondary};		
+`;
 
 LoginForm.propTypes = {
 	logToGame: PropTypes.func,

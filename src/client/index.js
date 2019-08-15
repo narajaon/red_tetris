@@ -3,16 +3,17 @@ import { render } from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
+import { ThemeProvider } from 'styled-components';
 import thunk from 'redux-thunk';
 
-import Tetris from './containers/Tetris';
+import Tetris from './containers/TetrisV2';
 import * as serviceWorker from './serviceWorker';
 import rootReducer from './rootReducer';
-
 import handleSocket from './middlewares/handleSocket';
 import hijackTranslate from './middlewares/hijackTranlate';
 import handleErrors from './middlewares/handleErrors';
 import endGame from './middlewares/endGame';
+import theme from './style/theme';
 
 // DECOMMENT FOR DEBUGGING PURPOSES
 // const logger = currentStore => next => action => {
@@ -62,7 +63,9 @@ Object.assign(document.getElementById('root').style, {
 render(
 	<Provider store={ store }>
 		<BrowserRouter>
-			<Tetris />
+			<ThemeProvider theme={theme}>
+				<Tetris />
+			</ThemeProvider>
 		</BrowserRouter>
 	</Provider>, document.getElementById('root')
 );
