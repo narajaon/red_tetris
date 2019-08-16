@@ -106,18 +106,14 @@ const Home = (props) => {
 	};
 
 	return (
-		<div className={ style }>
-			{
-				displayContent(isAllowed, phase, {
-					...props,
-					tileStyle: tileClasses,
-					quitHandler: disconnectPlayer,
-					containerStyle,
-					placed: pieces ? '' : placed,
-					type: 'regular'
-				})
-			}
-		</div>
+		displayContent(isAllowed, phase, {
+			...props,
+			tileStyle: tileClasses,
+			quitHandler: disconnectPlayer,
+			containerStyle,
+			placed: pieces ? '' : placed,
+			type: 'regular'
+		})
 	);
 };
 

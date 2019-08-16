@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { PropTypes } from 'prop-types';
 import { debounce } from 'lodash';
 import styled, { css } from 'styled-components';
@@ -32,18 +32,19 @@ const Grid = ({ keyPressHandler, grid, placed, player, type }) => {
 		if (contentRef) {
 			contentRef.focus();
 		}
-	});
+	}, [contentRef]);
+
+	const handler = keyHandler(keyPressHandler);
+	const refSetter = useCallback(element => setRef(element), [contentRef]);
 
 	return (
 		<div>
 			{player && <span>{ player }</span>}
 			<StyledGrid
 				tabIndex={ keyPressHandler ? 0 : '' }
-				onKeyDown={ keyHandler(keyPressHandler) }
-				onKeyPress={ keyHandler(keyPressHandler) }
-				ref={ element => {
-					setRef(element);
-				}}
+				onKeyDown={ handler }
+				onKeyPress={ handler }
+				ref={ refSetter }
 				data-jest="grid"
 			>
 				{
@@ -65,7 +66,6 @@ const Grid = ({ keyPressHandler, grid, placed, player, type }) => {
 const StyledTile = styled.div`
 	${({ type }) => tileTypes[type]}
 	${({ content }) => tileStates[content]}
-	border: 1px solid black;
 `;
 
 const StyledGrid = styled.div`

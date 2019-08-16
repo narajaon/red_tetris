@@ -20,12 +20,9 @@ const Queue = ({ players, startGame }) => {
 			}}
 			onKeyDown={ startGame }
 			data-jest="queue"
-			className={ style }
 		>
-					<div className={ innerContainer }>
 			<div>Current players :<br></br> { players.length } / 4</div>
 			<div>Press <span>SPACE</span> to begin the game</div>
-		</div>
 		</div>
 	);
 };
