@@ -39,13 +39,11 @@ export const GridWrapper = forwardRef((props, ref) => {
 	);
 });
 
-GridWrapper.displayName = 'GridWrapper';
-
 const StyledTile = styled.div`
 	${({ type }) => tileTypes[type]}
 	${({ content }) => tileStates[content]}
 	box-sizing: border-box;
-`;
+	`;
 
 const StyledGrid = styled.div`
 	display: grid;
@@ -54,7 +52,7 @@ const StyledGrid = styled.div`
 	width: fit-content;
 	border: 1px solid black;
 	box-sizing: border-box;
-`;
+	`;
 
 GridWrapper.propTypes = {
 	keyPressHandler: PropTypes.func,
@@ -64,3 +62,5 @@ GridWrapper.propTypes = {
 	placed: PropTypes.string,
 	player: PropTypes.string,
 };
+
+GridWrapper.displayName = 'GridWrapper';
