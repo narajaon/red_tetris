@@ -5,9 +5,27 @@ import styled, { css } from 'styled-components';
 
 import { tileStates, tileTypes } from '../style/Grid';
 
-const Grid = forwardRef((props, ref) => {
-	const { keyPressHandler, grid, placed, player, type } = props;
+export const Grid = ({ grid, type }) => {
 	console.log('grid', type);
+
+	return (
+		<StyledGrid data-jest="grid">
+			{grid.map((elem) => {
+				return elem.map((tile, index) => (
+					<StyledTile
+						key={type + index}
+						content={tile}
+						type={type}
+						data-jest="tile"
+					/>
+				));
+			})}
+		</StyledGrid>
+	);
+};
+
+export const GridWrapper = forwardRef((props, ref) => {
+	const { keyPressHandler, grid, placed, player, type } = props;
 
 	return (
 		<div
@@ -16,26 +34,12 @@ const Grid = forwardRef((props, ref) => {
 			onKeyDown={ keyPressHandler }
 			onKeyPress={ keyPressHandler }
 		>
-			{player && <span>{ player }</span>}
-			<StyledGrid
-				data-jest="grid"
-			>
-				{grid.map((elem) => {
-					return elem.map((tile, index) => (
-						<StyledTile
-							key={type + index}
-							content={tile}
-							type={type}
-							data-jest="tile"
-						/>
-					));
-				})}
-			</StyledGrid>
+			<Grid grid={grid} type={type} />
 		</div>
 	);
 });
 
-Grid.displayName = 'Grid';
+GridWrapper.displayName = 'GridWrapper';
 
 const StyledTile = styled.div`
 	${({ type }) => tileTypes[type]}
@@ -60,5 +64,3 @@ Grid.propTypes = {
 	placed: PropTypes.string,
 	player: PropTypes.string,
 };
-
-export default Grid;

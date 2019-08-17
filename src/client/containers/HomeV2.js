@@ -7,7 +7,7 @@ import _ from 'lodash';
 import { listenToNewPiece, emitGameStart, emitPhaseSwitch, listenToAddBlocks } from '../actions/Socket';
 import { rotatePiece, translatePiece } from '../actions/Grid';
 import { KEYS, PHASES, DEBOUNCE_VAL } from '../constants';
-import Grid from '../components/Grid';
+import { GridWrapper as Grid } from '../components/Grid';
 import Restart from '../components/Restart';
 import Queue from '../components/Queue';
 
@@ -23,28 +23,22 @@ const mapStateToProps = ({ gridReducer, gameReducer }) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		keyPressHandler:
-		// _.debounce(
-			(event) => {
-				switch (event.keyCode) {
-				case KEYS.R:
-					dispatch(rotatePiece());
-					break;
-				case KEYS.LEFT:
-					dispatch(translatePiece({x: -1, y: 0}));
-					break;
-				case KEYS.RIGHT:
-					dispatch(translatePiece({x: 1, y: 0}));
-					break;
-				case KEYS.DOWN:
-					dispatch(translatePiece({x: 0, y: 1}));
-					break;
-				}
-			},
-		// DEBOUNCE_VAL, {
-		// 	leading: true,
-		// 	trailing: false
-		// }),
+		keyPressHandler: (event) => {
+			switch (event.keyCode) {
+			case KEYS.R:
+				dispatch(rotatePiece());
+				break;
+			case KEYS.LEFT:
+				dispatch(translatePiece({x: -1, y: 0}));
+				break;
+			case KEYS.RIGHT:
+				dispatch(translatePiece({x: 1, y: 0}));
+				break;
+			case KEYS.DOWN:
+				dispatch(translatePiece({x: 0, y: 1}));
+				break;
+			}
+		},
 		setupGame: () => {
 			dispatch(listenToNewPiece());
 			dispatch(listenToAddBlocks());

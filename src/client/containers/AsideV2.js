@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import Grid from '../components/Grid';
+import { Grid } from '../components/Grid';
 import { initGrid } from '../helpers/Grid';
 import Infos from '../components/Infos';
 
@@ -20,32 +20,25 @@ const mapStateToProps = ({ gameReducer, gridReducer }) => {
 	};
 };
 
-const mapDispatchToProps = dispatch => {
-	return {
-	};
-};
-
-const defaultGrid = { grid: initGrid() };
+const defaultGrid = () => ({ grid: initGrid() });
 
 const Aside = (props) => {
-	const { top = defaultGrid, bottom = defaultGrid, infos, currentPlayer, room, players, gameMaster, score } = props;
+	const { top = defaultGrid(), bottom = defaultGrid(), infos, currentPlayer, room, players, gameMaster, score } = props;
 
 	return (
 		<div>
-			{
-				infos ?
-					<Infos
-						currentPlayer={currentPlayer}
-						gameMaster={gameMaster}
-						room={room}
-						players={players}
-						score={score}
-					/> :
-					<Grid
-						grid={ top.grid }
-						type="shadow"
-						player={ currentPlayer }/>
-			}
+			{infos ?
+				<Infos
+					currentPlayer={currentPlayer}
+					gameMaster={gameMaster}
+					room={room}
+					players={players}
+					score={score}
+				/> :
+				<Grid
+					grid={ top.grid }
+					type="shadow"
+					player={ currentPlayer }/>}
 			<Grid
 				grid={ bottom.grid }
 				type="shadow"
@@ -65,4 +58,4 @@ Aside.propTypes = {
 	score: PropTypes.object,
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Aside));
+export default withRouter(connect(mapStateToProps)(Aside));

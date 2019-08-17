@@ -22,7 +22,7 @@ const actions = {
 	'update-players' : (state, { players }) => {
 		return {
 			...state,
-			players: [ ...players ],
+			players,
 			gameMaster: players.find(({ isMaster }) => isMaster),
 		};
 	},
