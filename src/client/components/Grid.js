@@ -29,8 +29,8 @@ export const GridWrapper = forwardRef((props, ref) => {
 
 	return (
 		<div
-			ref={ref}
-			tabIndex={ type === 'regular' ? 0 : '' }
+			ref={ ref }
+			tabIndex="0"
 			onKeyDown={ keyPressHandler }
 			onKeyPress={ keyPressHandler }
 		>
@@ -56,7 +56,7 @@ const StyledGrid = styled.div`
 	box-sizing: border-box;
 `;
 
-Grid.propTypes = {
+GridWrapper.propTypes = {
 	keyPressHandler: PropTypes.func,
 	grid: PropTypes.array,
 	tileStyle: PropTypes.array,
