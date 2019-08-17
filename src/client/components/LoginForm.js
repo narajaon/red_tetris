@@ -7,7 +7,6 @@ import { Container } from '../style/Layouts';
 const LoginForm = ({ logToGame, history }) => {
 	const [ credentials, setCredentials ] = useState({ name: '', room: ''});
 	console.log('loginForm');
-	
 
 	const updateInputField = useCallback((inputField) => (e) => {
 		setCredentials({ ...credentials, [inputField]: e.target.value.trim() });

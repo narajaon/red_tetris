@@ -1,46 +1,23 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useRef, forwardRef } from 'react';
 import { PropTypes } from 'prop-types';
 import _ from 'lodash';
 import styled, { css } from 'styled-components';
-import uuid from 'uuid';
 
-import { DEBOUNCE_VAL } from '../constants';
 import { tileStates, tileTypes } from '../style/Grid';
 
-const keyHandler = (handler) => {
-	return handler ? _.debounce(handler, DEBOUNCE_VAL, {
-		'leading': true,
-		'trailing': false
-	}) : () => null;
-};
-
-const Grid = (props) => {
+const Grid = forwardRef((props, ref) => {
 	const { keyPressHandler, grid, placed, player, type } = props;
-
-	console.log('grid', props);
-	const [contentRef, setRef] = useState(null);
-
-	useEffect(() => {	
-		if (contentRef && type === 'regular') {
-			contentRef.focus();
-		}
-	}, []);
-
-	const handler = keyHandler(keyPressHandler);
-	const refSetter = useCallback(element => {
-		if (type === 'regular') {
-			setRef(element);
-		}
-	}, []);
+	console.log('grid', type);
 
 	return (
-		<div>
+		<div
+			ref={ref}
+			tabIndex={ type === 'regular' ? 0 : '' }
+			onKeyDown={ keyPressHandler }
+			onKeyPress={ keyPressHandler }
+		>
 			{player && <span>{ player }</span>}
 			<StyledGrid
-				tabIndex={ keyPressHandler ? 0 : '' }
-				onKeyDown={ handler }
-				onKeyPress={ handler }
-				ref={ refSetter }
 				data-jest="grid"
 			>
 				{grid.map((elem) => {
@@ -56,13 +33,14 @@ const Grid = (props) => {
 			</StyledGrid>
 		</div>
 	);
-};
+});
+
+Grid.displayName = 'Grid';
 
 const StyledTile = styled.div`
 	${({ type }) => tileTypes[type]}
 	${({ content }) => tileStates[content]}
 	box-sizing: border-box;
-	border: 1px solid black;
 `;
 
 const StyledGrid = styled.div`

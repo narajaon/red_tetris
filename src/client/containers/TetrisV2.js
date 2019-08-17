@@ -36,11 +36,11 @@ const mapDispatchToProps = (dispatch) => {
 
 const Tetris = ({ player2, player3, player4, listenToPhases, resetSocket }) => {
 	console.log('tetris');
-
+	
 	useEffect(() => {
-		initDocStyle();
 		listenToPhases();
-
+		initDocStyle();
+		
 		return resetSocket;
 	}, []);
 

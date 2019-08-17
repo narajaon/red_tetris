@@ -9,10 +9,10 @@ const Restart = ({ restartHandler, quitHandler }) => {
 			className={ style }
 			data-jest="restart"
 		>
-		<div className={ innerContainer }>
-			<div>GAME OVER</div>
-			<button className={ buttonBlue } onClick={ restartHandler } autoFocus><span>RESTART</span></button>
-			<button className={ buttonPink } onClick={ quitHandler }><span>QUIT</span></button>
+			<div className={ innerContainer }>
+				<div>GAME OVER</div>
+				<button className={ buttonBlue } onClick={ restartHandler } autoFocus><span>RESTART</span></button>
+				<button className={ buttonPink } onClick={ quitHandler }><span>QUIT</span></button>
 			</div>
 		</div>
 	);

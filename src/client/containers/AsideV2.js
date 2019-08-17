@@ -29,7 +29,6 @@ const defaultGrid = { grid: initGrid() };
 
 const Aside = (props) => {
 	const { top = defaultGrid, bottom = defaultGrid, infos, currentPlayer, room, players, gameMaster, score } = props;
-	// console.log('aside', props);
 
 	return (
 		<div>
