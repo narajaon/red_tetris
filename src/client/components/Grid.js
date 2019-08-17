@@ -1,41 +1,37 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { PropTypes } from 'prop-types';
-import { debounce } from 'lodash';
+import _ from 'lodash';
 import styled, { css } from 'styled-components';
 import uuid from 'uuid';
 
 import { DEBOUNCE_VAL } from '../constants';
 import { tileStates, tileTypes } from '../style/Grid';
 
-const Tile = ({ content, type }) => {
-	
-	return (
-		<StyledTile
-			content={content}
-			type={type}
-			data-jest="tile"
-		/>
-	);
-};
-
 const keyHandler = (handler) => {
-	return handler ? debounce(handler, DEBOUNCE_VAL, {
+	return handler ? _.debounce(handler, DEBOUNCE_VAL, {
 		'leading': true,
 		'trailing': false
 	}) : () => null;
 };
 
-const Grid = ({ keyPressHandler, grid, placed, player, type }) => {
+const Grid = (props) => {
+	const { keyPressHandler, grid, placed, player, type } = props;
+
+	console.log('grid', props);
 	const [contentRef, setRef] = useState(null);
 
-	useEffect(() => {
-		if (contentRef) {
+	useEffect(() => {	
+		if (contentRef && type === 'regular') {
 			contentRef.focus();
 		}
-	}, [contentRef]);
+	}, []);
 
 	const handler = keyHandler(keyPressHandler);
-	const refSetter = useCallback(element => setRef(element), [contentRef]);
+	const refSetter = useCallback(element => {
+		if (type === 'regular') {
+			setRef(element);
+		}
+	}, []);
 
 	return (
 		<div>
@@ -47,17 +43,16 @@ const Grid = ({ keyPressHandler, grid, placed, player, type }) => {
 				ref={ refSetter }
 				data-jest="grid"
 			>
-				{
-					grid.map((elem) => {
-						return elem.map(tile => (
-							<Tile
-								key={ uuid() }
-								content={ tile }
-								type={ type }
-							/>
-						));
-					})
-				}
+				{grid.map((elem) => {
+					return elem.map((tile, index) => (
+						<StyledTile
+							key={type + index}
+							content={tile}
+							type={type}
+							data-jest="tile"
+						/>
+					));
+				})}
 			</StyledGrid>
 		</div>
 	);
@@ -66,14 +61,17 @@ const Grid = ({ keyPressHandler, grid, placed, player, type }) => {
 const StyledTile = styled.div`
 	${({ type }) => tileTypes[type]}
 	${({ content }) => tileStates[content]}
+	box-sizing: border-box;
+	border: 1px solid black;
 `;
 
 const StyledGrid = styled.div`
 	display: grid;
 	grid-template-columns: repeat(10, min-content);
-	grid-gap: 0px;
-	border: 1px solid black;
+	grid-gap: 1px;
 	width: fit-content;
+	border: 1px solid black;
+	box-sizing: border-box;
 `;
 
 Grid.propTypes = {
@@ -83,12 +81,6 @@ Grid.propTypes = {
 	containerStyle: PropTypes.string,
 	placed: PropTypes.string,
 	player: PropTypes.string,
-};
-
-Tile.propTypes = {
-	style: PropTypes.array,
-	content: PropTypes.number,
-	isMain: PropTypes.bool,
 };
 
 export default Grid;

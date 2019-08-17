@@ -11,7 +11,7 @@ import {
 	removeFullLines,
 	updateGridWithScore,
 	generateBlockedLines,
-	clone2DGrid,
+	addBlockedLines,
 } from '../helpers/Grid';
 
 const initState = {
@@ -26,22 +26,6 @@ const initState = {
 		garbage: 0,
 	}
 };
-
-function addBlockedLines(grid, blocked, garbage) {
-	const updated = clone2DGrid(blocked);
-	let i = grid.length - 1;
-	let j = blocked.length - 1 - garbage;
-
-	for (j; j >= 0; j -= 1) {
-		grid[i].forEach((elem, index) => {
-			updated[j][index] = elem;
-		});
-
-		i -= 1;
-	}
-
-	return updated;
-}
 
 const actions = {
 	'reset-grid' : () => {

@@ -1,23 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { PropTypes } from 'prop-types';
 import { queue as style } from '../style/tetris.module.css';
 import { innerContainer } from '../style/queue.module.css';
 
 const Queue = ({ players, startGame }) => {
 	const [contentRef, setRef] = useState(null);
+	const refSetter = useCallback(element => setRef(element), []);
 
 	useEffect(() => {
 		if (contentRef) {
 			contentRef.focus();
 		}
-	});
+	}, [contentRef]);
 
 	return (
 		<div
 			tabIndex="0"
-			ref={ element => {
-				setRef(element);
-			}}
+			ref={refSetter}
 			onKeyDown={ startGame }
 			data-jest="queue"
 		>

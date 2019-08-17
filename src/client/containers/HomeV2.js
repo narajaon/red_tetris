@@ -10,9 +10,6 @@ import Grid from '../components/Grid';
 import Restart from '../components/Restart';
 import Queue from '../components/Queue';
 
-import { regular, isEmpty, isPlaced, isFull, isBlocked , placed, container as containerStyle } from '../style/grid.module.css';
-import { home as style } from '../style/tetris.module.css';
-
 const mapStateToProps = ({ gridReducer, gameReducer }) => {
 	return {
 		grid: gridReducer.grid,
@@ -60,12 +57,24 @@ const mapDispatchToProps = (dispatch) => {
 	};
 };
 
-const tileClasses = [
-	`${regular} ${isEmpty}`,
-	`${regular} ${isFull}`,
-	`${regular} ${isPlaced}`,
-	`${regular} ${isBlocked}`,
-];
+const displayContent = (playerIsAllowed, gamePhase, mainProps) => {
+	if (gamePhase === PHASES.CONNECTED){
+		return (<Queue players={mainProps.players} startGame={mainProps.startGame}/>);
+	}
+
+	if (!playerIsAllowed || gamePhase === PHASES.ARRIVED) {
+		return (<Redirect to="/login" />);
+	}
+
+	if (gamePhase === PHASES.ENDED){
+		return (<Restart { ...mainProps } />);
+	}
+
+	return (
+		<Grid { ...mainProps } />
+	);
+};
+
 
 const Home = (props) => {
 	const {
@@ -74,6 +83,7 @@ const Home = (props) => {
 		history,
 		disconnectPlayer,
 		pieces,
+		placed
 	} = props;
 
 	const [isAllowed, setIsAllowed] = useState(true);
@@ -87,30 +97,10 @@ const Home = (props) => {
 		};
 	}, [history.location]);
 
-	const displayContent = (playerIsAllowed, gamePhase, mainProps) => {
-		if (gamePhase === PHASES.CONNECTED){
-			return (<Queue { ...mainProps } />);
-		}
-
-		if (!playerIsAllowed || gamePhase === PHASES.ARRIVED) {
-			return (<Redirect to="/login" />);
-		}
-
-		if (gamePhase === PHASES.ENDED){
-			return (<Restart { ...mainProps } />);
-		}
-
-		return (
-			<Grid { ...mainProps } />
-		);
-	};
-
 	return (
 		displayContent(isAllowed, phase, {
 			...props,
-			tileStyle: tileClasses,
 			quitHandler: disconnectPlayer,
-			containerStyle,
 			placed: pieces ? '' : placed,
 			type: 'regular'
 		})

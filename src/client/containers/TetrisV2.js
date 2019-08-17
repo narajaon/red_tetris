@@ -4,19 +4,19 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 
-import Home from './Home';
+import Home from './HomeV2';
 import Login from './LoginV2';
-import Aside from './Aside';
-
+import Aside from './AsideV2';
 import { listenToPhaseSwitch, emitPhaseSwitch } from '../actions/Socket';
 import { PHASES } from '../constants';
 import { Container } from '../style/Layouts';
+import { initDocStyle } from '../style/Tetris';
 
 const mapStateToProps = ({ gameReducer }) => {
 	const { players, currentPlayer } = gameReducer;
 	const otherPlayers = players.filter(player => player.name !== currentPlayer);
 	const [ player2, player3, player4 ] = otherPlayers;
-	
+
 	return {
 		player2,
 		player3,
@@ -35,9 +35,12 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const Tetris = ({ player2, player3, player4, listenToPhases, resetSocket }) => {
+	console.log('tetris');
+
 	useEffect(() => {
+		initDocStyle();
 		listenToPhases();
-		
+
 		return resetSocket;
 	}, []);
 
@@ -45,12 +48,12 @@ const Tetris = ({ player2, player3, player4, listenToPhases, resetSocket }) => {
 		<Wrapper flexed justify="center">
 			<StyledContainer flexed justify="space-between">
 				<Aside infos bottom={ player2 }/>
-				<Container color="blue" flexed>
+				<StyledMain color="blue" flexed>
 					<Switch>
 						<Route exact path="/" component={ Home } />
 						<Route path="/login" component={ Login } />
 					</Switch>
-				</Container>
+				</StyledMain>
 				<Aside top={ player3 } bottom={ player4 }/>
 			</StyledContainer>
 		</Wrapper>
@@ -62,7 +65,11 @@ const Wrapper = styled(Container)`
 `;
 
 const StyledContainer = styled(Container)`
-	width: 90%;
+	/* width: 90%; */
+`;
+
+const StyledMain = styled(Container)`
+	/* flex: 1; */
 `;
 
 Tetris.propTypes = {

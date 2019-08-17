@@ -7,10 +7,6 @@ import Grid from '../components/Grid';
 import { initGrid } from '../helpers/Grid';
 import Infos from '../components/Infos';
 
-import { shadow, isEmpty, isPlaced, isFull, isBlocked, shadowContainer as containerStyle } from '../style/grid.module.css';
-import { content } from '../style/aside.module.css';
-import { aside } from '../style/tetris.module.css';
-
 const mapStateToProps = ({ gameReducer, gridReducer }) => {
 	const { currentPlayer, room, players, gameMaster } = gameReducer;
 	const { score } = gridReducer;
@@ -24,48 +20,35 @@ const mapStateToProps = ({ gameReducer, gridReducer }) => {
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
 	return {
 	};
 };
 
 const defaultGrid = { grid: initGrid() };
 
-const tileClasses = [
-	`${shadow} ${isEmpty}`,
-	`${shadow} ${isFull}`,
-	`${shadow} ${isPlaced}`,
-	`${shadow} ${isBlocked}`,
-];
+const Aside = (props) => {
+	const { top = defaultGrid, bottom = defaultGrid, infos, currentPlayer, room, players, gameMaster, score } = props;
+	// console.log('aside', props);
 
-const Aside = ({ top = defaultGrid, bottom = defaultGrid, infos, currentPlayer, room, players, gameMaster, score }) => {
-	const renderInfos = (infoComponent, props) => {
-		if (infoComponent) {
-			return (<Infos { ...props } />);
-		}
-
-		return (<Grid { ...props } />);
-	};
-	
 	return (
 		<div>
 			{
-				renderInfos(infos, {
-					currentPlayer,
-					players,
-					gameMaster,
-					grid: top.grid,
-					room,
-					containerStyle,
-					tileStyle: tileClasses,
-					score,
-					player: top.name,
-					type: 'shadow'
-				})
+				infos ?
+					<Infos
+						currentPlayer={currentPlayer}
+						gameMaster={gameMaster}
+						room={room}
+						players={players}
+						score={score}
+					/> :
+					<Grid
+						grid={ top.grid }
+						type="shadow"
+						player={ currentPlayer }/>
 			}
 			<Grid
 				grid={ bottom.grid }
-				tileStyle={ tileClasses }
 				type="shadow"
 				player={ bottom.name }/>
 		</div>

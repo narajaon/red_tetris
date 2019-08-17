@@ -2,10 +2,10 @@ import { PHASES } from '../constants';
 
 const initState = {
 	players: [],
-	currentPlayer: null,
-	gameMaster: null,
+	currentPlayer: undefined,
+	gameMaster: undefined,
 	phase: PHASES.ARRIVED,
-	room: null,
+	room: undefined,
 };
 
 const actions = {

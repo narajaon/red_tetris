@@ -73,6 +73,6 @@ export const TETRIS = [
 
 export const serverURI = 'http://localhost:8080/';
 
-export const DEBOUNCE_VAL = 50;
+export const DEBOUNCE_VAL = 400;
 
 export const GRAVITY_VAL = 800;

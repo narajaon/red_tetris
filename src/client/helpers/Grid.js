@@ -60,7 +60,7 @@ export function applyRotationTopiece(piece) {
 	const n = piece.length;
 
 	return piece.map((line, y) => {
-		return line.map((col, x) => {
+		return line.map((_col, x) => {
 			return piece[n - x - 1][y];
 		});
 	});
@@ -68,6 +68,22 @@ export function applyRotationTopiece(piece) {
 
 export function removeFullLines(grid) {
 	return grid.filter(lines => lines.some(col => col !== TILE.FULL));
+}
+
+export function addBlockedLines(grid, blocked, garbage) {
+	const updated = clone2DGrid(blocked);
+	let i = grid.length - 1;
+	let j = blocked.length - 1 - garbage;
+
+	for (j; j >= 0; j -= 1) {
+		grid[i].forEach((elem, index) => {
+			updated[j][index] = elem;
+		});
+
+		i -= 1;
+	}
+
+	return updated;
 }
 
 export function updateGridWithScore(filtered) {
@@ -90,7 +106,7 @@ export function canWallKick(grid, origin, piece) {
 	let rotated = clone2DGrid(piece);
 
 	rotated = rotated.map((line, y) => {
-		return line.map((col, x) => {
+		return line.map((_col, x) => {
 			return rotated[n - x - 1][y];
 		});
 	});
@@ -103,7 +119,7 @@ export function wallKick(grid, prevOrigin, newOrigin, piece) {
 	let rotated = clone2DGrid(piece);
 
 	rotated = rotated.map((line, y) => {
-		return line.map((col, x) => {
+		return line.map((_col, x) => {
 			return rotated[n - x - 1][y];
 		});
 	});
@@ -180,7 +196,7 @@ export	function generateBlockedLines(li) {
 	let len = empty.length - 1;
 
 	for (line; line > 0; line -= 1) {
-		empty[len].forEach((elem, i) => {
+		empty[len].forEach((_elem, i) => {
 			empty[len][i] = TILE.BLOCKED;
 		});
 		len -= 1;

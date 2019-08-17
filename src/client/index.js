@@ -16,49 +16,35 @@ import endGame from './middlewares/endGame';
 import theme from './style/theme';
 
 // DECOMMENT FOR DEBUGGING PURPOSES
-// const logger = currentStore => next => action => {
-// 	console.log('dispatching', action);
-// 	let result = next(action);
-// 	console.log('next state', currentStore.getState());
+const logger = currentStore => next => action => {
+	console.warn('dispatching', action);
+	let result = next(action);
+	console.warn('next state', currentStore.getState());
 	
-// 	return result;
-// };
+	return result;
+};
   
-// const crashReporter = () => next => action => {
-// 	try {
-// 		return next(action);
-// 	} catch (err) {
-// 		console.error('Caught an exception!', err);
-// 		throw err;
-// 	}
-// };
+const crashReporter = () => next => action => {
+	try {
+		return next(action);
+	} catch (err) {
+		console.error('Caught an exception!', err);
+		throw err;
+	}
+};
 
 const store = createStore(
 	rootReducer,
 	applyMiddleware(
 		thunk,
-		// logger,
-		// crashReporter,
+		logger,
+		crashReporter,
 		endGame(),
 		handleErrors(),
 		handleSocket(),
 		hijackTranslate(),
 	),
 );
-
-// override default body margin and make tetris take available space
-Object.assign(document.body.style, {
-	margin: '0',
-	height: '100%',
-});
-
-Object.assign(document.documentElement.style, {
-	height: '100%',
-});
-
-Object.assign(document.getElementById('root').style, {
-	height: '100%',
-});
 
 render(
 	<Provider store={ store }>
