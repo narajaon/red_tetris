@@ -36,25 +36,25 @@ const mapDispatchToProps = (dispatch) => {
 
 const Tetris = ({ player2, player3, player4, listenToPhases, resetSocket }) => {
 	console.log('tetris');
-	
+
 	useEffect(() => {
 		listenToPhases();
 		initDocStyle();
-		
+
 		return resetSocket;
 	}, []);
 
 	return (
 		<Wrapper flexed justify="center" align="center">
 			<StyledContainer flexed justify="space-between">
-				<StyledAside flexed direction="column" justify="center" infos bottom={ player2 }/>
-				<StyledMain color="blue" flexed align="center">
+				<Aside infos bottom={ player2 }/>
+				<StyledMain flexed align="center">
 					<Switch>
 						<Route exact path="/" component={ Home } />
 						<Route path="/login" component={ Login } />
 					</Switch>
 				</StyledMain>
-				<StyledAside flexed direction="column" justify="center" top={ player3 } bottom={ player4 }/>
+				<Aside top={ player3 } bottom={ player4 }/>
 			</StyledContainer>
 		</Wrapper>
 	);
@@ -63,21 +63,25 @@ const Tetris = ({ player2, player3, player4, listenToPhases, resetSocket }) => {
 const Wrapper = styled(Container)`
 	height: 100%;
 	width: 100;
-	/* transform: rotateX(60deg) rotateY(0deg) rotateZ(-45deg); */
+	font-family: monaco,Consolas,Lucida Console,monospace;
+	color: ${({ theme }) => theme.colors.main};
+	background-color: ${({ theme }) => theme.colors.background};
+
+	*:focus {
+		outline: none;
+	}
 `;
 
 const StyledContainer = styled(Container)`
-	border: 1px solid black;
-	/* width: 90%; */
+	border: 1px solid ${({ theme }) => theme.colors.main};
+	padding: 30px;
 `;
 
 const StyledMain = styled(Container)`
-	/* flex: 1; */
+	margin: 0 30px;
+	/* border: 1px solid ${({ theme }) => theme.colors.main}; */
 `;
 
-const StyledAside = styled(Aside)`
-	${Flexed}
-`;
 
 Tetris.propTypes = {
 	player2: PropTypes.object,

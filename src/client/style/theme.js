@@ -1,6 +1,10 @@
 export default {
 	colors: {
-		main: '#f0f',
-		secondary: '#0ff'
+		main: '#feffff',
+		// main: '#5ffdff',
+		secondary: '#5ffdff',
+		// secondary: '#feffff',
+		background: 'black',
+		content: '#5ff967',
 	},
 };

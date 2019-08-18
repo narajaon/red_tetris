@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { PropTypes } from 'prop-types';
+import styled, { css } from 'styled-components';
+
 import { queue as style } from '../style/tetris.module.css';
 import { innerContainer } from '../style/queue.module.css';
 
@@ -14,17 +16,30 @@ const Queue = ({ players, startGame }) => {
 	}, []);
 
 	return (
-		<div
+		<StyledQueue
 			tabIndex="0"
 			ref={contentRef}
 			onKeyDown={ startGame }
 			data-jest="queue"
 		>
-			<div>Current players :<br></br> { players.length } / 4</div>
-			<div>Press <span>SPACE</span> to begin the game</div>
-		</div>
+			<div>Current players :</div>
+			<div>{ players.length } / 4</div>
+			<div>Press <StyledSpace /> to begin the game</div>
+		</StyledQueue>
 	);
 };
+
+const StyledQueue = styled.div`
+	text-align: center;
+`;
+
+const StyledSpace = styled.span`
+	text-decoration: underline;
+
+	:after {
+		content: "SPACE";
+	}
+`;
 
 Queue.propTypes = {
 	players: PropTypes.array,

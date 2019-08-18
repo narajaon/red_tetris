@@ -1,5 +1,6 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
+import styled, { css } from 'styled-components';
 
 const getGM = (player, gm, playerList) => {
 	if (!playerList || !gm) return null;
@@ -12,14 +13,22 @@ const Infos = ({ currentPlayer, gameMaster, room, players, score }) => {
 		<div
 			data-jest="infos"
 		>
-			<div>Name: <span> { currentPlayer }</span></div>
-			<div>GM: <span> { getGM(currentPlayer, gameMaster, players) }</span></div>
-			<div>Room: <span> { room }</span></div>
-			<div>Garbage: <span>{ score.garbage }</span></div>
-			<div>{ score.total }</div>
+			<div><StyledLabel label="Name"/>: { currentPlayer }</div>
+			<div><StyledLabel label="GM"/>: { getGM(currentPlayer, gameMaster, players) }</div>
+			<div><StyledLabel label="Room"/>: { room }</div>
+			<div><StyledLabel label="Score" color="#5ff967"/>: { score.total }</div>
+			{players.length > 1 && <div><StyledLabel label="Garbage" color="#ff6d67"/>: { score.garbage }</div>}
 		</div>
 	);
 };
+
+const StyledLabel = styled.span`
+	color: ${({ theme, color }) => color || theme.colors.secondary};
+
+	::before {
+		content: "${({ label }) => label}";
+	}
+`;
 
 Infos.propTypes = {
 	currentPlayer: PropTypes.string,

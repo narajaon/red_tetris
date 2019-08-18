@@ -28,14 +28,14 @@ export const GridWrapper = forwardRef((props, ref) => {
 	const { keyPressHandler, grid, placed, player, type } = props;
 
 	return (
-		<div
+		<StyledWrapper
 			ref={ ref }
 			tabIndex="0"
 			onKeyDown={ keyPressHandler }
 			onKeyPress={ keyPressHandler }
 		>
 			<Grid grid={grid} type={type} />
-		</div>
+		</StyledWrapper>
 	);
 });
 
@@ -45,10 +45,13 @@ const StyledTile = styled.div`
 	box-sizing: border-box;
 `;
 
+const StyledWrapper = styled.div`
+	border-bottom: 1px solid ${({ theme }) => theme.colors.main};
+`;
+
 const StyledGrid = styled.div`
 	display: grid;
 	grid-template-columns: repeat(10, min-content);
-	grid-gap: 1px;
 	width: fit-content;
 	border: 1px solid black;
 	box-sizing: border-box;

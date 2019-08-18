@@ -2,10 +2,12 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import styled, { css } from 'styled-components';
 
 import { Grid } from '../components/Grid';
 import { initGrid } from '../helpers/Grid';
 import Infos from '../components/Infos';
+import { Flexed, Container } from '../style/Layouts';
 
 const mapStateToProps = ({ gameReducer, gridReducer }) => {
 	const { currentPlayer, room, players, gameMaster } = gameReducer;
@@ -23,10 +25,10 @@ const mapStateToProps = ({ gameReducer, gridReducer }) => {
 const defaultGrid = () => ({ grid: initGrid() });
 
 const Aside = (props) => {
-	const { top = defaultGrid(), bottom = defaultGrid(), infos, currentPlayer, room, players, gameMaster, score, className } = props;
+	const { top = defaultGrid(), bottom = defaultGrid(), infos, currentPlayer, room, players, gameMaster, score } = props;
 
 	return (
-		<div className={ className }>
+		<StyledAside flexed direction="column" justify="space-between" align="center">
 			{infos ?
 				<Infos
 					currentPlayer={currentPlayer}
@@ -43,9 +45,12 @@ const Aside = (props) => {
 				grid={ bottom.grid }
 				type="shadow"
 				player={ bottom.name }/>
-		</div>
+		</StyledAside>
 	);
 };
+
+const StyledAside = styled(Container)`
+`;
 
 Aside.propTypes = {
 	top: PropTypes.object,
