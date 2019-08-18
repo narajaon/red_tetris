@@ -23,10 +23,10 @@ const mapStateToProps = ({ gameReducer, gridReducer }) => {
 const defaultGrid = () => ({ grid: initGrid() });
 
 const Aside = (props) => {
-	const { top = defaultGrid(), bottom = defaultGrid(), infos, currentPlayer, room, players, gameMaster, score } = props;
+	const { top = defaultGrid(), bottom = defaultGrid(), infos, currentPlayer, room, players, gameMaster, score, className } = props;
 
 	return (
-		<div>
+		<div className={ className }>
 			{infos ?
 				<Infos
 					currentPlayer={currentPlayer}

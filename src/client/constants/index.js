@@ -75,4 +75,4 @@ export const serverURI = 'http://localhost:8080/';
 
 export const DEBOUNCE_VAL = 100;
 
-export const GRAVITY_VAL = 800;
+export const GRAVITY_VAL = 500;

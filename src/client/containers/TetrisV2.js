@@ -9,7 +9,7 @@ import Login from './LoginV2';
 import Aside from './AsideV2';
 import { listenToPhaseSwitch, emitPhaseSwitch } from '../actions/Socket';
 import { PHASES } from '../constants';
-import { Container } from '../style/Layouts';
+import { Container, Flexed } from '../style/Layouts';
 import { initDocStyle } from '../style/Tetris';
 
 const mapStateToProps = ({ gameReducer }) => {
@@ -45,16 +45,16 @@ const Tetris = ({ player2, player3, player4, listenToPhases, resetSocket }) => {
 	}, []);
 
 	return (
-		<Wrapper flexed justify="center">
+		<Wrapper flexed justify="center" align="center">
 			<StyledContainer flexed justify="space-between">
-				<Aside infos bottom={ player2 }/>
-				<StyledMain color="blue" flexed>
+				<StyledAside flexed direction="column" justify="center" infos bottom={ player2 }/>
+				<StyledMain color="blue" flexed align="center">
 					<Switch>
 						<Route exact path="/" component={ Home } />
 						<Route path="/login" component={ Login } />
 					</Switch>
 				</StyledMain>
-				<Aside top={ player3 } bottom={ player4 }/>
+				<StyledAside flexed direction="column" justify="center" top={ player3 } bottom={ player4 }/>
 			</StyledContainer>
 		</Wrapper>
 	);
@@ -62,14 +62,21 @@ const Tetris = ({ player2, player3, player4, listenToPhases, resetSocket }) => {
 
 const Wrapper = styled(Container)`
 	height: 100%;
+	width: 100;
+	/* transform: rotateX(60deg) rotateY(0deg) rotateZ(-45deg); */
 `;
 
 const StyledContainer = styled(Container)`
+	border: 1px solid black;
 	/* width: 90%; */
 `;
 
 const StyledMain = styled(Container)`
 	/* flex: 1; */
+`;
+
+const StyledAside = styled(Aside)`
+	${Flexed}
 `;
 
 Tetris.propTypes = {
