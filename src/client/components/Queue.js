@@ -1,9 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { PropTypes } from 'prop-types';
-import styled, { css } from 'styled-components';
-
-import { queue as style } from '../style/tetris.module.css';
-import { innerContainer } from '../style/queue.module.css';
+import styled from 'styled-components';
 
 const Queue = ({ players, startGame }) => {
 	const contentRef = useRef(null);

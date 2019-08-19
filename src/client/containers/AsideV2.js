@@ -2,12 +2,12 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 import { Grid } from '../components/Grid';
 import { initGrid } from '../helpers/Grid';
 import Infos from '../components/Infos';
-import { Flexed, Container } from '../style/Layouts';
+import { Container } from '../style/Layouts';
 
 const mapStateToProps = ({ gameReducer, gridReducer }) => {
 	const { currentPlayer, room, players, gameMaster } = gameReducer;

@@ -67,7 +67,6 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
-    "berve": "npm start && env NODE_ENV=1 npm run serve",
     "serve": "nodemon src/server/app.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",

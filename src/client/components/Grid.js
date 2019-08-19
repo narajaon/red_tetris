@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, forwardRef } from 'react';
+import React, { forwardRef } from 'react';
 import { PropTypes } from 'prop-types';
 import _ from 'lodash';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 import { tileStates, tileTypes } from '../style/Grid';
 

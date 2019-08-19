@@ -1,7 +1,7 @@
 import { withRouter } from 'react-router-dom';
 import React, { useState, useCallback } from 'react';
 import { PropTypes } from 'prop-types';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { Container, Flexed } from '../style/Layouts';
 import { StyledButton } from '../style/Elements';
 
