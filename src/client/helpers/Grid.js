@@ -174,9 +174,13 @@ export function clone2DGrid(grid) {
 	return grid.map(line => [ ...line ]);
 }
 
+export function convertPieceToShadow(piece) {
+	return piece.map(line => line.map(tile => tile ? TILE.SHADOW : tile));
+}
+
 export function createFreshGrid(prevGrid) {
 	const newGrid = prevGrid.map(line => {
-		return line.map(col => col === TILE.CURRENT ? TILE.EMPTY : col);
+		return line.map(col => col === TILE.CURRENT || col === TILE.SHADOW ? TILE.EMPTY : col);
 	});
 
 	return newGrid;
@@ -218,6 +222,30 @@ export function getUpdatedGrid(gameGrid, origin, piece) {
 
 			if (gridCopy[y][x] !== TILE.FULL && 
 				gridCopy[y][x] !== TILE.BLOCKED) {
+				gridCopy[y][x] = col;
+			}
+
+			x += 1;
+		});
+		x = xOrigin;
+		y += 1;
+	});
+
+	return gridCopy;
+}
+
+export function getUpdatedGridWithShadow(gameGrid, origin, piece) {
+	const gridCopy = clone2DGrid(gameGrid);
+	let { x, y } = origin;
+	const xOrigin = origin.x;
+	piece.forEach(line => {
+		line.forEach((col) => {
+			if (x === gridCopy[0].length && col === TILE.EMPTY ||
+				gridCopy[y] === undefined) {
+				return;
+			}
+
+			if (gridCopy[y][x] === TILE.EMPTY) {
 				gridCopy[y][x] = col;
 			}
 

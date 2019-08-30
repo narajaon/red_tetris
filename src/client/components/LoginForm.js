@@ -24,7 +24,7 @@ const LoginForm = ({ logToGame, history }) => {
 			<StyledTitle>./TET<StyledR />IS</StyledTitle>
 			<Container flexed direction="column" align="center">
 				<StyledInput data-jest="name" autoFocus type="text" onChange={ updateInputField('name') } placeholder="<name>"/>
-				<StyledInput data-jest="room" type="number" onChange={ updateInputField('room') } placeholder="<room>" min="0"/>
+				<StyledInput data-jest="room" onChange={ updateInputField('room') } placeholder="<room>" min="0"/>
 			</Container>
 			<StyledButton data-jest="submit">Start</StyledButton>
 		</StyledForm>
@@ -43,11 +43,10 @@ const StyledInput = styled.input`
 	background: ${({ theme }) => theme.colors.background};
 	caret-color: ${({ theme }) => theme.colors.main};
 	color: ${({ theme }) => theme.colors.main};
-	text-align: center;
+	/* text-align: center; */
+	width: 100px;
     border: none;
 	font-size: 20px;
-	appearance: none;
-	margin: 0%;
 
 	::placeholder {
 		text-align: center;

@@ -6,5 +6,6 @@ export default {
 		// secondary: '#feffff',
 		background: 'black',
 		content: '#5ff967',
+		lightgrey: '#424242'
 	},
 };

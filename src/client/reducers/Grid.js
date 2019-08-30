@@ -12,6 +12,8 @@ import {
 	updateGridWithScore,
 	generateBlockedLines,
 	addBlockedLines,
+	convertPieceToShadow,
+	getUpdatedGridWithShadow,
 } from '../helpers/Grid';
 
 const initState = {
@@ -122,11 +124,19 @@ const actions = {
 
 		if (!canMove) return state;
 		const gridBuffer = getUpdatedGrid(freshGrid, updatedOrigin, current);
-		const newPieces = { ...pieces, origin: { ...updatedOrigin }};
+		const newPieces = { ...pieces, origin: updatedOrigin };
+
+		let {x, y} = updatedOrigin;
+		const shadowPiece = convertPieceToShadow(current);
+		while (pieceCanMove(gridBuffer, { x, y }, shadowPiece)) {
+			y++;
+		}
+
+		const gridWithShadow = getUpdatedGridWithShadow(gridBuffer, {x, y: y - 1}, shadowPiece);
 
 		return {
 			...state,
-			grid: gridBuffer,
+			grid: gridWithShadow,
 			pieces: newPieces,
 		};
 	},

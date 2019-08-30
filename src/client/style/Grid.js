@@ -17,6 +17,9 @@ export const tileStates = [
 	css`
     	border: 1px solid ${({ theme }) => theme.colors.main};
 	`,
+	css`
+    	border: 1px solid ${({ theme }) => theme.colors.lightgrey};
+	`,
 ];
 
 export const tileTypes = {

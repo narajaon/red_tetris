@@ -15,6 +15,7 @@ export const TILE = {
 	CURRENT: 1,
 	FULL: 2,
 	BLOCKED: 3,
+	SHADOW: 4,
 };
 
 export const KEYS = {
