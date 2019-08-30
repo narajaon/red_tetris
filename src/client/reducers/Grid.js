@@ -107,6 +107,7 @@ const actions = {
 		// can not move down anymore
 		if (!canMove && translation.y > 0) {
 			if (pieceOverflows(grid)) return { ...state, overflows: true };
+
 			const blocked = blockPieceInGrid(grid);
 			const filtered = removeFullLines(blocked);
 			const scored = updateGridWithScore(filtered);
