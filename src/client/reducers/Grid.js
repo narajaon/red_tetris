@@ -95,7 +95,9 @@ const actions = {
 		const { pieces, grid, score } = state;
 		const { origin, current } = pieces;
 		const freshGrid = createFreshGrid(grid);
+
 		if (!current) return state;
+
 		const updatedOrigin = {
 			x: origin.x + translation.x,
 			y: origin.y + translation.y,
@@ -123,11 +125,12 @@ const actions = {
 		}
 
 		if (!canMove) return state;
+
 		const gridBuffer = getUpdatedGrid(freshGrid, updatedOrigin, current);
 		const newPieces = { ...pieces, origin: updatedOrigin };
-
 		let {x, y} = updatedOrigin;
 		const shadowPiece = convertPieceToShadow(current);
+
 		while (pieceCanMove(gridBuffer, { x, y }, shadowPiece)) {
 			y++;
 		}
