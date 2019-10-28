@@ -1,5 +1,4 @@
-import styled, { css } from 'styled-components';
-// import background from '../assets/isometric_pixel_flat_0087.png';
+import { css } from 'styled-components';
 
 export const tileStates = [
 	// EMPTY
@@ -12,11 +11,13 @@ export const tileStates = [
 	// PLACED
 	css`
     	border: 1px solid ${({ theme }) => theme.colors.secondary};
+		box-shadow: 0px 0px 2px 2px ${({ theme }) => theme.colors.secondary} inset;
 	`,
 	// BLOCKED
 	css`
     	border: 1px solid ${({ theme }) => theme.colors.main};
 	`,
+	// SHADOW
 	css`
     	border: 1px solid ${({ theme }) => theme.colors.lightgrey};
 	`,
