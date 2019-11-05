@@ -2,11 +2,10 @@ import { connect } from 'react-redux';
 import { withRouter, Redirect } from 'react-router-dom';
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 
 import { listenToNewPiece, emitGameStart, emitPhaseSwitch, listenToAddBlocks } from '../actions/Socket';
 import { rotatePiece, translatePiece } from '../actions/Grid';
-import { KEYS, PHASES, DEBOUNCE_VAL } from '../constants';
+import { KEYS, PHASES } from '../constants';
 import { GridWrapper as Grid } from '../components/Grid';
 import Restart from '../components/Restart';
 import Queue from '../components/Queue';

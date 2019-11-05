@@ -49,8 +49,6 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const Login = ({ logToGame, phase, currentPlayer, room }) => {
-	console.log('login');
-	
 	if (phase !== PHASES.ARRIVED) {
 		return (
 			<Redirect

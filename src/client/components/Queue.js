@@ -6,7 +6,6 @@ const Queue = ({ players, startGame }) => {
 	const contentRef = useRef(null);
 
 	useEffect(() => {
-		console.log('FOCUS');
 		if(contentRef && contentRef.current) {
 			contentRef.current.focus();
 		}

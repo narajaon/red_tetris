@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 import thunk from 'redux-thunk';
 
-import Tetris from './containers/TetrisV2';
+import Tetris from './containers/Tetris';
 import * as serviceWorker from './serviceWorker';
 import rootReducer from './rootReducer';
 import handleSocket from './middlewares/handleSocket';
@@ -16,22 +16,22 @@ import endGame from './middlewares/endGame';
 import theme from './style/theme';
 
 // DECOMMENT FOR DEBUGGING PURPOSES
-const logger = currentStore => next => action => {
-	console.warn('dispatching', action);
-	let result = next(action);
-	console.warn('next state', currentStore.getState());
+// const logger = currentStore => next => action => {
+// 	console.warn('dispatching', action);
+// 	let result = next(action);
+// 	console.warn('next state', currentStore.getState());
 	
-	return result;
-};
+// 	return result;
+// };
   
-const crashReporter = () => next => action => {
-	try {
-		return next(action);
-	} catch (err) {
-		console.error('Caught an exception!', err);
-		throw err;
-	}
-};
+// const crashReporter = () => next => action => {
+// 	try {
+// 		return next(action);
+// 	} catch (err) {
+// 		console.error('Caught an exception!', err);
+// 		throw err;
+// 	}
+// };
 
 const store = createStore(
 	rootReducer,

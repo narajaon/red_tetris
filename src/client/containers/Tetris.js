@@ -2,14 +2,14 @@ import React, { useEffect } from 'react';
 import { withRouter, Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
-import Home from './HomeV2';
-import Login from './LoginV2';
-import Aside from './AsideV2';
+import Home from './Home';
+import Login from './Login';
+import Aside from './Aside';
 import { listenToPhaseSwitch, emitPhaseSwitch } from '../actions/Socket';
 import { PHASES } from '../constants';
-import { Container, Flexed } from '../style/Layouts';
+import { Container } from '../style/Layouts';
 import { initDocStyle } from '../style/Tetris';
 
 const mapStateToProps = ({ gameReducer }) => {
@@ -35,8 +35,6 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const Tetris = ({ player2, player3, player4, listenToPhases, resetSocket }) => {
-	console.log('tetris');
-
 	useEffect(() => {
 		listenToPhases();
 		initDocStyle();

@@ -7,13 +7,12 @@ import { emitPhaseSwitch } from '../actions/Socket';
  */
 
 export default function handleErrors() {
-	return ({ dispatch, getState }) => next => (action) => {
-		const { type, message } = action;
+	return ({ dispatch }) => next => (action) => {
+		// const { type, message } = action;
+		const { type } = action;
 
 		if (type !== 'error') return next(action);
 
-		dispatch(emitPhaseSwitch(PHASES.ARRIVED));
-
-		return console.warn('ERROR:', message);
+		return dispatch(emitPhaseSwitch(PHASES.ARRIVED));
 	};
 }
