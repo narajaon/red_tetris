@@ -11,7 +11,9 @@ import {
 	removeFullLines,
 	updateGridWithScore,
 	generateBlockedLines,
-	clone2DGrid,
+	addBlockedLines,
+	convertPieceToShadow,
+	getUpdatedGridWithShadow,
 } from '../helpers/Grid';
 
 const initState = {
@@ -26,22 +28,6 @@ const initState = {
 		garbage: 0,
 	}
 };
-
-function addBlockedLines(grid, blocked, garbage) {
-	const updated = clone2DGrid(blocked);
-	let i = grid.length - 1;
-	let j = blocked.length - 1 - garbage;
-
-	for (j; j >= 0; j -= 1) {
-		grid[i].forEach((elem, index) => {
-			updated[j][index] = elem;
-		});
-
-		i -= 1;
-	}
-
-	return updated;
-}
 
 const actions = {
 	'reset-grid' : () => {
@@ -109,7 +95,9 @@ const actions = {
 		const { pieces, grid, score } = state;
 		const { origin, current } = pieces;
 		const freshGrid = createFreshGrid(grid);
+
 		if (!current) return state;
+
 		const updatedOrigin = {
 			x: origin.x + translation.x,
 			y: origin.y + translation.y,
@@ -119,6 +107,7 @@ const actions = {
 		// can not move down anymore
 		if (!canMove && translation.y > 0) {
 			if (pieceOverflows(grid)) return { ...state, overflows: true };
+
 			const blocked = blockPieceInGrid(grid);
 			const filtered = removeFullLines(blocked);
 			const scored = updateGridWithScore(filtered);
@@ -137,12 +126,21 @@ const actions = {
 		}
 
 		if (!canMove) return state;
+
 		const gridBuffer = getUpdatedGrid(freshGrid, updatedOrigin, current);
-		const newPieces = { ...pieces, origin: { ...updatedOrigin }};
+		const newPieces = { ...pieces, origin: updatedOrigin };
+		let {x, y} = updatedOrigin;
+		const shadowPiece = convertPieceToShadow(current);
+
+		while (pieceCanMove(gridBuffer, { x, y }, shadowPiece)) {
+			y++;
+		}
+
+		const gridWithShadow = getUpdatedGridWithShadow(gridBuffer, {x, y: y - 1}, shadowPiece);
 
 		return {
 			...state,
-			grid: gridBuffer,
+			grid: gridWithShadow,
 			pieces: newPieces,
 		};
 	},

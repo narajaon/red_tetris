@@ -3,22 +3,23 @@ import { render } from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
+import { ThemeProvider } from 'styled-components';
 import thunk from 'redux-thunk';
 
 import Tetris from './containers/Tetris';
 import * as serviceWorker from './serviceWorker';
 import rootReducer from './rootReducer';
-
 import handleSocket from './middlewares/handleSocket';
 import hijackTranslate from './middlewares/hijackTranlate';
 import handleErrors from './middlewares/handleErrors';
 import endGame from './middlewares/endGame';
+import theme from './style/theme';
 
 // DECOMMENT FOR DEBUGGING PURPOSES
 // const logger = currentStore => next => action => {
-// 	console.log('dispatching', action);
+// 	console.warn('dispatching', action);
 // 	let result = next(action);
-// 	console.log('next state', currentStore.getState());
+// 	console.warn('next state', currentStore.getState());
 	
 // 	return result;
 // };
@@ -45,24 +46,12 @@ const store = createStore(
 	),
 );
 
-// override default body margin and make tetris take available space
-Object.assign(document.body.style, {
-	margin: '0',
-	height: '100%',
-});
-
-Object.assign(document.documentElement.style, {
-	height: '100%',
-});
-
-Object.assign(document.getElementById('root').style, {
-	height: '100%',
-});
-
 render(
 	<Provider store={ store }>
 		<BrowserRouter>
-			<Tetris />
+			<ThemeProvider theme={theme}>
+				<Tetris />
+			</ThemeProvider>
 		</BrowserRouter>
 	</Provider>, document.getElementById('root')
 );

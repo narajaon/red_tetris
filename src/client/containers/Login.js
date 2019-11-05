@@ -49,11 +49,6 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const Login = ({ logToGame, phase, currentPlayer, room }) => {
-	const style = {
-		display: 'flex',
-		alignItems: 'center',
-	};
-
 	if (phase !== PHASES.ARRIVED) {
 		return (
 			<Redirect
@@ -66,9 +61,7 @@ const Login = ({ logToGame, phase, currentPlayer, room }) => {
 	}
 
 	return (
-		<div className="login" style={ style }>
-			<LoginForm logToGame={ logToGame }/>
-		</div>
+		<LoginForm logToGame={ logToGame }/>
 	);
 };
 

@@ -1,17 +1,14 @@
 import { connect } from 'react-redux';
 import { withRouter, Redirect } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import { listenToNewPiece, emitGameStart, emitPhaseSwitch, listenToAddBlocks } from '../actions/Socket';
 import { rotatePiece, translatePiece } from '../actions/Grid';
 import { KEYS, PHASES } from '../constants';
-import Grid from '../components/Grid';
+import { GridWrapper as Grid } from '../components/Grid';
 import Restart from '../components/Restart';
 import Queue from '../components/Queue';
-
-import { regular, isEmpty, isPlaced, isFull, isBlocked , placed, container as containerStyle } from '../style/grid.module.css';
-import { home as style } from '../style/tetris.module.css';
 
 const mapStateToProps = ({ gridReducer, gameReducer }) => {
 	return {
@@ -60,12 +57,34 @@ const mapDispatchToProps = (dispatch) => {
 	};
 };
 
-const tileClasses = [
-	`${regular} ${isEmpty}`,
-	`${regular} ${isFull}`,
-	`${regular} ${isPlaced}`,
-	`${regular} ${isBlocked}`,
-];
+const displayContent = (playerIsAllowed, gamePhase, mainProps) => {
+	if (gamePhase === PHASES.CONNECTED){
+		return (<Queue players={mainProps.players} startGame={mainProps.startGame}/>);
+	}
+
+	if (!playerIsAllowed || gamePhase === PHASES.ARRIVED) {
+		return (<Redirect to="/login" />);
+	}
+
+	if (gamePhase === PHASES.ENDED){
+		return (
+			<Restart
+				restartHandler={mainProps.restartHandler}
+				quitHandler={mainProps.quitHandler}
+			/>);
+	}
+
+	return (
+		<Grid
+			keyPressHandler={mainProps.keyPressHandler}
+			grid={mainProps.grid}
+			placed={mainProps.placed}
+			player={mainProps.player}
+			ref={mainProps.ref}
+			type="regular"
+		/>
+	);
+};
 
 const Home = (props) => {
 	const {
@@ -74,9 +93,18 @@ const Home = (props) => {
 		history,
 		disconnectPlayer,
 		pieces,
+		placed,
+		keyPressHandler
 	} = props;
 
 	const [isAllowed, setIsAllowed] = useState(true);
+	const contentRef = useRef(null);
+
+	useEffect(() => {
+		if (contentRef && contentRef.current) {
+			contentRef.current.focus();
+		}
+	}, [contentRef, contentRef.current]);
 
 	useEffect(() => {
 		setupGame();
@@ -87,36 +115,15 @@ const Home = (props) => {
 		};
 	}, [history.location]);
 
-	const displayContent = (playerIsAllowed, gamePhase, mainProps) => {
-		if (gamePhase === PHASES.CONNECTED){
-			return (<Queue { ...mainProps } />);
-		}
-
-		if (!playerIsAllowed || gamePhase === PHASES.ARRIVED) {
-			return (<Redirect to="/login" />);
-		}
-
-		if (gamePhase === PHASES.ENDED){
-			return (<Restart { ...mainProps } />);
-		}
-
-		return (
-			<Grid { ...mainProps } />
-		);
-	};
-
 	return (
-		<div className={ style }>
-			{
-				displayContent(isAllowed, phase, {
-					...props,
-					tileStyle: tileClasses,
-					quitHandler: disconnectPlayer,
-					containerStyle,
-					placed: pieces ? '' : placed,
-				})
-			}
-		</div>
+		displayContent(isAllowed, phase, {
+			...props,
+			keyPressHandler,
+			ref: contentRef,
+			quitHandler: disconnectPlayer,
+			placed: pieces ? '' : placed,
+			type: 'regular'
+		})
 	);
 };
 

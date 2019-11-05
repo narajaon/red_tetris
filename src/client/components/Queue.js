@@ -1,34 +1,41 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { PropTypes } from 'prop-types';
-import { queue as style } from '../style/tetris.module.css';
-import { innerContainer } from '../style/queue.module.css';
+import styled from 'styled-components';
 
 const Queue = ({ players, startGame }) => {
-	const [contentRef, setRef] = useState(null);
+	const contentRef = useRef(null);
 
 	useEffect(() => {
-		if (contentRef) {
-			contentRef.focus();
+		if(contentRef && contentRef.current) {
+			contentRef.current.focus();
 		}
-	});
+	}, []);
 
 	return (
-		<div
+		<StyledQueue
 			tabIndex="0"
-			ref={ element => {
-				setRef(element);
-			}}
+			ref={contentRef}
 			onKeyDown={ startGame }
 			data-jest="queue"
-			className={ style }
 		>
-					<div className={ innerContainer }>
-			<div>Current players :<br></br> { players.length } / 4</div>
-			<div>Press <span>SPACE</span> to begin the game</div>
-		</div>
-		</div>
+			<div>Current players :</div>
+			<div>{ players.length } / 4</div>
+			<div>Press <StyledSpace /> to begin the game</div>
+		</StyledQueue>
 	);
 };
+
+const StyledQueue = styled.div`
+	text-align: center;
+`;
+
+const StyledSpace = styled.span`
+	text-decoration: underline;
+
+	:after {
+		content: "SPACE";
+	}
+`;
 
 Queue.propTypes = {
 	players: PropTypes.array,

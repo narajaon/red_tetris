@@ -1,63 +1,63 @@
-import React, { useEffect, useState } from 'react';
+import React, { forwardRef } from 'react';
 import { PropTypes } from 'prop-types';
-import { debounce } from 'lodash';
-import { DEBOUNCE_VAL } from '../constants';
+import _ from 'lodash';
+import styled from 'styled-components';
 
-const Tile = ({ style, content }) => {
+import { tileStates, tileTypes } from '../style/Grid';
+
+export const Grid = ({ grid, type }) => {
+	console.log('grid', type);
+
 	return (
-		<div
-			className={ style[content] }
-			data-jest="tile"
-		></div>
+		<StyledGrid data-jest="grid">
+			{grid.map((elem) => {
+				return elem.map((tile, index) => (
+					<StyledTile
+						key={type + index}
+						content={tile}
+						type={type}
+						data-jest="tile"
+					/>
+				));
+			})}
+		</StyledGrid>
 	);
 };
 
-const Grid = ({ keyPressHandler, grid, placed, tileStyle, containerStyle, player }) => {
-	const [contentRef, setRef] = useState(null);
-
-	useEffect(() => {
-		if (contentRef) {
-			contentRef.focus();
-		}
-	});
-
-	const keyHandler = (handler) => {
-		return handler ? debounce(handler, DEBOUNCE_VAL, {
-			'leading': true,
-			'trailing': false
-		}) : () => null;
-	};
+export const GridWrapper = forwardRef((props, ref) => {
+	const { keyPressHandler, grid, placed, player, type } = props;
 
 	return (
-		<div>
-			<span>{ player }</span>
-			<div
-				tabIndex={ keyPressHandler ? 0 : '' }
-				onKeyDown={ keyHandler(keyPressHandler) }
-				onKeyPress={ keyHandler(keyPressHandler) }
-				ref={ element => {
-					setRef(element);
-				}}
-				data-jest="grid"
-				className={ `${containerStyle} ${placed}` }
-			>
-				{
-					grid.map((elem) => {
-						return elem.map((tile, index) => (
-							<Tile
-								key={ index }
-								style={ tileStyle }
-								content={ tile }
-							/>
-						));
-					})
-				}
-			</div>
-		</div>
+		<StyledWrapper
+			ref={ ref }
+			tabIndex="0"
+			onKeyDown={ keyPressHandler }
+			onKeyPress={ keyPressHandler }
+		>
+			<Grid grid={grid} type={type} />
+		</StyledWrapper>
 	);
-};
+});
 
-Grid.propTypes = {
+const StyledTile = styled.div`
+	${({ type }) => tileTypes[type]}
+	${({ content }) => tileStates[content]}
+	box-sizing: border-box;
+`;
+
+const StyledWrapper = styled.div`
+	border-bottom: 1px solid ${({ theme }) => theme.colors.main};
+`;
+
+const StyledGrid = styled.div`
+	display: grid;
+	grid-template-columns: repeat(10, min-content);
+	width: fit-content;
+	border: 1px solid black;
+	box-sizing: border-box;
+`;
+
+GridWrapper.propTypes = {
 	keyPressHandler: PropTypes.func,
 	grid: PropTypes.array,
 	tileStyle: PropTypes.array,
@@ -66,9 +66,4 @@ Grid.propTypes = {
 	player: PropTypes.string,
 };
 
-Tile.propTypes = {
-	style: PropTypes.array,
-	content: PropTypes.number,
-};
-
-export default Grid;
+GridWrapper.displayName = 'GridWrapper';

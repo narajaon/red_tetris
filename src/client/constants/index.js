@@ -15,6 +15,7 @@ export const TILE = {
 	CURRENT: 1,
 	FULL: 2,
 	BLOCKED: 3,
+	SHADOW: 4,
 };
 
 export const KEYS = {
@@ -73,6 +74,6 @@ export const TETRIS = [
 
 export const serverURI = 'http://localhost:8080/';
 
-export const DEBOUNCE_VAL = 50;
+export const DEBOUNCE_VAL = 100;
 
-export const GRAVITY_VAL = 800;
+export const GRAVITY_VAL = 500;

@@ -59,6 +59,7 @@
     "style-loader": "0.23.1",
     "terser-webpack-plugin": "1.2.2",
     "url-loader": "1.1.2",
+    "uuid": "^3.3.2",
     "webpack": "4.28.3",
     "webpack-dev-server": "3.1.14",
     "webpack-manifest-plugin": "2.0.4",
@@ -66,7 +67,6 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
-    "berve": "npm start && env NODE_ENV=1 npm run serve",
     "serve": "nodemon src/server/app.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
@@ -137,6 +137,7 @@
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-react": "^7.12.4",
     "redux-mock-store": "^1.5.3",
-    "styled-components": "^4.2.0"
+    "styled-components": "^4.2.0",
+    "why-did-you-update": "^1.0.6"
   }
 }

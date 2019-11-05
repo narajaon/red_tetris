@@ -1,22 +1,30 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import { restart as style } from '../style/tetris.module.css';
-import { innerContainer, buttonBlue, buttonPink } from '../style/restart.module.css';
+import styled from 'styled-components';
+
+import { StyledButton } from '../style/Elements';
+import { Container } from '../style/Layouts';
 
 const Restart = ({ restartHandler, quitHandler }) => {
 	return (
-		<div
-			className={ style }
-			data-jest="restart"
-		>
-		<div className={ innerContainer }>
-			<div>GAME OVER</div>
-			<button className={ buttonBlue } onClick={ restartHandler } autoFocus><span>RESTART</span></button>
-			<button className={ buttonPink } onClick={ quitHandler }><span>QUIT</span></button>
-			</div>
+		<div data-jest="restart">
+			<Container flexed direction="column" justify="center">
+				<StyledOver>GAME OVER</StyledOver>
+				<CustomButton onClick={ restartHandler } autoFocus>RESTART</CustomButton>
+				<StyledButton onClick={ quitHandler }>QUIT</StyledButton>
+			</Container>
 		</div>
 	);
 };
+
+const StyledOver = styled.div`
+	text-align: center;
+	margin-bottom: 30px;
+`;
+
+const CustomButton = styled(StyledButton)`
+	margin-bottom: 5px;
+`;
 
 Restart.propTypes = {
 	restartHandler: PropTypes.func,

@@ -1,28 +1,34 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import { infos as style } from '../style/aside.module.css';
-import { infocolor, scored } from '../style/infos.module.css';
+import styled from 'styled-components';
+
+const getGM = (player, gm, playerList) => {
+	if (!playerList || !gm) return null;
+
+	return player === gm.name  ? 'YOU' : `${gm.name}`;
+};
 
 const Infos = ({ currentPlayer, gameMaster, room, players, score }) => {
-	const getGM = (player, gm, playerList) => {
-		if (!playerList || !gm) return null;
-
-		return player === gm.name  ? 'YOU' : `${gm.name}`;
-	};
-
 	return (
 		<div
-			className={ style }
 			data-jest="infos"
 		>
-			<div>Name: <span className={ infocolor }> { currentPlayer }</span></div>
-			<div>GM: <span className={ infocolor }> { getGM(currentPlayer, gameMaster, players) }</span></div>
-			<div>Room: <span className={ infocolor }> { room }</span></div>
-			<div>Garbage: <span className={ infocolor }>{ score.garbage }</span></div>
-			<div className={ scored }>{ score.total }</div>
+			<div><StyledLabel label="Name"/>: { currentPlayer }</div>
+			<div><StyledLabel label="GM"/>: { getGM(currentPlayer, gameMaster, players) }</div>
+			<div><StyledLabel label="Room"/>: { room }</div>
+			<div><StyledLabel label="Score" color="#5ff967"/>: { score.total }</div>
+			{players.length > 1 && <div><StyledLabel label="Garbage" color="#ff6d67"/>: { score.garbage }</div>}
 		</div>
 	);
 };
+
+const StyledLabel = styled.span`
+	color: ${({ theme, color }) => color || theme.colors.secondary};
+
+	::before {
+		content: "${({ label }) => label}";
+	}
+`;
 
 Infos.propTypes = {
 	currentPlayer: PropTypes.string,

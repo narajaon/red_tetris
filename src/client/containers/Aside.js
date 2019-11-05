@@ -2,14 +2,12 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
-import Grid from '../components/Grid';
+import { Grid } from '../components/Grid';
 import { initGrid } from '../helpers/Grid';
 import Infos from '../components/Infos';
-
-import { shadow, isEmpty, isPlaced, isFull, isBlocked, shadowContainer as containerStyle } from '../style/grid.module.css';
-import { content } from '../style/aside.module.css';
-import { aside } from '../style/tetris.module.css';
+import { Container } from '../style/Layouts';
 
 const mapStateToProps = ({ gameReducer, gridReducer }) => {
 	const { currentPlayer, room, players, gameMaster } = gameReducer;
@@ -24,52 +22,35 @@ const mapStateToProps = ({ gameReducer, gridReducer }) => {
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
-	return {
-	};
-};
+const defaultGrid = () => ({ grid: initGrid() });
 
-const defaultGrid = { grid: initGrid() };
+const Aside = (props) => {
+	const { top = defaultGrid(), bottom = defaultGrid(), infos, currentPlayer, room, players, gameMaster, score } = props;
 
-const tileClasses = [
-	`${shadow} ${isEmpty}`,
-	`${shadow} ${isFull}`,
-	`${shadow} ${isPlaced}`,
-	`${shadow} ${isBlocked}`,
-];
-
-const Aside = ({ top = defaultGrid, bottom = defaultGrid, infos, currentPlayer, room, players, gameMaster, score }) => {
-	const renderInfos = (infoComponent, props) => {
-		if (infoComponent) {
-			return (<Infos { ...props } />);
-		}
-
-		return (<Grid { ...props } />);
-	};
-	
 	return (
-		<div className={ aside }>
-			<div className={ content }>
-				{
-					renderInfos(infos, {
-						currentPlayer,
-						players,
-						gameMaster,
-						grid: top.grid,
-						room,
-						containerStyle,
-						tileStyle: tileClasses,
-						score,
-						player: top.name,
-					})
-				}
-			</div>
-			<div className={ content }>
-				<Grid grid={ bottom.grid } tileStyle={ tileClasses } containerStyle={ containerStyle } player={ bottom.name }/>
-			</div>
-		</div>
+		<StyledAside flexed direction="column" justify="space-between" align="center">
+			{infos ?
+				<Infos
+					currentPlayer={currentPlayer}
+					gameMaster={gameMaster}
+					room={room}
+					players={players}
+					score={score}
+				/> :
+				<Grid
+					grid={ top.grid }
+					type="shadow"
+					player={ currentPlayer }/>}
+			<Grid
+				grid={ bottom.grid }
+				type="shadow"
+				player={ bottom.name }/>
+		</StyledAside>
 	);
 };
+
+const StyledAside = styled(Container)`
+`;
 
 Aside.propTypes = {
 	top: PropTypes.object,
@@ -82,4 +63,4 @@ Aside.propTypes = {
 	score: PropTypes.object,
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Aside));
+export default withRouter(connect(mapStateToProps)(Aside));
