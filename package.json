@@ -122,8 +122,8 @@
       "node"
     ],
     "watchPlugins": [
-      "/Users/narajaon/porto/tetris/node_modules/jest-watch-typeahead/filename.js",
-      "/Users/narajaon/porto/tetris/node_modules/jest-watch-typeahead/testname.js"
+      "./node_modules/jest-watch-typeahead/filename.js",
+      "./node_modules/jest-watch-typeahead/testname.js"
     ]
   },
   "babel": {
