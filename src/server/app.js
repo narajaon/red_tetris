@@ -13,7 +13,7 @@ async function start() {
 	// SETUP GAME
 	config.socket.setup(server);
 	// START SERVER
-	await server.listen(config.server.port);
+	await server.listen(config.server.port, config.server.host);
 
 	return app;
 }
