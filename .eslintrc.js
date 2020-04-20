@@ -49,7 +49,7 @@ module.exports = {
         "import/no-extraneous-dependencies": ["off"],
         "no-console": warnOnDev,
         "no-debugger": warnOnDev,
-        "react/prop-types": warnOnDev,
+        "react/prop-types": 0,
         "newline-before-return": ["warn"],
     }
 };

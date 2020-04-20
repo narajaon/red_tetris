@@ -6,8 +6,6 @@ import styled from 'styled-components';
 import { tileStates, tileTypes } from '../style/Grid';
 
 export const Grid = ({ grid, type }) => {
-	console.log('grid', type);
-
 	return (
 		<StyledGrid data-jest="grid">
 			{grid.map((elem) => {
