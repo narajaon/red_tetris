@@ -6,9 +6,9 @@ Red tetris is also a realtime, multiplayer tetris game using socket.io.
 
 ## Getting Started
 
-Start by launching the server and the client in different terminals `npm start` `npm run serve`
+`docker run -p 8080:8080 narajaon/red_tetris`
 
-Then go to `localhost:3000` in your browser
+Then go to `localhost:8080` in your browser
 
 ## Usage
 
