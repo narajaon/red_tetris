@@ -17,7 +17,7 @@ const Infos = ({ currentPlayer, gameMaster, room, players, score }) => {
 			<div><StyledLabel label="GM"/>: { getGM(currentPlayer, gameMaster, players) }</div>
 			<div><StyledLabel label="Room"/>: { room }</div>
 			<div><StyledLabel label="Score" color="#5ff967"/>: { score.total }</div>
-			{players.length > 1 && <div><StyledLabel label="Garbage" color="#ff6d67"/>: { score.garbage }</div>}
+			{players.length > 1 && <div data-jest="infos-other-players"><StyledLabel label="Garbage" color="#ff6d67"/>: { score.garbage }</div>}
 		</div>
 	);
 };

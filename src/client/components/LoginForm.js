@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Container, Flexed } from '../style/Layouts';
 import { StyledButton } from '../style/Elements';
 
-const LoginForm = ({ logToGame, history }) => {
+export const LoginFormComponent = ({ logToGame, history }) => {
 	const [ credentials, setCredentials ] = useState({ name: '', room: ''});
 
 	const updateInputField = useCallback((inputField) => (e) => {
@@ -61,9 +61,9 @@ const StyledR = styled.span`
 	}
 `;
 
-LoginForm.propTypes = {
+LoginFormComponent.propTypes = {
 	logToGame: PropTypes.func,
 	history: PropTypes.object,
 };
 
-export default withRouter(LoginForm);
+export default withRouter(LoginFormComponent);

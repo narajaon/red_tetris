@@ -1,15 +1,16 @@
-import chai, { expect, assert } from 'chai';
+import chai, { expect } from 'chai';
 import reducer from '../../../client/reducers/Grid';
-import { initGrid, getUpdatedGrid, createNewPieces } from '../../../client/helpers/Grid';
+import { initGrid, getUpdatedGrid, getUpdatedGridWithShadow, createNewPieces } from '../../../client/helpers/Grid';
 import { placePiece, translatePiece, rotatePiece, resetGrid, queuePieces, popPieces } from '../../../client/actions/Grid';
 import { TETRIS } from '../../../client/constants';
+
 
 chai.config.truncateThreshold = 0;
 
 describe('grid reducers', () => {
-	const emptyGrid = initGrid();
 	const pieceID = Math.floor(Math.random() * (TETRIS.length));
 	const newPieces = createNewPieces({ current: TETRIS[pieceID], name: pieceID });
+	const emptyGrid = initGrid();
 	const initState = {
 		grid: emptyGrid,
 		pieces: null,
@@ -72,7 +73,11 @@ describe('grid reducers', () => {
 			);
 
 			expect(reducer(state, translatePiece(tranlation))).to.eql({
-				grid: freshGrid,
+				grid: getUpdatedGridWithShadow(
+					freshGrid,
+					translatedPieces.origin,
+					translatedPieces.current
+				),
 				pieces: translatedPieces,
 				interval: null,
 				overflows: false,

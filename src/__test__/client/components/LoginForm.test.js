@@ -4,20 +4,16 @@ import configureStore from 'redux-mock-store';
 import { expect } from 'chai';
 import Adapter from 'enzyme-adapter-react-16';
 
-import LoginForm from '../../../client/components/LoginForm';
-
-const middlewares = [
-	// thunk,
-	// handleSocket(),
-	// requestNewPiece(),
-];
+import { LoginFormComponent } from '../../../client/components/LoginForm';
+import ThemeWrapper from '../theme';
 
 configure({ adapter: new Adapter() });
 
 function setup(initState, initProps) {
-	const mockStore = configureStore(middlewares);
+	const mockStore = configureStore([]);
 	const store = mockStore(initState);
-	const enzymeWrapper = mount(<LoginForm { ...initProps  } { ...initState }/>);
+	const WithTheme = ThemeWrapper(LoginFormComponent);
+	const enzymeWrapper = mount(<WithTheme { ...initProps  } { ...initState }/>);
 
 	return {
 		initProps,
@@ -40,7 +36,7 @@ describe('Grid component testing', () => {
 	});
 
 	it('renders the restart component', () => {
-		const { enzymeWrapper, store } = setup(initState, initProps);
+		const { enzymeWrapper } = setup(initState, initProps);
 		expect(enzymeWrapper.find('[data-jest="login-form"]')).to.not.be.an('undefined');
 	});
 });

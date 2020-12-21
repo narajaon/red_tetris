@@ -9,10 +9,10 @@ chai.config.truncateThreshold = 0;
 describe('grid reducers', () => {
 	const initState = {
 		players: [],
-		currentPlayer: null,
-		gameMaster: null,
+		currentPlayer: undefined,
+		gameMaster: undefined,
 		phase: PHASES.ARRIVED,
-		room: null,
+		room: undefined,
 	};
 
 	const mockPlayer = {

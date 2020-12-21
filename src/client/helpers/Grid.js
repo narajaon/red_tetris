@@ -235,14 +235,25 @@ export function getUpdatedGrid(gameGrid, origin, piece) {
 }
 
 export function getUpdatedGridWithShadow(gameGrid, origin, piece) {
-	const gridCopy = clone2DGrid(gameGrid);
+	const shadowPiece = convertPieceToShadow(piece);
 	let { x, y } = origin;
-	const xOrigin = origin.x;
-	piece.forEach(line => {
-		line.forEach((col) => {
+
+	while (pieceCanMove(gameGrid, { x, y }, shadowPiece)) {
+		y++;
+	}
+
+	y--;
+
+	const gridCopy = clone2DGrid(gameGrid);
+
+	for (let i = 0; i < shadowPiece.length; i++) {
+		const line = shadowPiece[i];
+
+		for (let j = 0; j < line.length; j++) {
+			const col = line[j];
 			if (x === gridCopy[0].length && col === TILE.EMPTY ||
 				gridCopy[y] === undefined) {
-				return;
+				break;
 			}
 
 			if (gridCopy[y][x] === TILE.EMPTY) {
@@ -250,10 +261,12 @@ export function getUpdatedGridWithShadow(gameGrid, origin, piece) {
 			}
 
 			x += 1;
-		});
-		x = xOrigin;
+		}
+
+		// eslint-disable-next-line prefer-destructuring
+		x = origin.x;
 		y += 1;
-	});
+	}
 
 	return gridCopy;
 }

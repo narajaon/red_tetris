@@ -5,19 +5,15 @@ import { expect } from 'chai';
 import Adapter from 'enzyme-adapter-react-16';
 
 import Infos from '../../../client/components/Infos';
-
-const middlewares = [
-	// thunk,
-	// handleSocket(),
-	// requestNewPiece(),
-];
+import ThemeWrapper from '../theme';
 
 configure({ adapter: new Adapter() });
 
 function setup(initState, initProps) {
-	const mockStore = configureStore(middlewares);
+	const mockStore = configureStore([]);
 	const store = mockStore(initState);
-	const enzymeWrapper = mount(<Infos { ...initProps  } { ...initState }/>);
+	const WithTheme = ThemeWrapper(Infos);
+	const enzymeWrapper = mount(<WithTheme { ...initProps  } { ...initState }/>);
 
 	return {
 		initProps,
@@ -51,6 +47,6 @@ describe('Infos component testing', () => {
 		const { enzymeWrapper } = setup(initState, initProps);
 		expect(enzymeWrapper).to.not.be.an('undefined');
 		expect(enzymeWrapper.find('[data-jest="infos"]')).to.not.be.an('undefined');
-		expect(enzymeWrapper.find('[data-jest="infos-other-players"]')).to.have.lengthOf(2);
+		expect(enzymeWrapper.find('[data-jest="infos-other-players"]')).to.have.lengthOf(1);
 	});
 });

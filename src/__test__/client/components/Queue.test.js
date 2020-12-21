@@ -47,6 +47,7 @@ describe('Grid component testing', () => {
 	it('renders the restart component', () => {
 		const { enzymeWrapper, store } = setup(initState, initProps);
 		expect(enzymeWrapper.find('[data-jest="queue"]')).to.not.be.an('undefined');
-		expect(enzymeWrapper.find('[data-jest="queue"]').text()).to.contain(`Current players : ${ store.getState().players.length } / 4`);
+		expect(enzymeWrapper.find('[data-jest="queue"] div').text()).to.include(
+			`${ store.getState().players.length } / 4`);
 	});
 });

@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { compose } from 'redux';
 import { withRouter, Redirect } from 'react-router-dom';
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
@@ -51,7 +52,7 @@ const mapDispatchToProps = (dispatch) => {
 			dispatch(emitPhaseSwitch(PHASES.CONNECTED));
 		},
 		startGame: (e) => {
-			if (e.keyCode !== KEYS.SPACE) return;
+			if (e.keyCode !== KEYS.ENTER) return;
 			dispatch(emitGameStart());
 		},
 	};
@@ -136,4 +137,4 @@ Home.propTypes = {
 	pieces: PropTypes.object,
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Home));
+export default compose(withRouter, connect(mapStateToProps, mapDispatchToProps))(Home);

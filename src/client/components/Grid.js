@@ -1,6 +1,5 @@
 import React, { forwardRef } from 'react';
 import { PropTypes } from 'prop-types';
-import _ from 'lodash';
 import styled from 'styled-components';
 
 import { tileStates, tileTypes } from '../style/Grid';
@@ -11,7 +10,7 @@ export const Grid = ({ grid, type }) => {
 			{grid.map((elem) => {
 				return elem.map((tile, index) => (
 					<StyledTile
-						key={type + index}
+						key={index}
 						content={tile}
 						type={type}
 						data-jest="tile"
@@ -23,7 +22,7 @@ export const Grid = ({ grid, type }) => {
 };
 
 export const GridWrapper = forwardRef((props, ref) => {
-	const { keyPressHandler, grid, placed, player, type } = props;
+	const { keyPressHandler, grid, type } = props;
 
 	return (
 		<StyledWrapper

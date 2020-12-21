@@ -12,11 +12,10 @@ import {
 	updateGridWithScore,
 	generateBlockedLines,
 	addBlockedLines,
-	convertPieceToShadow,
 	getUpdatedGridWithShadow,
 } from '../helpers/Grid';
 
-const initState = {
+const initState = () => ({
 	grid: initGrid(),
 	pieces: null,
 	interval: null,
@@ -27,11 +26,11 @@ const initState = {
 		total: 0,
 		garbage: 0,
 	}
-};
+});
 
 const actions = {
 	'reset-grid' : () => {
-		return initState;
+		return initState();
 	},
 	'set-score': (state, { propName, prop }) => {
 		return {
@@ -94,9 +93,10 @@ const actions = {
 	'translate-piece' : (state, { translation }) => {
 		const { pieces, grid, score } = state;
 		const { origin, current } = pieces;
-		const freshGrid = createFreshGrid(grid);
 
 		if (!current) return state;
+
+		const freshGrid = createFreshGrid(grid);
 
 		const updatedOrigin = {
 			x: origin.x + translation.x,
@@ -128,20 +128,12 @@ const actions = {
 		if (!canMove) return state;
 
 		const gridBuffer = getUpdatedGrid(freshGrid, updatedOrigin, current);
-		const newPieces = { ...pieces, origin: updatedOrigin };
-		let {x, y} = updatedOrigin;
-		const shadowPiece = convertPieceToShadow(current);
-
-		while (pieceCanMove(gridBuffer, { x, y }, shadowPiece)) {
-			y++;
-		}
-
-		const gridWithShadow = getUpdatedGridWithShadow(gridBuffer, {x, y: y - 1}, shadowPiece);
+		const gridWithShadow = getUpdatedGridWithShadow(gridBuffer, updatedOrigin, current);
 
 		return {
 			...state,
 			grid: gridWithShadow,
-			pieces: newPieces,
+			pieces: { ...pieces, origin: updatedOrigin },
 		};
 	},
 	'rotate-piece' : (state) => {
@@ -171,7 +163,7 @@ const actions = {
 	},
 };
 
-const gridReducer = (state = initState, action) => {
+const gridReducer = (state = initState(), action) => {
 	if (state.overflows && action.type !== 'reset-grid') {
 		return state;
 	}
