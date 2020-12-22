@@ -104,7 +104,7 @@ export const HomeComponent = ({
 		if (contentRef && contentRef.current) {
 			contentRef.current.focus();
 		}
-	}, [contentRef]);
+	}, [contentRef, contentRef.current]);
 
 	useEffect(() => {
 		setupGame();

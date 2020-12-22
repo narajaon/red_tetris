@@ -148,8 +148,8 @@ export function iterWallKicks(freshGrid, origin, current, wallkicks) {
 	return kicks ? translatedOrigin : null;
 }
 
-export function attemptWallKicks(pieces, current, freshGrid) {
-	const { origin } = pieces;
+export function attemptWallKicks(pieces, freshGrid) {
+	const { origin, current } = pieces;
 	let translatedOrigin = iterWallKicks(freshGrid, origin, current, WALLKICKS);
 
 	if (!translatedOrigin && pieces.name === 1) {

@@ -151,7 +151,7 @@ const actions = {
 		if (!pieceCanMove(freshGrid, origin, rotated)){
 			return {
 				...state,
-				...attemptWallKicks(pieces, current, freshGrid),
+				...attemptWallKicks(pieces, freshGrid),
 			};
 		}
 
