@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
@@ -47,10 +47,10 @@ const store = createStore(
 
 render(
 	<Provider store={ store }>
-		<BrowserRouter>
+		<HashRouter>
 			<ThemeProvider theme={theme}>
 				<Tetris />
 			</ThemeProvider>
-		</BrowserRouter>
+		</HashRouter>
 	</Provider>, document.getElementById('root')
 );

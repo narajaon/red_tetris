@@ -66,6 +66,7 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
+    "start:prod": "NODE_ENV=production node src/server/app.js",
     "serve": "nodemon src/server/app.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --no-watch",

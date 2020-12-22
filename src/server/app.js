@@ -14,6 +14,7 @@ async function start() {
 	config.socket.setup(server);
 	// START SERVER
 	await server.listen(config.server.port, config.server.host);
+	console.log(config.server.port);
 
 	return app;
 }
