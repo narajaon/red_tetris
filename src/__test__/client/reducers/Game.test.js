@@ -1,6 +1,6 @@
 import chai, { expect } from 'chai';
 import reducer from '../../../client/reducers/Game';
-import { restartGame, initPlayerAndRoom, updatePlayers, switchPhase } from '../../../client/actions/Game';
+import { restartGame, initPlayerAndRoom, updatePlayers } from '../../../client/actions/Game';
 import { PHASES } from '../../../client/constants';
 import { initGrid } from '../../../client/helpers/Grid';
 
@@ -50,13 +50,5 @@ describe('grid reducers', () => {
 			players : mockPlayers,
 			gameMaster: mockPlayers[1],
 		});
-	});
-
-	it('should update phase', () => {
-		// TODO: Add thunk testing
-		// expect(reducer(undefined, switchPhase(PHASES.ENDED))).to.eql({
-		// 	...initState,
-		// 	phase: PHASES.ENDED,
-		// });
 	});
 });

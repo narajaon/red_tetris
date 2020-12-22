@@ -58,16 +58,16 @@ const mapDispatchToProps = (dispatch) => {
 	};
 };
 
-const displayContent = (playerIsAllowed, gamePhase, mainProps) => {
-	if (gamePhase === PHASES.CONNECTED){
+const Content = ({ isAllowed, phase, mainProps }) => {
+	if (phase === PHASES.CONNECTED){
 		return (<Queue players={mainProps.players} startGame={mainProps.startGame}/>);
 	}
 
-	if (!playerIsAllowed || gamePhase === PHASES.ARRIVED) {
+	if (!isAllowed || phase === PHASES.ARRIVED) {
 		return (<Redirect to="/login" />);
 	}
 
-	if (gamePhase === PHASES.ENDED){
+	if (phase === PHASES.ENDED){
 		return (
 			<Restart
 				restartHandler={mainProps.restartHandler}
@@ -87,17 +87,16 @@ const displayContent = (playerIsAllowed, gamePhase, mainProps) => {
 	);
 };
 
-const Home = (props) => {
-	const {
-		phase,
-		setupGame,
-		history,
-		disconnectPlayer,
-		pieces,
-		placed,
-		keyPressHandler
-	} = props;
-
+export const HomeComponent = ({
+	phase,
+	setupGame,
+	history = {},
+	disconnectPlayer,
+	pieces,
+	placed,
+	keyPressHandler,
+	...rest
+}) => {
 	const [isAllowed, setIsAllowed] = useState(true);
 	const contentRef = useRef(null);
 
@@ -105,7 +104,7 @@ const Home = (props) => {
 		if (contentRef && contentRef.current) {
 			contentRef.current.focus();
 		}
-	}, [contentRef, contentRef.current]);
+	}, [contentRef]);
 
 	useEffect(() => {
 		setupGame();
@@ -117,24 +116,30 @@ const Home = (props) => {
 	}, [history.location]);
 
 	return (
-		displayContent(isAllowed, phase, {
-			...props,
-			keyPressHandler,
-			ref: contentRef,
-			quitHandler: disconnectPlayer,
-			placed: pieces ? '' : placed,
-			type: 'regular'
-		})
+		<Content
+			isAllowed={isAllowed}
+			phase={phase}
+			mainProps={{
+				...rest,
+				keyPressHandler,
+				ref: contentRef,
+				quitHandler: disconnectPlayer,
+				placed: pieces ? '' : placed,
+				type: 'regular'
+			}}
+		/>
 	);
 };
 
-Home.propTypes = {
+HomeComponent.propTypes = {
 	phase: PropTypes.string,
 	interval: PropTypes.number,
 	setupGame: PropTypes.func,
 	history: PropTypes.object,
 	disconnectPlayer: PropTypes.func,
-	pieces: PropTypes.object,
+	pieces: PropTypes.array,
 };
 
-export default compose(withRouter, connect(mapStateToProps, mapDispatchToProps))(Home);
+const ConnectedHome = compose(withRouter, connect(mapStateToProps, mapDispatchToProps))(HomeComponent);
+
+export default ConnectedHome;

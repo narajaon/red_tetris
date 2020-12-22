@@ -19,7 +19,6 @@ describe('Aside Container', () => {
 
 	it('should render whitout infos', () => {
 		const {enzymeWrapper} = setup(fullStore, { infos: true }, Aside);
-		enzymeWrapper.debug();
 
 		expect(enzymeWrapper.find('[data-jest="aside-info"]')).toHaveLength(1);
 	});

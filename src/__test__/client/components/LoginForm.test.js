@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import Adapter from 'enzyme-adapter-react-16';
 import setup from '../enzymeSetup';
 
-import { LoginFormComponent } from '../../../client/components/LoginForm';
+import LoginFormComponent from '../../../client/components/LoginForm';
 
 configure({ adapter: new Adapter() });
 

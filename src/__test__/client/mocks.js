@@ -1,4 +1,5 @@
-import {PHASES} from '../../client/constants';
+import {PHASES, TETRIS} from '../../client/constants';
+import { initGrid } from '../../client/helpers/Grid';
 
 export const player = {
 	name: 'mockPlayer',
@@ -9,6 +10,7 @@ export const player = {
 	},
 	phase: 'arrived',
 	isMaster: false,
+	grid: initGrid(),
 };
 
 export const playerList = [ 
@@ -19,18 +21,18 @@ export const playerList = [
 		garbage: 0,
 	}
 	},
-	{...player, name: 'mockPlayer3',  score: {
-		lines: 10,
-		total: 100,
-		garbage: 0,
-	}
-	},
 	{...player, name: 'mockPlayer4',  score: {
 		lines: 1,
 		total: 10,
 		garbage: 0,
 	}
 	, isMaster: true},
+	{...player, name: 'mockPlayer3',  score: {
+		lines: 10,
+		total: 100,
+		garbage: 0,
+	}
+	},
 ];
 
 export const fullStore = {
@@ -42,6 +44,11 @@ export const fullStore = {
 		room: '42',
 	},
 	gridReducer: {
+		grid: initGrid(),
+		pieces: TETRIS[1],
+		interval: null,
+		overflows: false,
+		piecesQueue: [TETRIS[1], TETRIS[2], TETRIS[0]],
 		score: player.score
 	}
 };

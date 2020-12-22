@@ -1,11 +1,10 @@
-import { withRouter } from 'react-router-dom';
 import React, { useState, useCallback } from 'react';
 import { PropTypes } from 'prop-types';
 import styled from 'styled-components';
 import { Container, Flexed } from '../style/Layouts';
 import { StyledButton } from '../style/Elements';
 
-export const LoginFormComponent = ({ logToGame, history }) => {
+const LoginForm = ({ logToGame }) => {
 	const [ credentials, setCredentials ] = useState({ name: '', room: ''});
 
 	const updateInputField = useCallback((inputField) => (e) => {
@@ -14,7 +13,7 @@ export const LoginFormComponent = ({ logToGame, history }) => {
 
 	return (
 		<StyledForm
-			onSubmit={ logToGame(credentials, history) }
+			onSubmit={ logToGame(credentials) }
 			flexed
 			direction="column"
 			justify="space-around"
@@ -61,9 +60,9 @@ const StyledR = styled.span`
 	}
 `;
 
-LoginFormComponent.propTypes = {
+LoginForm.propTypes = {
 	logToGame: PropTypes.func,
 	history: PropTypes.object,
 };
 
-export default withRouter(LoginFormComponent);
+export default LoginForm;
