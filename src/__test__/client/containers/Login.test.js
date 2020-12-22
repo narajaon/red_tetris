@@ -9,11 +9,10 @@ jest.mock('react-redux', () => ({
 	// eslint-disable-next-line react/display-name
 	connect: (mapStateToProps) => {
 		const { connect: actualConnect } = jest.requireActual('react-redux');
-		const dummy = () => ({ type: 'dummy' });
 		
-		return actualConnect(mapStateToProps, {
-			logToGame: jest.fn(dummy),
-		});
+		return actualConnect(mapStateToProps, () => ({
+			logToGame: () => jest.fn(),
+		}));
 	},
 }));
 

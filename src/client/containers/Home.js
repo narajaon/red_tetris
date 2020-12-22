@@ -21,7 +21,7 @@ const mapStateToProps = ({ gridReducer, gameReducer }) => {
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
+export const mapDispatchToProps = (dispatch) => {
 	return {
 		keyPressHandler: (event) => {
 			switch (event.keyCode) {

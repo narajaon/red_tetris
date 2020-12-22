@@ -1,5 +1,4 @@
-import React from 'react';
-import { configure, shallow, mount } from 'enzyme';
+import { configure } from 'enzyme';
 import chai, { expect } from 'chai';
 import Adapter from 'enzyme-adapter-react-16';
 import configureStore from 'redux-mock-store';
@@ -31,7 +30,7 @@ configure({ adapter: new Adapter() });
 
 describe('Socket.io-client', function() {
 	it('should add a place-piece action on piece-request', function() {
-		const { store, server, socket } = setup({});
+		const { store } = setup({});
 		const dummyPieces = TETRIS[2];
 
 		store.dispatch(placePiece(dummyPieces));

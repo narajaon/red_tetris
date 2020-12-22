@@ -13,7 +13,7 @@ const LoginForm = ({ logToGame }) => {
 
 	return (
 		<StyledForm
-			onSubmit={ logToGame(credentials) }
+			onSubmit={logToGame(credentials)}
 			flexed
 			direction="column"
 			justify="space-around"

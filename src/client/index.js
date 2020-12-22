@@ -7,7 +7,6 @@ import { ThemeProvider } from 'styled-components';
 import thunk from 'redux-thunk';
 
 import Tetris from './containers/Tetris';
-import * as serviceWorker from './serviceWorker';
 import rootReducer from './rootReducer';
 import handleSocket from './middlewares/handleSocket';
 import hijackTranslate from './middlewares/hijackTranlate';
@@ -55,8 +54,3 @@ render(
 		</BrowserRouter>
 	</Provider>, document.getElementById('root')
 );
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers:
-serviceWorker.unregister();

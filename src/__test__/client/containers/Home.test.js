@@ -1,8 +1,9 @@
 import React from 'react';
 import setup from '../enzymeSetup';
-import Home from '../../../client/containers/Home';
+import Home, { mapDispatchToProps } from '../../../client/containers/Home';
 import { fullStore } from '../mocks';
-import { PHASES } from '../../../client/constants';
+import { KEYS, PHASES } from '../../../client/constants';
+import {rotatePiece, translatePiece} from '../../../client/actions/Grid';
 
 jest.mock('react-redux', () => ({
 	...jest.requireActual('react-redux'),
@@ -68,3 +69,46 @@ describe('Home container', () => {
 	});
 });
 
+describe('Home mapDispatchToProps', () => {
+	it('should handle keyPressHandler', () => {
+		const dispatch = jest.fn();
+
+		mapDispatchToProps(dispatch).keyPressHandler({ keyCode: KEYS.R });
+		expect(dispatch).toBeCalledWith(rotatePiece());
+		mapDispatchToProps(dispatch).keyPressHandler({ keyCode: KEYS.LEFT });
+		expect(dispatch).toBeCalledWith(translatePiece({x: -1, y: 0}));
+		mapDispatchToProps(dispatch).keyPressHandler({ keyCode: KEYS.RIGHT });
+		expect(dispatch).toBeCalledWith(translatePiece({x: 1, y: 0}));
+		mapDispatchToProps(dispatch).keyPressHandler({ keyCode: KEYS.DOWN });
+		expect(dispatch).toBeCalledWith(translatePiece({x: 0, y: 1}));
+	});
+
+	it('should handle startGame', () => {
+		const dispatch = jest.fn();
+
+		mapDispatchToProps(dispatch).startGame({ keyCode: KEYS.ENTER });
+		expect(dispatch).toHaveBeenCalledTimes(1);
+	});
+
+	it('should handle restartHandler', () => {
+		const dispatch = jest.fn();
+
+		mapDispatchToProps(dispatch).restartHandler();
+		expect(dispatch).toHaveBeenCalledTimes(1);
+	});
+
+	it('should handle disconnectPlayer', () => {
+		const dispatch = jest.fn();
+
+		mapDispatchToProps(dispatch).disconnectPlayer();
+		expect(dispatch).toHaveBeenCalledTimes(3);
+	});
+
+
+	it('should handle setupGame', () => {
+		const dispatch = jest.fn();
+
+		mapDispatchToProps(dispatch).setupGame();
+		expect(dispatch).toHaveBeenCalledTimes(2);
+	});
+});
