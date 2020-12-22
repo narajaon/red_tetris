@@ -1,11 +1,9 @@
-const Piece = require('./Piece');
 const Game = require('./Game');
 
 module.exports = class Socket {
 	constructor(io) {
 		this.io = io;
 		this.games = [];
-		this.piece = new Piece();
 	}
 
 	connect(setupListeners) {

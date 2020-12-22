@@ -1,3 +1,4 @@
+const Piece = require('./Piece');
 const Player = require('./Player');
 
 module.exports = class Game {
@@ -6,6 +7,7 @@ module.exports = class Game {
 		this.players = [new Player(master, true)];
 		this.master = master;
 		this.room = room;
+		this.piece = new Piece();
 	}
 
 	getPlayer(playerName) {

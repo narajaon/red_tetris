@@ -199,7 +199,7 @@ export	function generateBlockedLines(li) {
 	let line = li;
 	let len = empty.length - 1;
 
-	for (line; line > 0; line -= 1) {
+	for (line; line > 0 && len > 0; line -= 1) {
 		empty[len].forEach((_elem, i) => {
 			empty[len][i] = TILE.BLOCKED;
 		});

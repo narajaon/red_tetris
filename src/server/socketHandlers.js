@@ -3,11 +3,9 @@ const { GAME_PHASES, MAX_PLAYERS } = require('./constants');
 module.exports = {
 	'auth-request' : function (client) {
 		return ({ player, room }) => {
-			console.log('HERE');
-
 			if (!this.credentialsAreValid(player, room)) {
 				console.log('BAD CREDENTIALS');
-
+				
 				return;
 			}
 
@@ -83,7 +81,11 @@ module.exports = {
 	},
 	'piece-request': function () {
 		return ({ player, room }) => {
-			const pieces = this.piece.getNewPiece();
+			const game = this.getGameOfRoom(room);
+
+			if (!game) return;
+
+			const pieces = game.piece.getNewPiece();
 			console.log(player, 'requested', pieces);
 			this.emitToRoom('new-piece-event', room, {
 				pieces,

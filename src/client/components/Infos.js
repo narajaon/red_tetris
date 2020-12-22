@@ -12,18 +12,20 @@ const Infos = ({ currentPlayer, gameMaster, room, players, score }) => {
 	return (
 		<div
 			data-jest="infos"
+			style={{ display: 'flex', flexDirection: 'column' }}
 		>
-			<div><StyledLabel label="Name"/>: { currentPlayer }</div>
-			<div><StyledLabel label="GM"/>: { getGM(currentPlayer, gameMaster, players) }</div>
-			<div><StyledLabel label="Room"/>: { room }</div>
-			<div><StyledLabel label="Score" color="#5ff967"/>: { score.total }</div>
-			{players.length > 1 && <div data-jest="infos-other-players"><StyledLabel label="Garbage" color="#ff6d67"/>: { score.garbage }</div>}
+			<StyledLabel>Name : { currentPlayer }</StyledLabel>
+			<StyledLabel>GM : { getGM(currentPlayer, gameMaster, players) }</StyledLabel>
+			<StyledLabel>Room : { room }</StyledLabel>
+			<StyledLabel color="#5ff967">Score : { score.total }</StyledLabel>
+			{players.length > 1 && <StyledLabel data-jest="infos-other-players" color="#ff6d67">Garbage : { score.garbage }</StyledLabel>}
 		</div>
 	);
 };
 
 const StyledLabel = styled.span`
 	color: ${({ theme, color }) => color || theme.colors.secondary};
+  width: 100%;
 
 	::before {
 		content: "${({ label }) => label}";
