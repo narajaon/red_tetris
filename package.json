@@ -68,7 +68,7 @@
     "start": "node scripts/start.js",
     "serve": "nodemon src/server/app.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js --no-watch",
+    "test": "node scripts/test.js --no-watch --coverage",
     "test:coverage": "node scripts/test.js --coverage --collectCoverageFrom=!src/client/serviceWorker.js --collectCoverageFrom=src/**/*js"
   },
   "eslintConfig": {

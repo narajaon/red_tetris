@@ -24,13 +24,14 @@ const mapStateToProps = ({ gameReducer, gridReducer }) => {
 
 const defaultGrid = () => ({ grid: initGrid() });
 
-const Aside = (props) => {
-	const { top = defaultGrid(), bottom = defaultGrid(), infos, currentPlayer, room, players, gameMaster, score } = props;
-
+export const AsideComponent = ({ top, bottom, infos, currentPlayer, room, players, gameMaster, score }) => {
+	// console.log({ infos });
+	
 	return (
 		<StyledAside flexed direction="column" justify="space-between" align="center">
 			{infos ?
 				<Infos
+					data-jest='aside-info'
 					currentPlayer={currentPlayer}
 					gameMaster={gameMaster}
 					room={room}
@@ -52,7 +53,12 @@ const Aside = (props) => {
 const StyledAside = styled(Container)`
 `;
 
-Aside.propTypes = {
+AsideComponent.defaultProps = {
+	top: defaultGrid(),
+	bottom: defaultGrid(),
+};
+
+AsideComponent.propTypes = {
 	top: PropTypes.object,
 	bottom: PropTypes.object,
 	infos: PropTypes.bool,
@@ -63,4 +69,6 @@ Aside.propTypes = {
 	score: PropTypes.object,
 };
 
-export default withRouter(connect(mapStateToProps)(Aside));
+const ConnectedAside = withRouter(connect(mapStateToProps)(AsideComponent));
+
+export default ConnectedAside;
