@@ -107,13 +107,12 @@ describe('using Socket methods', () => {
 
 	it('should emit new piece', () => {		
 		mockSocket['auth-request'](mockClient)(id);
-		mockSocket['start-game'](mockClient)(id);
 		mockSocket['piece-request'](mockClient)(id);
-		expect(eventsToRoom).to.have.lengthOf(1);
-		mockSocket['piece-request'](mockClient)(id);
+		expect(eventsToRoom).to.have.lengthOf(2);
 		mockSocket['piece-request'](mockClient)(id);
 		mockSocket['piece-request'](mockClient)(id);
-		expect(eventsToRoom).to.have.lengthOf(4);
+		mockSocket['piece-request'](mockClient)(id);
+		expect(eventsToRoom).to.have.lengthOf(5);
 	});
 
 	it('should emit phase-switch-event to all players', () => {

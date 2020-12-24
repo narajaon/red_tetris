@@ -23,10 +23,10 @@ describe('Infos component testing', () => {
 		};
 	});
 
-	it('renders N number of players', () => {
+	it('renders 3 number of players', () => {
 		const { enzymeWrapper } = setup({}, initProps, Infos);
 		expect(enzymeWrapper).to.not.be.an('undefined');
 		expect(enzymeWrapper.find('[data-jest="infos"]')).to.not.be.an('undefined');
-		expect(enzymeWrapper.find('[data-jest="infos-other-players"]')).to.have.lengthOf(1);
+		expect(enzymeWrapper.find('[data-jest="infos-other-players"]')).to.have.lengthOf(3);
 	});
 });
