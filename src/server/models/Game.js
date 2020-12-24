@@ -1,13 +1,24 @@
+const { GAME_PHASES } = require('../constants');
 const Piece = require('./Piece');
 const Player = require('./Player');
 
 module.exports = class Game {
 	constructor(master, room) {
-		this.phase = 'connected';
 		this.players = [new Player(master, true)];
 		this.master = master;
 		this.room = room;
 		this.piece = new Piece();
+	}
+
+	arePlayersReady() {
+		return this.players.every((player) => player.phase === GAME_PHASES.CONNECTED);
+	}
+
+	restart() {
+		this.piece = new Piece();
+		this.players.forEach((player) => {
+			player.restart();
+		});
 	}
 
 	getPlayer(playerName) {
@@ -16,9 +27,9 @@ module.exports = class Game {
 		});
 	}
 
-	updatePlayer(playerName, { propName, prop }) {
+	updatePlayer(playerName, { prop, data }) {
 		const player = this.players.find(p => p.name === playerName);
-		player[propName] = prop;
+		player[prop] = data;
 	}
 
 	addPlayer(playerName) {

@@ -28,6 +28,8 @@ const mapStateToProps = ({ gameReducer }) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		logToGame: ({ room, name }) => (e) => {
+			// eslint-disable-next-line no-console
+			console.log('LOGGED');
 			e.preventDefault();
 
 			if (!formIsValid(name, room)) {
@@ -54,7 +56,7 @@ const Login = ({ logToGame, phase, currentPlayer, room }) => {
 			<Redirect
 				to={{
 					pathname: '/',
-					hash: `#${room}[${currentPlayer}]`,
+					hash: `${room}[${currentPlayer}]`,
 				}}
 			/>
 		);

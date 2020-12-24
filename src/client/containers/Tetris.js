@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { withRouter, Switch, Route } from 'react-router-dom';
+import { withRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -49,7 +49,8 @@ const Tetris = ({ player2, player3, player4, listenToPhases, resetSocket }) => {
 				<StyledMain flexed align="center">
 					<Switch>
 						<Route exact path="/" component={ Home } />
-						<Route path="/login" component={ Login } />
+						<Route exact path="/login" component={ Login } />
+						<Redirect from="*" to="/login" />
 					</Switch>
 				</StyledMain>
 				<Aside top={ player3 } bottom={ player4 }/>

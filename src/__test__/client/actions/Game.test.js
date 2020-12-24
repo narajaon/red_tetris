@@ -10,6 +10,6 @@ describe('switchPhase', () => {
 		const getState = jest.fn(() => ({ gridReducer: { interval: 42 }, gameReducer: { currentPlayer: 'test' } }));
 
 		switchPhase(PHASES.ARRIVED)(dispatch, getState);
-		expect(dispatch).toHaveBeenCalledTimes(4);
+		expect(dispatch).toHaveBeenCalledTimes(3);
 	});
 });

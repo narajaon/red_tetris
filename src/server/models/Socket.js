@@ -12,13 +12,10 @@ module.exports = class Socket {
 		});
 	}
 
-	updatePlayer(playerName, room, { prop, data }) {
+	updatePlayer(playerName, room, option) {
 		const gameOfRoom = this.getGameOfRoom(room);
-		if (!gameOfRoom) return ;
-		const playerToUpdate = gameOfRoom.getPlayer(playerName);
-		if (playerToUpdate) {
-			playerToUpdate[prop] = data;
-		}
+		console.assert(!!gameOfRoom, 'invalid player ' + playerName);
+		gameOfRoom.updatePlayer(playerName, option);
 	}
 
 	playerIsMaster(playerName, room) {
@@ -35,10 +32,17 @@ module.exports = class Socket {
 		});
 	}
 
-	getGameOfRoom(room) {
-		return this.games.find(game => {
+	getGameOfRoom(room, newMaster) {
+		let gameOfRoom = this.games.find(game => {
 			return game.room === room;
 		});
+
+		if (!gameOfRoom) {
+			gameOfRoom = new Game(room, newMaster);
+			this.games.push(gameOfRoom);
+		}
+
+		return gameOfRoom;
 	}
 
 	addPlayerToGame(playerName, room) {
@@ -54,14 +58,10 @@ module.exports = class Socket {
 	}
 
 	removePlayerFromGame(playerName, room) {
-		let gameindex;
-		const roomToSearch = this.games.find((game, i) => {
-			gameindex = i;
+		const gameIndex = this.games.findIndex(game => game.room === room);
+		const roomToSearch = this.games[gameIndex];
 
-			return game.room === room;
-		});
-
-		if (!roomToSearch) return;
+		if(!roomToSearch) return;
 
 		roomToSearch.removePlayer(playerName);
 
@@ -72,7 +72,7 @@ module.exports = class Socket {
 
 		// CHECK IF THERES NO PLAYERS LEFT
 		if (roomToSearch.players.length === 0) {
-			this.games.splice(gameindex, 1);
+			this.games.splice(gameIndex, 1);
 		}
 	}
 };

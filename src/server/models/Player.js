@@ -5,6 +5,7 @@
  * - started
  * - ended
  */
+const { GAME_PHASES } = require('../constants');
 
 function initGrid() {
 	return Array.from(Array(20), () => [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
@@ -15,7 +16,12 @@ module.exports = class Player {
 		this.name = name;
 		this.grid = initGrid();
 		this.score = 0;
-		this.phase = 'arrived';
+		this.phase = GAME_PHASES.ARRIVED;
 		this.isMaster = isMaster;
+	}
+
+	restart() {
+		this.grid = initGrid();
+		this.score = 0;
 	}
 };

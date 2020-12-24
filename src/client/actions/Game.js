@@ -25,11 +25,11 @@ export function switchPhase(phase) {
 			if (currentPlayer) {
 				dispatch(emitRemovePlayer());
 				dispatch(restartGame());
-				dispatch(resetGrid());
 				clearInterval(interval);
 			}
 			break;
 		case PHASES.STARTED:
+			dispatch(resetGrid());
 			dispatch(startAnimation());
 			break;
 		case PHASES.ENDED:	

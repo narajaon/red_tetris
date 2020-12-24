@@ -32,6 +32,13 @@ module.exports = {
 	'start-game': function () {
 		return ({ room, player }) => {
 			if (this.playerIsMaster(player, room)) {
+				console.assert(!!player, 'not valid player ' + player);
+				const game = this.getGameOfRoom(room);
+
+				if (game) {
+					game.restart();
+				}
+
 				console.log(`game in room ${room} started`);
 				this.emitToRoom('phase-switch-event', room, { phase: GAME_PHASES.STARTED });
 				this.updatePlayer(player, room, { prop: 'phase', data: GAME_PHASES.STARTED });
@@ -43,12 +50,11 @@ module.exports = {
 			console.log('SWITCH', phase);
 
 			client.emit('phase-switch-event', { phase });
-			const game = this.getGameOfRoom(room);
+			const game = this.getGameOfRoom(room, player);
 
-			// No more games in ROOM
-			if (!game) return ;
+			console.assert(!!game, `searched game is invalid phase: ${phase} room: ${room}`);
 
-			game.updatePlayer(player, { propName: 'phase', prop: phase });
+			this.updatePlayer(player, room, { prop: 'phase', data: phase });
 			this.emitToRoom('update-players', room, {
 				players: game.players,
 			});
@@ -56,7 +62,7 @@ module.exports = {
 	},
 	'remove-player': function () {
 		return ({ player, room }) => {
-			console.log('TO REMOVE', player);
+			console.log('REMOVE ', player);
 			this.removePlayerFromGame(player, room);
 			const game = this.getGameOfRoom(room);
 			if (!game || !game.players ) return;
@@ -82,9 +88,6 @@ module.exports = {
 	'piece-request': function () {
 		return ({ player, room }) => {
 			const game = this.getGameOfRoom(room);
-
-			if (!game) return;
-
 			const pieces = game.piece.getNewPiece();
 			console.log(player, 'requested', pieces);
 			this.emitToRoom('new-piece-event', room, {
